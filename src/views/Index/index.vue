@@ -35,12 +35,16 @@ type HistoryData = {
 // 地图下钻历史记录
 const historyMapData = ref<HistoryData[]>([]);
 
+// 返回上级地图
 const backMap = () => {
   const myChart = echarts.init(
     <HTMLElement>document.getElementById("mapEchart")
   );
+  // 去除当前的地图信息
   historyMapData.value.pop();
+  // 获取上一级的地图信息
   const newdata = historyMapData.value.pop();
+  // 重新渲染地图
   initMap(myChart, newdata?.name || "map", newdata?.adcode || "100000");
 };
 
@@ -55,6 +59,7 @@ const getMapJSON = async (adcode: string = "100000") => {
 // 初始化json返回地图渲染需要的data数据
 const initJSONData = (json: any) => {
   // console.log(json.features);
+  // 过滤合格的data信息
   const DATA = json.features.map((item: any) => {
     return {
       value: item.properties,
@@ -100,11 +105,15 @@ const initMap = async (
   geoName: string,
   adcode: string
 ) => {
+  // 清除echarts实例
   chartDOM.clear();
+  // 请求map的json
   const { data: geoJson } = await getMapJSON(adcode);
+  // 重新注册地图
   echarts.registerMap(geoName, <any>geoJson);
   // 图表配置项
   const option = getOption(geoName, geoJson);
+  // 渲染配置
   chartDOM.setOption(option);
 };
 
@@ -121,7 +130,9 @@ const chartMap = async () => {
     console.log(e);
     const newName: string = e.name;
     if (e.value.level === "district") return alert("该地区已经无法下钻");
+    // 添加历史记录
     historyMapData.value.push(e.value);
+    // 初始化地图
     initMap(myChart, newName, e.value.adcode);
   });
   //让可视化地图跟随浏览器大小缩放
