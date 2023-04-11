@@ -76,23 +76,117 @@ const getOption = (geoName: string, geoJson: any) => {
   const option = {
     series: [
       {
+        zlevel: 10,
+        regionHeight: 2,
         type: "map3D",
         map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
-        shading: "lambert",
+        shading: "realistic",
+        realisticMaterial: {
+          detailTexture: "./1.jpeg",
+          roughness: 0.2,
+          metalness: 0,
+        },
         data: initJSONData(geoJson), //这里比较重要：获得过滤后的data，这样点击事件时就能获得这个data的值
-        itemStyle: {
-          borderWidth: 1.6,
-          borderColor: "#09417F",
-          color: "#00254b",
+        label: {
+          show: true, // 是否显示标签。
           textStyle: {
-            color: "#fff",
-            fontsize: 50,
+            color: "#fff", // 地图初始化区域字体颜色
+            fontSize: 10,
+          },
+          formatter: (e: any) => {
+            // console.log(e.name);
+            return ` ${e.name} `;
           },
         },
+        itemStyle: {
+          borderWidth: 1.5,
+          borderColor: "#5FB9DA",
+          color: "#13A4C4",
+        },
         emphasis: {
-          itemStyle: { color: "#fff" },
+          label: {
+            show: true,
+            textStyle: {
+              color: "#f8fbfb",
+              borderColor: "#17E8F4",
+              fontSize: 18,
+            },
+          },
+          itemStyle: {
+            color: "#18B6FE",
+
+            backgroundColor: {
+              image:
+                "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201603%2F01%2F20160301232632_nXWsm.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1683787069&t=efc060f66bf6fa2c9446bddbd085982b",
+            },
+          },
+        },
+        viewControl: {
+          autoRotate: true,
+          autoRotateAfterStill: 3,
+          distance: 120,
+          minAlpha: 5, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
+          maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
+          minBeta: -360, // 左右旋转的最小 beta 值。即视角能旋转到达最左的角度。[ default: -80 ]
+          maxBeta: 360, // 左右旋转的最大 beta 值。即视角能旋转到达最右的角度。[ default: 80 ]
+          animation: true, // 是否开启动画。[ default: true ]
+          animationDurationUpdate: 1000, // 过渡动画的时长。[ default: 1000 ]
+          animationEasingUpdate: "cubicInOut", // 过渡动画的缓动效果。[ default: cubicInOut ]
+        },
+        light: {
+          //光照阴影
+          main: {
+            // color: "#fff", //光照颜色
+            intensity: 0.3, //光照强度
+            //shadowQuality: 'high', //阴影亮度
+            shadow: true, //是否显示阴影
+            shadowQuality: "medium", //阴影质量 ultra //阴影亮度
+            alpha: 55,
+            beta: 10,
+          },
+          ambient: {
+            intensity: 0.7,
+          },
         },
       },
+      // {
+      //   zlevel: 10,
+      //   regionHeight:3,
+      //   type: "map3D",
+      //   map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
+      //   shading: "lambert",
+      //   itemStyle: {
+      //     borderWidth: 1,
+      //     borderColor: "#13B4D2",
+      //     color: "#1993BB",
+      //   },
+      // },
+      // {
+      //   zlevel: 10,
+      //   regionHeight:2,
+      //   type: "map3D",
+      //   map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
+      //   shading: "lambert",
+      //   itemStyle: {
+      //     borderWidth: 1,
+      //     borderColor: "#0C586E",
+      //     color: "#12A5C2",
+      //   },
+
+      // },
+      // {
+      //   zlevel: 10,
+      //   regionHeight:1,
+      //   type: "map3D",
+      //   map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
+      //   shading: "lambert",
+      //   itemStyle: {
+      //     borderWidth: 1,
+      //     borderColor: "#0C4F60",
+      //     color: "#0D4B64",
+      //   },
+
+      // },
     ],
   };
 
