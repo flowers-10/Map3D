@@ -71,12 +71,18 @@ const initJSONData = (json: any) => {
 };
 
 // 图表生成配置项
-const getOption = (geoName: string, geoJson: any) => {
+const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
   // 图表配置项
   const option = {
+    geo3D: {
+      show: false,
+      type: "map3D",
+      map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
+      regionHeight: 2,
+    },
     series: [
       {
-        zlevel: 10,
+        zlevel: -10,
         regionHeight: 2,
         type: "map3D",
         map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
@@ -86,7 +92,7 @@ const getOption = (geoName: string, geoJson: any) => {
           roughness: 0.2,
           metalness: 0,
         },
-        data: initJSONData(geoJson), //这里比较重要：获得过滤后的data，这样点击事件时就能获得这个data的值
+        data: mapData, //这里比较重要：获得过滤后的data，这样点击事件时就能获得这个data的值
         label: {
           show: true, // 是否显示标签。
           textStyle: {
@@ -121,72 +127,43 @@ const getOption = (geoName: string, geoJson: any) => {
             },
           },
         },
-        viewControl: {
-          autoRotate: true,
-          autoRotateAfterStill: 3,
-          distance: 120,
-          minAlpha: 5, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
-          maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
-          minBeta: -360, // 左右旋转的最小 beta 值。即视角能旋转到达最左的角度。[ default: -80 ]
-          maxBeta: 360, // 左右旋转的最大 beta 值。即视角能旋转到达最右的角度。[ default: 80 ]
-          animation: true, // 是否开启动画。[ default: true ]
-          animationDurationUpdate: 1000, // 过渡动画的时长。[ default: 1000 ]
-          animationEasingUpdate: "cubicInOut", // 过渡动画的缓动效果。[ default: cubicInOut ]
+      },
+      {
+        type: "scatter3D",
+        coordinateSystem: "geo3D",
+        data: scatterData,
+        symbol: "circle",
+        symbolSize: 20,
+        itemStyle: {
+          color: "transparent",
         },
-        light: {
-          //光照阴影
-          main: {
-            // color: "#fff", //光照颜色
-            intensity: 0.3, //光照强度
-            //shadowQuality: 'high', //阴影亮度
-            shadow: true, //是否显示阴影
-            shadowQuality: "medium", //阴影质量 ultra //阴影亮度
-            alpha: 55,
-            beta: 10,
+        label: {
+          show: true,
+          position: "top",
+          distance: -20,
+          formatter() {
+            return "2";
           },
-          ambient: {
-            intensity: 0.7,
+
+          textStyle: {
+            color: "transparent",
+            padding: [15, 20],
+            backgroundColor: {
+              image: "./2.jpeg",
+            },
+          },
+        },
+        emphasis: {
+          label: {
+            show: true,
+            textStyle: {
+              backgroundColor: {
+                image: "./2.jpeg",
+              },
+            },
           },
         },
       },
-      // {
-      //   zlevel: 10,
-      //   regionHeight:3,
-      //   type: "map3D",
-      //   map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
-      //   shading: "lambert",
-      //   itemStyle: {
-      //     borderWidth: 1,
-      //     borderColor: "#13B4D2",
-      //     color: "#1993BB",
-      //   },
-      // },
-      // {
-      //   zlevel: 10,
-      //   regionHeight:2,
-      //   type: "map3D",
-      //   map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
-      //   shading: "lambert",
-      //   itemStyle: {
-      //     borderWidth: 1,
-      //     borderColor: "#0C586E",
-      //     color: "#12A5C2",
-      //   },
-
-      // },
-      // {
-      //   zlevel: 10,
-      //   regionHeight:1,
-      //   type: "map3D",
-      //   map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
-      //   shading: "lambert",
-      //   itemStyle: {
-      //     borderWidth: 1,
-      //     borderColor: "#0C4F60",
-      //     color: "#0D4B64",
-      //   },
-
-      // },
     ],
   };
 
@@ -205,8 +182,10 @@ const initMap = async (
   const { data: geoJson } = await getMapJSON(adcode);
   // 重新注册地图
   echarts.registerMap(geoName, <any>geoJson);
+  // 过滤json数据
+  const mapData = initJSONData(geoJson);
   // 图表配置项
-  const option = getOption(geoName, geoJson);
+  const option = getOption(geoName, mapData);
   // 渲染配置
   chartDOM.setOption(option);
 };
@@ -229,6 +208,14 @@ const chartMap = async () => {
     // 初始化地图
     initMap(myChart, newName, e.value.adcode);
   });
+  // 添加鼠标移入事件
+  // myChart.on("mouseover", (e: any) => {
+  //   // console.log(e.data.value);
+  //   const valuee = e.data.value.center;
+  //   valuee.push(1);
+  //   const data = [{ name: e.data.value.name, value: valuee }];
+  //   console.log(data);
+  // });
   //让可视化地图跟随浏览器大小缩放
   window.addEventListener("resize", () => {
     myChart.resize();
