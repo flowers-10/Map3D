@@ -1,6 +1,7 @@
 <template>
   <div class="investment-screen">
     <svg
+      style="position: absolute; left: 20px; top: 20px; cursor: pointer"
       @click="backMap"
       t="1681180771137"
       class="icon"
@@ -33,7 +34,7 @@ type HistoryData = {
 };
 
 // 地图下钻历史记录
-const historyMapData = ref<HistoryData[]>([]);
+const historyMapData = ref<HistoryData[]>([{ name: "map", adcode: "100000" }]);
 
 // 返回上级地图
 const backMap = () => {
@@ -42,8 +43,9 @@ const backMap = () => {
   );
   // 去除当前的地图信息
   historyMapData.value.pop();
+  const len = historyMapData.value.length;
   // 获取上一级的地图信息
-  const newdata = historyMapData.value.pop();
+  const newdata = historyMapData.value[len - 1];
   // 重新渲染地图
   initMap(myChart, newdata?.name || "map", newdata?.adcode || "100000");
 };
@@ -233,6 +235,7 @@ onMounted(() => {
   background-color: rgb(0, 0, 42);
   width: 100vw;
   height: 100vh;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
