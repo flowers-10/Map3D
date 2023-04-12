@@ -35,14 +35,10 @@ type HistoryData = {
 
 // 地图下钻历史记录
 const historyMapData = ref<HistoryData[]>([{ name: "map", adcode: "100000" }]);
-// option缓存
-const optionCache = ref();
-watch(optionCache, (old, newValue) => {
-  // console.log(newValue);
-});
 
 // 返回上级地图
 const backMap = () => {
+  clearInterval(regionsSetInterVal.value);
   const myChart = echarts.init(
     <HTMLElement>document.getElementById("mapEchart")
   );
@@ -78,14 +74,42 @@ const initJSONData = (json: any) => {
 };
 
 // 图表生成配置项
-const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
+const getOption = (geoName: string, mapData: any) => {
   // 图表配置项
   const option = {
     geo3D: {
-      show: false,
+      zlevel: -100,
+      show: true,
       type: "map3D",
       map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
       regionHeight: 2,
+      shading: "realistic",
+      realisticMaterial: {
+        detailTexture: "./1.jpeg",
+        roughness: 0.2,
+        metalness: 0,
+      },
+      regions: [
+        {
+          name: mapData[0].name,
+          // label: {
+          //   show: true,
+          //   textStyle: {
+          //     color: "#fff", // 地图初始化区域字体颜色
+          //     fontSize: 18,
+          //   },
+          // },
+          itemStyle: {
+            color: "#ff9900",
+          },
+        },
+      ], //默认高亮区域
+      emphasis: {
+        label: { show: false },
+        itemStyle: {
+          color: "transparent",
+        },
+      },
     },
     series: [
       {
@@ -93,18 +117,12 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
         regionHeight: 2,
         type: "map3D",
         map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
-        shading: "realistic",
-        realisticMaterial: {
-          detailTexture: "./1.jpeg",
-          roughness: 0.2,
-          metalness: 0,
-        },
         data: mapData, //这里比较重要：获得过滤后的data，这样点击事件时就能获得这个data的值
         label: {
           show: true, // 是否显示标签。
           textStyle: {
             color: "#fff", // 地图初始化区域字体颜色
-            fontSize: 10,
+            fontSize: 12,
           },
           formatter: (e: any) => {
             // console.log(e.name);
@@ -114,85 +132,50 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
         itemStyle: {
           borderWidth: 1.5,
           borderColor: "#5FB9DA",
-          color: "#13A4C4",
+          color: "transparent",
         },
         emphasis: {
           label: {
             show: true,
             textStyle: {
               color: "#f8fbfb",
-              borderColor: "#17E8F4",
+              // borderColor: "#17E8F4",
               fontSize: 18,
+              padding: [20, 20],
+              backgroundColor: {
+                image: "./2.png",
+              },
             },
           },
           itemStyle: {
             color: "#18B6FE",
-
-            backgroundColor: {
-              image:
-                "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201603%2F01%2F20160301232632_nXWsm.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1683787069&t=efc060f66bf6fa2c9446bddbd085982b",
-            },
-          },
-        },
-      },
-      {
-        zlevel: 1,
-        type: "scatter3D",
-        coordinateSystem: "geo3D",
-        data: [
-          { name: "杭州", value: [120.161693, 30.280059] },
-          { name: "温州", value: [120.705869, 28.001095] },
-          { name: "湖州", value: [120.094566, 30.899015] },
-          { name: "嘉兴", value: [120.762045, 30.750912] },
-          { name: "绍兴", value: [120.586673, 30.036519] },
-          { name: "丽水", value: [119.929503, 28.472979] },
-          { name: "衢州", value: [118.880768, 28.941661] },
-          { name: "金华", value: [119.654027, 29.084455] },
-          { name: "台州", value: [121.426996, 28.662297] },
-          { name: "宁波", value: [121.556686, 29.880177] },
-          { name: "舟山", value: [122.214339, 29.991092] },
-        ],
-        symbol: "circle",
-        itemStyle: {
-          color: "transparent",
-        },
-        label: {
-          show: true,
-          position: "top",
-          distance: -20,
-          formatter() {
-            return "2";
-          },
-
-          textStyle: {
-            color: "transparent",
-            padding: [20, 20],
-            backgroundColor: {
-              image: "./2.jpeg",
-            },
-          },
-        },
-        emphasis: {
-          label: {
-            show: true,
-            formatter() {
-            return "2";
-          },
-            textStyle: {
-              color: "transparent",
-              padding: [20, 20],
-              backgroundColor: {
-                image: "./3.jpeg",
-              },
-            },
           },
         },
       },
     ],
   };
-  // 收集当前的option
-  optionCache.value = option;
   return option;
+};
+
+// 轮训 regions 地图名的下标
+let regionsCount = ref<number>(0);
+// 定时器接收容器
+const regionsSetInterVal = ref();
+let flag = ref(false)
+
+// 循环定时器修改地图option高亮显示地图区域
+const setIntervalOptionsRegionsMap = (
+  option: any,
+  mapData: any,
+  chartDOM: echarts.ECharts
+) => {
+    regionsSetInterVal.value = setInterval(() => {
+      option.geo3D.regions[0].name = mapData[regionsCount.value].name;
+      updateMap(chartDOM, option);
+      regionsCount.value++;
+      flag.value = true
+      if (regionsCount.value === mapData.length) regionsCount.value = 0;
+    }, 1000);
 };
 
 // 初始化图表
@@ -212,8 +195,8 @@ const initMap = async (
   // 图表配置项
   const option = getOption(geoName, mapData);
   // 渲染配置
-  // chartDOM.setOption(option);
-  updateMap(chartDOM, option);
+  setIntervalOptionsRegionsMap(option, mapData, chartDOM);
+  // updateMap(chartDOM,option)
 };
 
 // 更新图表配置项重新渲染
@@ -232,6 +215,7 @@ const chartMap = async () => {
   initMap(myChart, "map", "100000");
   // 添加点击事件
   myChart.on("click", (e: any) => {
+    clearInterval(regionsSetInterVal.value);
     console.log(e);
     const newName: string = e.name;
     if (e.value.level === "district") return alert("该地区已经无法下钻");
@@ -242,7 +226,14 @@ const chartMap = async () => {
   });
   // 添加鼠标移入事件
   myChart.on("mouseover", (e: any) => {
-    console.log(e.data.value);
+      console.log('鼠标移入');
+      clearInterval(regionsSetInterVal.value);
+  });
+  // 添加鼠标移出事件
+  myChart.on("mouseout", (e: any) => {
+    console.log("鼠标移出");
+    flag.value = false
+    
   });
   //让可视化地图跟随浏览器大小缩放
   window.addEventListener("resize", () => {
