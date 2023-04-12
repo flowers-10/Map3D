@@ -140,17 +140,17 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
         type: "scatter3D",
         coordinateSystem: "geo3D",
         data: [
-          { name: "杭州", value: [120.161693, 30.280059, 1] },
-          { name: "温州", value: [120.705869, 28.001095, 1] },
-          { name: "湖州", value: [120.094566, 30.899015, 1] },
-          { name: "嘉兴", value: [120.762045, 30.750912, 1] },
-          { name: "绍兴", value: [120.586673, 30.036519, 1] },
-          { name: "丽水", value: [119.929503, 28.472979, 1] },
-          { name: "衢州", value: [118.880768, 28.941661, 1] },
-          { name: "金华", value: [119.654027, 29.084455, 1] },
-          { name: "台州", value: [121.426996, 28.662297, 1] },
-          { name: "宁波", value: [121.556686, 29.880177, 1] },
-          { name: "舟山", value: [122.214339, 29.991092, 1] },
+          { name: "杭州", value: [120.161693, 30.280059] },
+          { name: "温州", value: [120.705869, 28.001095] },
+          { name: "湖州", value: [120.094566, 30.899015] },
+          { name: "嘉兴", value: [120.762045, 30.750912] },
+          { name: "绍兴", value: [120.586673, 30.036519] },
+          { name: "丽水", value: [119.929503, 28.472979] },
+          { name: "衢州", value: [118.880768, 28.941661] },
+          { name: "金华", value: [119.654027, 29.084455] },
+          { name: "台州", value: [121.426996, 28.662297] },
+          { name: "宁波", value: [121.556686, 29.880177] },
+          { name: "舟山", value: [122.214339, 29.991092] },
         ],
         symbol: "circle",
         itemStyle: {
@@ -159,7 +159,7 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
         label: {
           show: true,
           position: "top",
-          distance: 0,
+          distance: -20,
           formatter() {
             return "2";
           },
@@ -175,6 +175,9 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
         emphasis: {
           label: {
             show: true,
+            formatter() {
+            return "2";
+          },
             textStyle: {
               color: "transparent",
               padding: [20, 20],
