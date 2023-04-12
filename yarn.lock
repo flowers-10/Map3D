@@ -317,7 +317,7 @@ echarts-gl@^2.0.9:
     claygl "^1.2.1"
     zrender "^5.1.1"
 
-echarts@^5.4.0:
+echarts@^5.2.2:
   version "5.4.2"
   resolved "https://registry.npmmirror.com/echarts/-/echarts-5.4.2.tgz#9f38781c9c6ae323e896956178f6956952c77a48"
   integrity sha512-2W3vw3oI2tWJdyAz+b8DuWS0nfXtSDqlDmqgin/lfzbkB01cuMEN66KWBlmur3YMp5nEDEEt5s23pllnAzB4EA==

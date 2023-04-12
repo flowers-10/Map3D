@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import * as echarts from "echarts";
 import "echarts-gl"; //3D地图插件
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, watchEffect } from "vue";
 import axios from "axios";
 
 type HistoryData = {
@@ -35,6 +35,11 @@ type HistoryData = {
 
 // 地图下钻历史记录
 const historyMapData = ref<HistoryData[]>([{ name: "map", adcode: "100000" }]);
+// option缓存
+const optionCache = ref();
+watch(optionCache, (old, newValue) => {
+  // console.log(newValue);
+});
 
 // 返回上级地图
 const backMap = () => {
@@ -131,25 +136,37 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
         },
       },
       {
+        zlevel: 1,
         type: "scatter3D",
         coordinateSystem: "geo3D",
-        data: scatterData,
+        data: [
+          { name: "杭州", value: [120.161693, 30.280059, 1] },
+          { name: "温州", value: [120.705869, 28.001095, 1] },
+          { name: "湖州", value: [120.094566, 30.899015, 1] },
+          { name: "嘉兴", value: [120.762045, 30.750912, 1] },
+          { name: "绍兴", value: [120.586673, 30.036519, 1] },
+          { name: "丽水", value: [119.929503, 28.472979, 1] },
+          { name: "衢州", value: [118.880768, 28.941661, 1] },
+          { name: "金华", value: [119.654027, 29.084455, 1] },
+          { name: "台州", value: [121.426996, 28.662297, 1] },
+          { name: "宁波", value: [121.556686, 29.880177, 1] },
+          { name: "舟山", value: [122.214339, 29.991092, 1] },
+        ],
         symbol: "circle",
-        symbolSize: 20,
         itemStyle: {
           color: "transparent",
         },
         label: {
           show: true,
           position: "top",
-          distance: -20,
+          distance: 0,
           formatter() {
             return "2";
           },
 
           textStyle: {
             color: "transparent",
-            padding: [15, 20],
+            padding: [20, 20],
             backgroundColor: {
               image: "./2.jpeg",
             },
@@ -159,8 +176,10 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
           label: {
             show: true,
             textStyle: {
+              color: "transparent",
+              padding: [20, 20],
               backgroundColor: {
-                image: "./2.jpeg",
+                image: "./3.jpeg",
               },
             },
           },
@@ -168,7 +187,8 @@ const getOption = (geoName: string, mapData: any, scatterData: any = []) => {
       },
     ],
   };
-
+  // 收集当前的option
+  optionCache.value = option;
   return option;
 };
 
@@ -188,6 +208,13 @@ const initMap = async (
   const mapData = initJSONData(geoJson);
   // 图表配置项
   const option = getOption(geoName, mapData);
+  // 渲染配置
+  // chartDOM.setOption(option);
+  updateMap(chartDOM, option);
+};
+
+// 更新图表配置项重新渲染
+const updateMap = (chartDOM: echarts.ECharts, option: any) => {
   // 渲染配置
   chartDOM.setOption(option);
 };
@@ -211,13 +238,9 @@ const chartMap = async () => {
     initMap(myChart, newName, e.value.adcode);
   });
   // 添加鼠标移入事件
-  // myChart.on("mouseover", (e: any) => {
-  //   // console.log(e.data.value);
-  //   const valuee = e.data.value.center;
-  //   valuee.push(1);
-  //   const data = [{ name: e.data.value.name, value: valuee }];
-  //   console.log(data);
-  // });
+  myChart.on("mouseover", (e: any) => {
+    console.log(e.data.value);
+  });
   //让可视化地图跟随浏览器大小缩放
   window.addEventListener("resize", () => {
     myChart.resize();
