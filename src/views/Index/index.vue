@@ -95,13 +95,46 @@ const getMapJSON = async (adcode: string = "100000", geoName: string) => {
   // 重新注册地图
   echarts.registerMap(geoName, <any>res.data);
   // 过滤json数据
+
+  const lightMap: any = {
+    河南省: {
+      show: true,
+      formatter: (e: any) => {
+        return ` ${e.name} `;
+      },
+      textStyle: {
+        color: "#f8fbfb",
+        fontSize: 18,
+        padding: [20, 20],
+        backgroundColor: {
+          image: "./2.png",
+        },
+      },
+    },
+    郑州市: {
+      show: true,
+      formatter: (e: any) => {
+        return ` ${e.name} `;
+      },
+      textStyle: {
+        color: "#f8fbfb",
+        fontSize: 18,
+        padding: [20, 20],
+        backgroundColor: {
+          image: "./2.png",
+        },
+      },
+    },
+  };
   const mapData = res.data.features.map((item: any) => {
+    console.log(item.properties.name);
     return {
       value: item.properties,
       name: item.properties.name,
+      label: lightMap[item.properties.name],
     };
   });
-  
+
   return mapData;
 };
 // 图表生成配置项
@@ -120,6 +153,13 @@ const getOption = (geoName: string, mapData: any) => {
         roughness: 0.2,
         metalness: 0,
       },
+      // viewControl: {
+      //   minAlpha: 70, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
+      //   maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
+      //   minBeta: -360, // 左右旋转的最小 beta 值。即视角能旋转到达最左的角度。[ default: -80 ]
+      //   maxBeta: 360, // 左右旋转的最大 beta 值。即视角能旋转到达最右的角度。[ default: 80 ]
+      // },
+
       regions: [
         {
           name: mapData[0].name,
@@ -160,6 +200,18 @@ const getOption = (geoName: string, mapData: any) => {
             return ` ${e.name} `;
           },
         },
+        shading: "realistic",
+        realisticMaterial: {
+          detailTexture: "./4.jpeg",
+          roughness: 0.2,
+          metalness: 0,
+        },
+        // viewControl: {
+        //   minAlpha: 70, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
+        //   maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
+        //   minBeta: -360, // 左右旋转的最小 beta 值。即视角能旋转到达最左的角度。[ default: -80 ]
+        //   maxBeta: 360, // 左右旋转的最大 beta 值。即视角能旋转到达最右的角度。[ default: 80 ]
+        // },
         itemStyle: {
           borderWidth: 1.5,
           borderColor: "#5FB9DA",
