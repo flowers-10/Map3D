@@ -59,7 +59,6 @@ const chartMap = async () => {
   // 添加鼠标移出事件
   myChart.on("mouseout", (e: any) => {
     console.log("鼠标移出");
-    flag.value = false;
   });
   //让可视化地图跟随浏览器大小缩放
   window.addEventListener("resize", () => {
@@ -75,96 +74,35 @@ const initMap = async (
   // 清除echarts实例
   chartDOM.clear();
   // 请求map的json
-  const { data: geoJson } = await getMapJSON(adcode);
-  // 重新注册地图
-  echarts.registerMap(geoName, <any>geoJson);
-  // 过滤json数据
-  const mapData = initJSONData(geoJson);
+  const mapData = await getMapJSON(adcode, geoName);
   // 图表配置项
   const option = getOption(geoName, mapData);
   // 渲染配置
-  // setIntervalOptionsRegionsMap(option, mapData, chartDOM);
-  updateMap(chartDOM, option);
-};
-
-/**
- * 返回上级功能
- */
-type HistoryData = {
-  name: string;
-  adcode: string | undefined;
-};
-// 地图下钻历史记录
-const historyMapData = ref<HistoryData[]>([{ name: "map", adcode: "100000" }]);
-// 返回上级地图
-const backMap = () => {
-  clearInterval(regionsSetInterVal.value);
-  const myChart = echarts.init(
-    <HTMLElement>document.getElementById("mapEchart")
-  );
-  // 去除当前的地图信息
-  historyMapData.value.pop();
-  const len = historyMapData.value.length;
-  // 获取上一级的地图信息
-  const newdata = historyMapData.value[len - 1];
-  // 重新渲染地图
-  initMap(myChart, newdata?.name || "map", newdata?.adcode || "100000");
-};
-
-/**
- * 高亮区块功能
- */
-// 轮训 regions 地图名的下标
-let regionsCount = ref<number>(0);
-// 定时器接收容器
-const regionsSetInterVal = ref();
-let flag = ref(false);
-// 循环定时器修改地图option高亮显示地图区域
-const setIntervalOptionsRegionsMap = (
-  option: any,
-  mapData: any,
-  chartDOM: echarts.ECharts
-) => {
-  regionsSetInterVal.value = setInterval(() => {
-    option.geo3D.regions[0].name = mapData[regionsCount.value].name;
-    updateMap(chartDOM, option);
-    regionsCount.value++;
-    flag.value = true;
-    if (regionsCount.value === mapData.length) regionsCount.value = 0;
-  }, 1000);
-};
-
-/**
- * 更新地图功能
- */
-// 更新图表配置项重新渲染
-const updateMap = (chartDOM: echarts.ECharts, option: any) => {
-  // 渲染配置
-  chartDOM.setOption(option);
+  setIntervalOptionsRegionsMap(option, mapData, chartDOM);
+  // updateMap(chartDOM, option);
 };
 
 /**
  * 地图配置项
  */
-// 请求地图json数据
-const getMapJSON = async (adcode: string = "100000") => {
+
+// 请求地图json数据，并过滤成地图data配置项
+const getMapJSON = async (adcode: string = "100000", geoName: string) => {
   const res = await axios.get(
     `https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`
   );
-  return res;
-};
-// 初始化json返回地图渲染需要的data数据
-const initJSONData = (json: any) => {
-  // console.log(json.features);
-  // 过滤合格的data信息
-  const DATA = json.features.map((item: any) => {
+
+  // 重新注册地图
+  echarts.registerMap(geoName, <any>res.data);
+  // 过滤json数据
+  const mapData = res.data.features.map((item: any) => {
     return {
       value: item.properties,
       name: item.properties.name,
     };
   });
-  // console.log(DATA);
-  return DATA;
+  
+  return mapData;
 };
 // 图表生成配置项
 const getOption = (geoName: string, mapData: any) => {
@@ -248,6 +186,63 @@ const getOption = (geoName: string, mapData: any) => {
     ],
   };
   return option;
+};
+
+/**
+ * 更新地图功能
+ */
+
+// 更新图表配置项重新渲染
+const updateMap = (chartDOM: echarts.ECharts, option: any) => {
+  // 渲染配置
+  chartDOM.setOption(option);
+};
+
+/**
+ * 返回上级地图功能
+ */
+
+type HistoryData = {
+  name: string;
+  adcode: string | undefined;
+};
+// 地图下钻历史记录
+const historyMapData = ref<HistoryData[]>([{ name: "map", adcode: "100000" }]);
+// 返回上级地图
+const backMap = () => {
+  clearInterval(regionsSetInterVal.value);
+  const myChart = echarts.init(
+    <HTMLElement>document.getElementById("mapEchart")
+  );
+  // 去除当前的地图信息
+  historyMapData.value.pop();
+  const len = historyMapData.value.length;
+  // 获取上一级的地图信息
+  const newdata = historyMapData.value[len - 1];
+  // 重新渲染地图
+  initMap(myChart, newdata?.name || "map", newdata?.adcode || "100000");
+};
+
+/**
+ * 高亮区块功能
+ */
+
+// 轮训 regions 地图名的下标
+let regionsCount = ref<number>(0);
+// 定时器接收容器
+const regionsSetInterVal = ref();
+// 循环定时器修改地图option高亮显示地图区域
+const setIntervalOptionsRegionsMap = (
+  option: any,
+  mapData: any,
+  chartDOM: echarts.ECharts
+) => {
+  regionsSetInterVal.value = setInterval(() => {
+    option.geo3D.regions[0].name = mapData[regionsCount.value].name;
+    updateMap(chartDOM, option);
+    regionsCount.value++;
+    if (regionsCount.value === mapData.length) regionsCount.value = 0;
+  }, 1000);
 };
 
 /**
