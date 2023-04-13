@@ -25,17 +25,77 @@
 <script lang="ts" setup>
 import * as echarts from "echarts";
 import "echarts-gl"; //3D地图插件
-import { onMounted, ref, watch, watchEffect } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 
+/**
+ * 初始化地图
+ */
+
+// 定义echarts方法
+const chartMap = async () => {
+  // 初始化dom
+  const myChart = echarts.init(
+    <HTMLElement>document.getElementById("mapEchart")
+  );
+  // 初始化map
+  initMap(myChart, "map", "100000");
+  // 添加点击事件
+  myChart.on("click", (e: any) => {
+    clearInterval(regionsSetInterVal.value);
+    console.log(e);
+    const newName: string = e.name;
+    if (e.value.level === "district") return alert("该地区已经无法下钻");
+    // 添加历史记录
+    historyMapData.value.push(e.value);
+    // 初始化地图
+    initMap(myChart, newName, e.value.adcode);
+  });
+  // 添加鼠标移入事件
+  myChart.on("mouseover", (e: any) => {
+    console.log("鼠标移入");
+    clearInterval(regionsSetInterVal.value);
+  });
+  // 添加鼠标移出事件
+  myChart.on("mouseout", (e: any) => {
+    console.log("鼠标移出");
+    flag.value = false;
+  });
+  //让可视化地图跟随浏览器大小缩放
+  window.addEventListener("resize", () => {
+    myChart.resize();
+  });
+};
+// 初始化图表
+const initMap = async (
+  chartDOM: echarts.ECharts,
+  geoName: string,
+  adcode: string
+) => {
+  // 清除echarts实例
+  chartDOM.clear();
+  // 请求map的json
+  const { data: geoJson } = await getMapJSON(adcode);
+  // 重新注册地图
+  echarts.registerMap(geoName, <any>geoJson);
+  // 过滤json数据
+  const mapData = initJSONData(geoJson);
+  // 图表配置项
+  const option = getOption(geoName, mapData);
+  // 渲染配置
+  // setIntervalOptionsRegionsMap(option, mapData, chartDOM);
+  updateMap(chartDOM, option);
+};
+
+/**
+ * 返回上级功能
+ */
 type HistoryData = {
   name: string;
   adcode: string | undefined;
 };
-
 // 地图下钻历史记录
 const historyMapData = ref<HistoryData[]>([{ name: "map", adcode: "100000" }]);
-
 // 返回上级地图
 const backMap = () => {
   clearInterval(regionsSetInterVal.value);
@@ -51,6 +111,41 @@ const backMap = () => {
   initMap(myChart, newdata?.name || "map", newdata?.adcode || "100000");
 };
 
+/**
+ * 高亮区块功能
+ */
+// 轮训 regions 地图名的下标
+let regionsCount = ref<number>(0);
+// 定时器接收容器
+const regionsSetInterVal = ref();
+let flag = ref(false);
+// 循环定时器修改地图option高亮显示地图区域
+const setIntervalOptionsRegionsMap = (
+  option: any,
+  mapData: any,
+  chartDOM: echarts.ECharts
+) => {
+  regionsSetInterVal.value = setInterval(() => {
+    option.geo3D.regions[0].name = mapData[regionsCount.value].name;
+    updateMap(chartDOM, option);
+    regionsCount.value++;
+    flag.value = true;
+    if (regionsCount.value === mapData.length) regionsCount.value = 0;
+  }, 1000);
+};
+
+/**
+ * 更新地图功能
+ */
+// 更新图表配置项重新渲染
+const updateMap = (chartDOM: echarts.ECharts, option: any) => {
+  // 渲染配置
+  chartDOM.setOption(option);
+};
+
+/**
+ * 地图配置项
+ */
 // 请求地图json数据
 const getMapJSON = async (adcode: string = "100000") => {
   const res = await axios.get(
@@ -58,7 +153,6 @@ const getMapJSON = async (adcode: string = "100000") => {
   );
   return res;
 };
-
 // 初始化json返回地图渲染需要的data数据
 const initJSONData = (json: any) => {
   // console.log(json.features);
@@ -72,7 +166,6 @@ const initJSONData = (json: any) => {
   // console.log(DATA);
   return DATA;
 };
-
 // 图表生成配置项
 const getOption = (geoName: string, mapData: any) => {
   // 图表配置项
@@ -157,90 +250,9 @@ const getOption = (geoName: string, mapData: any) => {
   return option;
 };
 
-// 轮训 regions 地图名的下标
-let regionsCount = ref<number>(0);
-// 定时器接收容器
-const regionsSetInterVal = ref();
-let flag = ref(false)
-
-// 循环定时器修改地图option高亮显示地图区域
-const setIntervalOptionsRegionsMap = (
-  option: any,
-  mapData: any,
-  chartDOM: echarts.ECharts
-) => {
-    regionsSetInterVal.value = setInterval(() => {
-      option.geo3D.regions[0].name = mapData[regionsCount.value].name;
-      updateMap(chartDOM, option);
-      regionsCount.value++;
-      flag.value = true
-      if (regionsCount.value === mapData.length) regionsCount.value = 0;
-    }, 1000);
-};
-
-// 初始化图表
-const initMap = async (
-  chartDOM: echarts.ECharts,
-  geoName: string,
-  adcode: string
-) => {
-  // 清除echarts实例
-  chartDOM.clear();
-  // 请求map的json
-  const { data: geoJson } = await getMapJSON(adcode);
-  // 重新注册地图
-  echarts.registerMap(geoName, <any>geoJson);
-  // 过滤json数据
-  const mapData = initJSONData(geoJson);
-  // 图表配置项
-  const option = getOption(geoName, mapData);
-  // 渲染配置
-  setIntervalOptionsRegionsMap(option, mapData, chartDOM);
-  // updateMap(chartDOM,option)
-};
-
-// 更新图表配置项重新渲染
-const updateMap = (chartDOM: echarts.ECharts, option: any) => {
-  // 渲染配置
-  chartDOM.setOption(option);
-};
-
-// 定义echarts方法
-const chartMap = async () => {
-  // 初始化dom
-  const myChart = echarts.init(
-    <HTMLElement>document.getElementById("mapEchart")
-  );
-  // 初始化map
-  initMap(myChart, "map", "100000");
-  // 添加点击事件
-  myChart.on("click", (e: any) => {
-    clearInterval(regionsSetInterVal.value);
-    console.log(e);
-    const newName: string = e.name;
-    if (e.value.level === "district") return alert("该地区已经无法下钻");
-    // 添加历史记录
-    historyMapData.value.push(e.value);
-    // 初始化地图
-    initMap(myChart, newName, e.value.adcode);
-  });
-  // 添加鼠标移入事件
-  myChart.on("mouseover", (e: any) => {
-      console.log('鼠标移入');
-      clearInterval(regionsSetInterVal.value);
-  });
-  // 添加鼠标移出事件
-  myChart.on("mouseout", (e: any) => {
-    console.log("鼠标移出");
-    flag.value = false
-    
-  });
-  //让可视化地图跟随浏览器大小缩放
-  window.addEventListener("resize", () => {
-    myChart.resize();
-  });
-};
-
+/**
+ * 生命周期
+ */
 onMounted(() => {
   // 挂载echart
   chartMap();
