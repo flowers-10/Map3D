@@ -68,8 +68,7 @@ const initMap = async (
   // 图表配置项
   const option = getOption(geoName, mapData);
   // 渲染配置
-  // setIntervalOptionsRegionsMap(option, mapData, chartDOM);
-  updateMap(chartDOM, option);
+    chartDOM.setOption(option);
 };
 
 /**
@@ -135,7 +134,6 @@ const getOption = (geoName: string, mapData: any) => {
             fontSize: 12,
           },
           formatter: (e: any) => {
-            // console.log(e.name);
             return ` ${e.name} `;
           },
         },
@@ -167,16 +165,6 @@ const getOption = (geoName: string, mapData: any) => {
     ],
   };
   return option;
-};
-
-/**
- * 更新地图功能
- */
-
-// 更新图表配置项重新渲染
-const updateMap = (chartDOM: echarts.ECharts, option: any) => {
-  // 渲染配置
-  chartDOM.setOption(option);
 };
 
 /**

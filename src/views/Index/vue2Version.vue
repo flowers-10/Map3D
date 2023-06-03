@@ -27,17 +27,10 @@ import * as echarts from "echarts";
 import "echarts-gl"; //3D地图插件
 import axios from "axios";
 
-type HistoryData = {
-  name: string;
-  adcode: string | undefined;
-};
-
 export default {
   data() {
     return {
       historyMapData: [{ name: "map", adcode: "100000" }],
-      regionsSetInterVal: 0,
-      regionsCount: 0,
     };
   },
   methods: {
@@ -50,8 +43,6 @@ export default {
       this.initMap(myChart, "map", "100000");
       // 添加点击事件
       myChart.on("click", (e: any) => {
-        clearInterval(this.regionsSetInterVal);
-        console.log(e);
         const newName: string = e.name;
         if (e.value.level === "district") return alert("该地区已经无法下钻");
         // 添加历史记录
@@ -59,15 +50,7 @@ export default {
         // 初始化地图
         this.initMap(myChart, newName, e.value.adcode);
       });
-      // 添加鼠标移入事件
-      myChart.on("mouseover", (e: any) => {
-        console.log("鼠标移入");
-        clearInterval(this.regionsSetInterVal);
-      });
-      // 添加鼠标移出事件
-      myChart.on("mouseout", (e: any) => {
-        console.log("鼠标移出");
-      });
+
       //让可视化地图跟随浏览器大小缩放
       window.addEventListener("resize", () => {
         myChart.resize();
@@ -81,8 +64,7 @@ export default {
       // 图表配置项
       const option = this.getOption(geoName, mapData);
       // 渲染配置
-      this.setIntervalOptionsRegionsMap(option, mapData, chartDOM);
-      // updateMap(chartDOM, option);
+      chartDOM.setOption(option);
     },
     async getMapJSON(adcode: string = "100000", geoName: string) {
       const res = await axios.get(
@@ -92,43 +74,11 @@ export default {
       // 重新注册地图
       echarts.registerMap(geoName, <any>res.data);
       // 过滤json数据
-
-      const lightMap: any = {
-        河南省: {
-          show: true,
-          formatter: (e: any) => {
-            return ` ${e.name} `;
-          },
-          textStyle: {
-            color: "#f8fbfb",
-            fontSize: 18,
-            padding: [20, 20],
-            backgroundColor: {
-              image: "./2.png",
-            },
-          },
-        },
-        郑州市: {
-          show: true,
-          formatter: (e: any) => {
-            return ` ${e.name} `;
-          },
-          textStyle: {
-            color: "#f8fbfb",
-            fontSize: 18,
-            padding: [20, 20],
-            backgroundColor: {
-              image: "./2.png",
-            },
-          },
-        },
-      };
       const mapData = res.data.features.map((item: any) => {
         // console.log(item.properties.name);
         return {
           value: item.properties,
           name: item.properties.name,
-          label: lightMap[item.properties.name],
         };
       });
 
@@ -149,23 +99,9 @@ export default {
             roughness: 0.2,
             metalness: 0,
           },
-          // viewControl: {
-          //   minAlpha: 70, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
-          //   maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
-          //   minBeta: -360, // 左右旋转的最小 beta 值。即视角能旋转到达最左的角度。[ default: -80 ]
-          //   maxBeta: 360, // 左右旋转的最大 beta 值。即视角能旋转到达最右的角度。[ default: 80 ]
-          // },
-
           regions: [
             {
               name: mapData[0].name,
-              // label: {
-              //   show: true,
-              //   textStyle: {
-              //     color: "#fff", // 地图初始化区域字体颜色
-              //     fontSize: 18,
-              //   },
-              // },
               itemStyle: {
                 color: "#ff9900",
               },
@@ -202,12 +138,6 @@ export default {
               roughness: 0.2,
               metalness: 0,
             },
-            // viewControl: {
-            //   minAlpha: 70, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
-            //   maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
-            //   minBeta: -360, // 左右旋转的最小 beta 值。即视角能旋转到达最左的角度。[ default: -80 ]
-            //   maxBeta: 360, // 左右旋转的最大 beta 值。即视角能旋转到达最右的角度。[ default: 80 ]
-            // },
             itemStyle: {
               borderWidth: 1.5,
               borderColor: "#5FB9DA",
@@ -218,7 +148,6 @@ export default {
                 show: true,
                 textStyle: {
                   color: "#f8fbfb",
-                  // borderColor: "#17E8F4",
                   fontSize: 18,
                   padding: [20, 20],
                   backgroundColor: {
@@ -235,12 +164,7 @@ export default {
       };
       return option;
     },
-    updateMap(chartDOM: echarts.ECharts, option: any) {
-      // 渲染配置
-      chartDOM.setOption(option);
-    },
     backMap() {
-      clearInterval(this.regionsSetInterVal);
       const myChart = echarts.init(
         <HTMLElement>document.getElementById("mapEchart")
       );
@@ -255,18 +179,6 @@ export default {
         newdata?.name || "map",
         newdata?.adcode || "100000"
       );
-    },
-    setIntervalOptionsRegionsMap(
-      option: any,
-      mapData: any,
-      chartDOM: echarts.ECharts
-    ) {
-      this.regionsSetInterVal = setInterval(() => {
-        option.geo3D.regions[0].name = mapData[this.regionsCount].name;
-        this.updateMap(chartDOM, option);
-        this.regionsCount++;
-        if (this.regionsCount === mapData.length) this.regionsCount = 0;
-      }, 1000);
     },
   },
   mounted() {
