@@ -86,41 +86,10 @@ const getMapJSON = async (adcode: string = "100000", geoName: string) => {
   echarts.registerMap(geoName, <any>res.data);
   // 过滤json数据
 
-  const lightMap: any = {
-    河南省: {
-      show: true,
-      formatter: (e: any) => {
-        return ` ${e.name} `;
-      },
-      textStyle: {
-        color: "#f8fbfb",
-        fontSize: 18,
-        padding: [20, 20],
-        backgroundColor: {
-          image: "./2.png",
-        },
-      },
-    },
-    郑州市: {
-      show: true,
-      formatter: (e: any) => {
-        return ` ${e.name} `;
-      },
-      textStyle: {
-        color: "#f8fbfb",
-        fontSize: 18,
-        padding: [20, 20],
-        backgroundColor: {
-          image: "./2.png",
-        },
-      },
-    },
-  };
   const mapData = res.data.features.map((item: any) => {
     return {
       value: item.properties,
-      name: item.properties.name,
-      label: lightMap[item.properties.name],
+      name: item.properties.name
     };
   });
 
