@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IndexVue from './views/Index/index.vue';
+import IndexVue from './views/Index/vue3Version.vue';
 </script>
 
 <template>
