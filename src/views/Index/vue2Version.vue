@@ -183,6 +183,8 @@ export default {
   },
   mounted() {
     this.chartMap();
+    console.log(1);
+    
   },
 };
 </script>
