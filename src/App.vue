@@ -1,11 +1,10 @@
 <script setup lang="ts">
-// import IndexVue from './views/Index/vue2Version.vue';
-import PointVue from './views/Point/index.vue'
+import HeaderVue from './components/Header/index.vue'
 </script>
 
 <template>
-  <!-- <IndexVue/> -->
-  <PointVue/>
+  <HeaderVue></HeaderVue>
+  <router-view></router-view>
 </template>
 
 <style scoped>

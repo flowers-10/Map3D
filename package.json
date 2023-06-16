@@ -13,7 +13,9 @@
     "axios": "^1.3.5",
     "echarts": "^5.2.2",
     "echarts-gl": "^2.0.9",
-    "vue": "^3.2.47"
+    "save": "^2.9.0",
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

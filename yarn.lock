@@ -1350,6 +1350,11 @@
     "@vue/compiler-dom" "3.2.47"
     "@vue/shared" "3.2.47"
 
+"@vue/devtools-api@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.5.0.tgz#98b99425edee70b4c992692628fa1ea2c1e57d07"
+  integrity sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==
+
 "@vue/reactivity-transform@3.2.47":
   version "3.2.47"
   resolved "https://registry.npmmirror.com/@vue/reactivity-transform/-/reactivity-transform-3.2.47.tgz#e45df4d06370f8abf29081a16afd25cffba6d84e"
@@ -1397,6 +1402,11 @@
   version "3.2.47"
   resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.2.47.tgz#e597ef75086c6e896ff5478a6bfc0a7aa4bbd14c"
   integrity sha512-BHGyyGN3Q97EZx0taMQ+OLNuZcW3d37ZEVmEAyeoA9ERdGvm9Irc/0Fua8SNyOtV1w6BS4q25wbMzJujO9HIfQ==
+
+async@^3.2.2:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-3.2.4.tgz#2d22e00f8cddeb5fde5dd33522b56d1cf569a81c"
+  integrity sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -1516,6 +1526,11 @@ density-clustering@1.3.0:
   resolved "https://registry.npmmirror.com/density-clustering/-/density-clustering-1.3.0.tgz#dc9f59c8f0ab97e1624ac64930fd3194817dcac5"
   integrity sha512-icpmBubVTwLnsaor9qH/4tG5+7+f61VcqMN3V3pm9sxxSCt2Jcs0zWOgwZW9ARJYaKD3FumIgHiMOcIMRRAzFQ==
 
+duplexer@^0.1.1, duplexer@~0.1.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
+  integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
+
 earcut@^2.0.0:
   version "2.2.4"
   resolved "https://registry.npmmirror.com/earcut/-/earcut-2.2.4.tgz#6d02fd4d68160c114825d06890a92ecaae60343a"
@@ -1570,6 +1585,19 @@ estree-walker@^2.0.2:
   resolved "https://registry.npmmirror.com/estree-walker/-/estree-walker-2.0.2.tgz#52f010178c2a4c117a7757cfe942adb7d2da4cac"
   integrity sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==
 
+event-stream@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/event-stream/-/event-stream-4.0.1.tgz#4092808ec995d0dd75ea4580c1df6a74db2cde65"
+  integrity sha512-qACXdu/9VHPBzcyhdOWR5/IahhGMf0roTeZJfzz077GwylcDd90yOHLouhmv7GJ5XzPi6ekaQWd8AvPP2nOvpA==
+  dependencies:
+    duplexer "^0.1.1"
+    from "^0.1.7"
+    map-stream "0.0.7"
+    pause-stream "^0.0.11"
+    split "^1.0.1"
+    stream-combiner "^0.2.2"
+    through "^2.3.8"
+
 follow-redirects@^1.15.0:
   version "1.15.2"
   resolved "https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
@@ -1583,6 +1611,11 @@ form-data@^4.0.0:
     asynckit "^0.4.0"
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
+
+from@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/from/-/from-0.1.7.tgz#83c60afc58b9c56997007ed1a768b3ab303a44fe"
+  integrity sha512-twe20eF1OxVxp/ML/kq2p1uc6KvFK/+vs8WjEbeKmV2He22MKm7YF2ANIt+EOqhJ5L3K/SuuPhk0hWQDjOM23g==
 
 fsevents@~2.3.2:
   version "2.3.2"
@@ -1693,12 +1726,22 @@ is-regex@^1.0.4:
     call-bind "^1.0.2"
     has-tostringtag "^1.0.0"
 
+lodash.assign@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
+  integrity sha512-hFuH8TY+Yji7Eja3mGiuAxBqLagejScbG8GbG0j6o9vzn0YL14My+ktnqtZgFTosKymC9/44wP6s7xyuLfnClw==
+
 magic-string@^0.25.7:
   version "0.25.9"
   resolved "https://registry.npmmirror.com/magic-string/-/magic-string-0.25.9.tgz#de7f9faf91ef8a1c91d02c2e5314c8277dbcdd1c"
   integrity sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==
   dependencies:
     sourcemap-codec "^1.4.8"
+
+map-stream@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/map-stream/-/map-stream-0.0.7.tgz#8a1f07896d82b10926bd3744a2420009f88974a8"
+  integrity sha512-C0X0KQmGm3N2ftbTGBhSyuydQ+vV1LC3f3zPvT3RXHXNZrvfPZcoXp/N5DOa8vedX/rTMm2CjTtivFg2STJMRQ==
 
 mime-db@1.52.0:
   version "1.52.0"
@@ -1711,6 +1754,11 @@ mime-types@^2.1.12:
   integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==
   dependencies:
     mime-db "1.52.0"
+
+mingo@^6.1.0:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/mingo/-/mingo-6.4.1.tgz#6a1f856032e85096356f6e0540bca2fc36051cb5"
+  integrity sha512-33eT0c5rGCiHd+fb6myC7zUg5YhufB/3+Ix4wzIi5vwbB6UOODfcxDhrjTiMZkJHVdKnkeeSB2fdGcvDmN1ibw==
 
 minimatch@^6.1.6:
   version "6.2.0"
@@ -1751,6 +1799,13 @@ path-parse@^1.0.7:
   version "1.0.7"
   resolved "https://registry.npmmirror.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
+
+pause-stream@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/pause-stream/-/pause-stream-0.0.11.tgz#fe5a34b0cbce12b5aa6a2b403ee2e73b602f1445"
+  integrity sha512-e3FBlXLmN/D1S+zHzanP4E/4Z60oFAa3O051qt1pxa7DEJWKAyil6upYVXCWadEnuoqa4Pkc9oUx9zsxYeRv8A==
+  dependencies:
+    through "~2.3"
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -1837,6 +1892,16 @@ rollup@^3.18.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
+save@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/save/-/save-2.9.0.tgz#6659375fadeaf58e4abc6a90ec6b0fb2e2232e0f"
+  integrity sha512-eg8+g8CjvehE/2C6EbLdtK1pINVD27pcJLj4M9PjWWhoeha/y5bWf4dp/0RF+OzbKTcG1bae9qi3PAqiR8CJTg==
+  dependencies:
+    async "^3.2.2"
+    event-stream "^4.0.1"
+    lodash.assign "^4.2.0"
+    mingo "^6.1.0"
+
 skmeans@0.9.7:
   version "0.9.7"
   resolved "https://registry.npmmirror.com/skmeans/-/skmeans-0.9.7.tgz#72670cebb728508f56e29c0e10d11e623529ce5d"
@@ -1862,10 +1927,30 @@ splaytree@^3.1.0:
   resolved "https://registry.npmmirror.com/splaytree/-/splaytree-3.1.2.tgz#d1db2691665a3c69d630de98d55145a6546dc166"
   integrity sha512-4OM2BJgC5UzrhVnnJA4BkHKGtjXNzzUfpQjCO8I05xYPsfS/VuQDwjCGGMi8rYQilHEV4j8NBqTFbls/PZEE7A==
 
+split@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/split/-/split-1.0.1.tgz#605bd9be303aa59fb35f9229fbea0ddec9ea07d9"
+  integrity sha512-mTyOoPbrivtXnwnIxZRFYRrPNtEFKlpB2fvjSnCQUiAA6qAZzqwna5envK4uk6OIeP17CsdF3rSBGYVBsU0Tkg==
+  dependencies:
+    through "2"
+
+stream-combiner@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/stream-combiner/-/stream-combiner-0.2.2.tgz#aec8cbac177b56b6f4fa479ced8c1912cee52858"
+  integrity sha512-6yHMqgLYDzQDcAkL+tjJDC5nSNuNIx0vZtRZeiPh7Saef7VHX9H5Ijn9l2VIol2zaNYlYEX6KyuT/237A58qEQ==
+  dependencies:
+    duplexer "~0.1.1"
+    through "~2.3.4"
+
 supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+through@2, through@^2.3.8, through@~2.3, through@~2.3.4:
+  version "2.3.8"
+  resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
+  integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
 tinyqueue@^2.0.3:
   version "2.0.3"
@@ -1912,6 +1997,13 @@ vite@^4.2.0:
     rollup "^3.18.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vue-router@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.2.2.tgz#b0097b66d89ca81c0986be03da244c7b32a4fd81"
+  integrity sha512-cChBPPmAflgBGmy3tBsjeoe3f3VOSG6naKyY5pjtrqLGbNEXdzCigFUHgBvp9e3ysAtFtEx7OLqcSDh/1Cq2TQ==
+  dependencies:
+    "@vue/devtools-api" "^6.5.0"
 
 vue-template-compiler@^2.7.14:
   version "2.7.14"
