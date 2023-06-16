@@ -1,6 +1,7 @@
 # 需求分析
 
 ![1.gif](https://img-blog.csdnimg.cn/img_convert/2599cdfdc5e9581f8ba7ccdd98cd0be5.gif#averageHue=#070d31&clientId=uf414d4de-1063-4&from=drop&id=u3f1b064f&name=1.gif&originHeight=364&originWidth=736&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2936583&status=done&style=none&taskId=u9229c651-76a1-4881-93f3-a957a761331&title=#averageHue=#070d31&from=url&id=U3WaH&originHeight=364&originWidth=736&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
+
 地图下钻是一个非常常见的功能需求，本篇文章会细致讲解如何在Vue3中使用Eharts-gl渲染出3D地图，并且实现地图下钻和返回上级地图的完整功能。
 github项目demo地址：[点击这里](https://github.com/flowers-10/Map3D)
 > 注意此项目为vue3版本，vue2版本在仓库分支里
