@@ -46,3 +46,11 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a {
+	text-decoration: none;
+	color: #111;
+}
+
+* {
+	box-sizing: border-box;
+}

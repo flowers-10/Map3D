@@ -1,6 +1,6 @@
 <template>
-  <div>
-    123
+  <div class="home">
+    Hello Echarts !
   </div>
 </template>
 
@@ -9,4 +9,15 @@ import { ref } from "vue"
 
 </script>
 
-<style lang="less" scoped></style>
+<style scoped>
+.home {
+  padding-top: 8vh;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size:80px;
+
+}
+</style>
