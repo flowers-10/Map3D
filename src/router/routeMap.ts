@@ -23,4 +23,12 @@ export const routes = [
       navLink: "地图下钻Vue3版本",
     },
   },
+  {
+    path: "/Vue3Point",
+    component: () => import("../views/Point/index.vue"),
+    name: "Vue3Point",
+    meta: {
+      navLink: "城市消费水平",
+    },
+  },
 ];
