@@ -33,6 +33,6 @@ function generateUniformPoints(
 }
 
 const boundaries: turf.Feature<turf.Polygon> = turf.polygon([hzBoundaries]);
-const points: turf.Position[] = generateUniformPoints(50000, boundaries);
+const points: turf.Position[] = generateUniformPoints(10000, boundaries);
 
 export default points 
