@@ -14,42 +14,56 @@ import HangZhou from "../../assets/JSON/HangZhou.json";
 const hzBoundaries: turf.Position[] =
   HangZhou.features[0].geometry.coordinates[0][0];
 
-function generateUniformPoints(
-  count: number,
-  boundaries: turf.Feature<turf.Polygon>
-): turf.Position[] {
+function generateDataBit(count: number, boundaries: turf.Feature<turf.Polygon>) {
+  const center: turf.Position = turf.centroid(boundaries).geometry.coordinates;
   const points: turf.Position[] = [];
   const bbox: turf.BBox = turf.bbox(boundaries);
-  const cellSizeX: number = (bbox[2] - bbox[0]) / Math.ceil(Math.sqrt(count));
-  const cellSizeY: number = (bbox[3] - bbox[1]) / Math.ceil(Math.sqrt(count));
-
-  for (let x = bbox[0] + cellSizeX / 2; x < bbox[2]; x += cellSizeX) {
-    for (let y = bbox[1] + cellSizeY / 2; y < bbox[3]; y += cellSizeY) {
-      const pt: turf.Feature<turf.Point> = turf.point([x, y]);
-      if (turf.booleanPointInPolygon(pt, boundaries)) {
-        points.push([x, y]);
-      }
-      if (points.length >= count) {
-        break;
+  const distance = [
+    bbox[2] - bbox[0],
+    bbox[3] - bbox[1],
+  ];
+  for (let i = 0; i < count; i++) {
+    let point: turf.Position | null = null;
+    while (!point) {
+      const x = Math.random() * distance[0] + bbox[0];
+      const y = Math.random() * distance[1] + bbox[1];
+      const pointCandidate: turf.Position = [x, y];
+      if (turf.booleanPointInPolygon(pointCandidate, boundaries)) {
+        let value = 0;
+        const distanceToCenter = Math.sqrt(
+          Math.pow(x - center[0], 2) + Math.pow(y - center[1], 2)
+        );
+        if (distanceToCenter < distance[0] / 15) {
+          value = Math.random() * 40;
+        // } else if (distanceToCenter < distance[0] * 2 / 15) {
+        //   value = Math.random() * 30;
+        // } else if (distanceToCenter < distance[0] * 3 / 15) {
+        //   value = Math.random() * 15;
+        // } else if (distanceToCenter < distance[0] * 4 / 15) {
+        //   value = Math.random() * 10;
+        } else {
+          // if (Math.random() < 0.05) {
+          //   value = Math.random() * 40;
+          // } else {
+            value = Math.random() * 2 + 1;
+          // }
+        }
+        point = [x, y, value];
       }
     }
-    if (points.length >= count) {
-      break;
-    }
+    points.push(point);
   }
-
   return points;
 }
 
 const boundaries: turf.Feature<turf.Polygon> = turf.polygon([hzBoundaries]);
-const points: turf.Position[] = generateUniformPoints(10000, boundaries);
-const DataBit: any = [];
-for (let item of points) {
-  item[2] = Math.random() * 40;
-  DataBit.push({ value: item });
-}
+const DataBit: any = generateDataBit(10000, boundaries).map((point) => {
+  return {
+    value: point,
+  };
+});
 
-console.log(DataBit);
+
 
 // 定义echarts方法
 const chartMap = () => {
@@ -82,7 +96,7 @@ const chartMap = () => {
         distance: 80,
         // panMouseButton: "left",
         // rotateMouseButton: "right",
-        autoRotate: true,
+        // autoRotate: true,
         autoRotateAfterStill: 3,
         minAlpha: 5, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
         maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
