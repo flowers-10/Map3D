@@ -9,59 +9,18 @@ import "echarts-gl"; //3D地图插件
 import { onMounted } from "vue";
 import * as turf from "@turf/turf";
 import HangZhou from "../../assets/JSON/HangZhou.json";
+import points from './generateUniformPoints'
 
-// 杭州的边界范围
-const hzBoundaries: turf.Position[] =
-  HangZhou.features[0].geometry.coordinates[0][0];
 
-function generateDataBit(count: number, boundaries: turf.Feature<turf.Polygon>) {
-  const center: turf.Position = turf.centroid(boundaries).geometry.coordinates;
-  const points: turf.Position[] = [];
-  const bbox: turf.BBox = turf.bbox(boundaries);
-  const distance = [
-    bbox[2] - bbox[0],
-    bbox[3] - bbox[1],
-  ];
-  for (let i = 0; i < count; i++) {
-    let point: turf.Position | null = null;
-    while (!point) {
-      const x = Math.random() * distance[0] + bbox[0];
-      const y = Math.random() * distance[1] + bbox[1];
-      const pointCandidate: turf.Position = [x, y];
-      if (turf.booleanPointInPolygon(pointCandidate, boundaries)) {
-        let value = 0;
-        const distanceToCenter = Math.sqrt(
-          Math.pow(x - center[0], 2) + Math.pow(y - center[1], 2)
-        );
-        if (distanceToCenter < distance[0] / 15) {
-          value = Math.random() * 40;
-        // } else if (distanceToCenter < distance[0] * 2 / 15) {
-        //   value = Math.random() * 30;
-        // } else if (distanceToCenter < distance[0] * 3 / 15) {
-        //   value = Math.random() * 15;
-        // } else if (distanceToCenter < distance[0] * 4 / 15) {
-        //   value = Math.random() * 10;
-        } else {
-          // if (Math.random() < 0.05) {
-          //   value = Math.random() * 40;
-          // } else {
-            value = Math.random() * 2 + 1;
-          // }
-        }
-        point = [x, y, value];
-      }
-    }
-    points.push(point);
-  }
-  return points;
+
+
+const DataBit: any = [];
+for (let item of points) {
+  item[2] = Math.random() + 1;
+  DataBit.push({ value: item });
 }
-
-const boundaries: turf.Feature<turf.Polygon> = turf.polygon([hzBoundaries]);
-const DataBit: any = generateDataBit(10000, boundaries).map((point) => {
-  return {
-    value: point,
-  };
-});
+DataBit[0].value[2] = 40
+console.log(DataBit);
 
 
 
