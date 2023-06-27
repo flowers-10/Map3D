@@ -11,18 +11,7 @@ import * as turf from "@turf/turf";
 import HangZhou from "../../assets/JSON/HangZhou.json";
 import points from './generateUniformPoints'
 
-
-
-
-const DataBit: any = [];
-for (let item of points) {
-  item[2] = Math.random() + 1;
-  DataBit.push({ value: item });
-}
-DataBit[0].value[2] = 40
-console.log(DataBit);
-
-
+console.log(points);
 
 // 定义echarts方法
 const chartMap = () => {
@@ -119,7 +108,7 @@ const chartMap = () => {
         type: "bar3D",
         coordinateSystem: "geo3D",
         shading: "lambert",
-        data: DataBit,
+        data: points,
         barSize: 0.2,
         minHeight: 0.001,
         silent: true,

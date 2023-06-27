@@ -18,7 +18,11 @@ function generateUniformPoints(
     for (let y = bbox[1] + cellSizeY / 2; y < bbox[3]; y += cellSizeY) {
       const pt: turf.Feature<turf.Point> = turf.point([x, y]);
       if (turf.booleanPointInPolygon(pt, boundaries)) {
-        points.push([x, y]);
+        points.push([
+          x,
+          y,
+          Math.sin((x * Math.PI) ) * Math.cos((y * Math.PI) ) * 100,
+        ]);
       }
       if (points.length >= count) {
         break;
@@ -33,6 +37,6 @@ function generateUniformPoints(
 }
 
 const boundaries: turf.Feature<turf.Polygon> = turf.polygon([hzBoundaries]);
-const points: turf.Position[] = generateUniformPoints(10000, boundaries);
+const points: turf.Position[] = generateUniformPoints(30000, boundaries);
 
-export default points 
+export default points;
