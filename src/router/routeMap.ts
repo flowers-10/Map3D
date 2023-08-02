@@ -31,4 +31,12 @@ export const routes = [
       navLink: "城市消费水平",
     },
   },
+  {
+    path: "/ScrollBar",
+    component: () => import("../views/ScrollBar/index.vue"),
+    name: "ScrollBar",
+    meta: {
+      navLink: "滚动柱状图",
+    },
+  },
 ];
