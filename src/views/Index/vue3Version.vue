@@ -68,7 +68,7 @@ const initMap = async (
   // 图表配置项
   const option = getOption(geoName, mapData);
   // 渲染配置
-    chartDOM.setOption(option);
+  chartDOM.setOption(option);
 };
 
 /**
@@ -88,7 +88,7 @@ const getMapJSON = async (adcode: string = "100000", geoName: string) => {
   const mapData = res.data.features.map((item: any) => {
     return {
       value: item.properties,
-      name: item.properties.name
+      name: item.properties.name,
     };
   });
 
@@ -111,14 +111,40 @@ const getOption = (geoName: string, mapData: any) => {
         borderWidth: 1.5,
         borderColor: "#5FB9DA",
         color: "#6597D0",
-        opacity :1,
+        opacity: 1,
       },
-      emphasis: {
-        label: { show: false },
-        itemStyle: {
-          color: "transparent",
+      label: {
+        show: true, // 是否显示标签。
+        textStyle: {
+          color: "#fff", // 地图初始化区域字体颜色
+          fontSize: 40,
+        },
+        formatter: (e: any) => {
+          return ` ${e.name} `;
         },
       },
+      // emphasis: {
+      //   label: {
+      //     show: true,
+      //     textStyle: {
+      //       color: "#f8fbfb",
+      //       fontSize: 18,
+      //       padding: [20, 20],
+      //       backgroundColor: {
+      //         image: "./2.png",
+      //       },
+      //     },
+      //   },
+      //   itemStyle: {
+      //     color: "#67DBFB",
+      //   },
+      // },
+      // emphasis: {
+      //   label: { show: false },
+      //   itemStyle: {
+      //     color: "transparent",
+      //   },
+      // },
     },
     series: [
       {
@@ -127,14 +153,36 @@ const getOption = (geoName: string, mapData: any) => {
         type: "map3D",
         map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
         data: mapData, //这里比较重要：获得过滤后的data，这样点击事件时就能获得这个data的值
-        label: {
-          show: true, // 是否显示标签。
-          textStyle: {
-            color: "#fff", // 地图初始化区域字体颜色
-            fontSize: 12,
-          },
-          formatter: (e: any) => {
-            return ` ${e.name} `;
+        // label: {
+        //   show: true, // 是否显示标签。
+        //   textStyle: {
+        //     color: "#fff", // 地图初始化区域字体颜色
+        //     fontSize: 26,
+        //   },
+        //   formatter: (e: any) => {
+        //     return ` ${e.name} `;
+        //   },
+        // },
+        // emphasis: {
+        //   label: {
+        //     show: true,
+        //     textStyle: {
+        //       color: "#f8fbfb",
+        //       fontSize: 18,
+        //       padding: [20, 20],
+        //       backgroundColor: {
+        //         image: "./2.png",
+        //       },
+        //     },
+        //   },
+        //   itemStyle: {
+        //     color: "#67DBFB",
+        //   },
+        // },
+           emphasis: {
+          label: { show: false },
+          itemStyle: {
+            color: "transparent",
           },
         },
         shading: "realistic",
@@ -144,22 +192,6 @@ const getOption = (geoName: string, mapData: any) => {
         },
         itemStyle: {
           color: "transparent",
-        },
-        emphasis: {
-          label: {
-            show: true,
-            textStyle: {
-              color: "#f8fbfb",
-              fontSize: 18,
-              padding: [20, 20],
-              backgroundColor: {
-                image: "./2.png",
-              },
-            },
-          },
-          itemStyle: {
-            color: "#67DBFB",
-          },
         },
       },
     ],
