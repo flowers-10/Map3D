@@ -123,28 +123,6 @@ const getOption = (geoName: string, mapData: any) => {
           return ` ${e.name} `;
         },
       },
-      // emphasis: {
-      //   label: {
-      //     show: true,
-      //     textStyle: {
-      //       color: "#f8fbfb",
-      //       fontSize: 18,
-      //       padding: [20, 20],
-      //       backgroundColor: {
-      //         image: "./2.png",
-      //       },
-      //     },
-      //   },
-      //   itemStyle: {
-      //     color: "#67DBFB",
-      //   },
-      // },
-      // emphasis: {
-      //   label: { show: false },
-      //   itemStyle: {
-      //     color: "transparent",
-      //   },
-      // },
     },
     series: [
       {
@@ -153,33 +131,7 @@ const getOption = (geoName: string, mapData: any) => {
         type: "map3D",
         map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
         data: mapData, //这里比较重要：获得过滤后的data，这样点击事件时就能获得这个data的值
-        // label: {
-        //   show: true, // 是否显示标签。
-        //   textStyle: {
-        //     color: "#fff", // 地图初始化区域字体颜色
-        //     fontSize: 26,
-        //   },
-        //   formatter: (e: any) => {
-        //     return ` ${e.name} `;
-        //   },
-        // },
-        // emphasis: {
-        //   label: {
-        //     show: true,
-        //     textStyle: {
-        //       color: "#f8fbfb",
-        //       fontSize: 18,
-        //       padding: [20, 20],
-        //       backgroundColor: {
-        //         image: "./2.png",
-        //       },
-        //     },
-        //   },
-        //   itemStyle: {
-        //     color: "#67DBFB",
-        //   },
-        // },
-           emphasis: {
+        emphasis: {
           label: { show: false },
           itemStyle: {
             color: "transparent",
@@ -246,6 +198,5 @@ onMounted(() => {
 .map-chart {
   width: 80%;
   height: 80%;
-  /* background-color: wheat; */
 }
 </style>

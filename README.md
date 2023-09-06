@@ -3,7 +3,7 @@
 ![1.gif](https://img-blog.csdnimg.cn/img_convert/2599cdfdc5e9581f8ba7ccdd98cd0be5.gif#averageHue=#070d31&clientId=uf414d4de-1063-4&from=drop&id=u3f1b064f&name=1.gif&originHeight=364&originWidth=736&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2936583&status=done&style=none&taskId=u9229c651-76a1-4881-93f3-a957a761331&title=#averageHue=#070d31&from=url&id=U3WaH&originHeight=364&originWidth=736&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
 地图下钻是一个非常常见的功能需求，本篇文章会细致讲解如何在Vue3中使用Eharts-gl渲染出3D地图，并且实现地图下钻和返回上级地图的完整功能。
-github项目demo地址：[点击这里](https://github.com/flowers-10/Map3D)
+
 > 注意此项目为vue3版本，vue2版本在仓库分支里
 > 给个星星吧！！不定期更新此demo，一般只更新vue3的版本，2版本自行迁移即可。
 
@@ -123,7 +123,7 @@ const initMap = async (
   // 图表配置项
   const option = getOption(geoName, mapData);
   // 渲染配置
-    chartDOM.setOption(option);
+  chartDOM.setOption(option);
 };
 
 /**
@@ -143,7 +143,7 @@ const getMapJSON = async (adcode: string = "100000", geoName: string) => {
   const mapData = res.data.features.map((item: any) => {
     return {
       value: item.properties,
-      name: item.properties.name
+      name: item.properties.name,
     };
   });
 
@@ -166,12 +166,16 @@ const getOption = (geoName: string, mapData: any) => {
         borderWidth: 1.5,
         borderColor: "#5FB9DA",
         color: "#6597D0",
-        opacity :1,
+        opacity: 1,
       },
-      emphasis: {
-        label: { show: false },
-        itemStyle: {
-          color: "transparent",
+      label: {
+        show: true, // 是否显示标签。
+        textStyle: {
+          color: "#fff", // 地图初始化区域字体颜色
+          fontSize: 40,
+        },
+        formatter: (e: any) => {
+          return ` ${e.name} `;
         },
       },
     },
@@ -182,14 +186,10 @@ const getOption = (geoName: string, mapData: any) => {
         type: "map3D",
         map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
         data: mapData, //这里比较重要：获得过滤后的data，这样点击事件时就能获得这个data的值
-        label: {
-          show: true, // 是否显示标签。
-          textStyle: {
-            color: "#fff", // 地图初始化区域字体颜色
-            fontSize: 12,
-          },
-          formatter: (e: any) => {
-            return ` ${e.name} `;
+        emphasis: {
+          label: { show: false },
+          itemStyle: {
+            color: "transparent",
           },
         },
         shading: "realistic",
@@ -199,22 +199,6 @@ const getOption = (geoName: string, mapData: any) => {
         },
         itemStyle: {
           color: "transparent",
-        },
-        emphasis: {
-          label: {
-            show: true,
-            textStyle: {
-              color: "#f8fbfb",
-              fontSize: 18,
-              padding: [20, 20],
-              backgroundColor: {
-                image: "./2.png",
-              },
-            },
-          },
-          itemStyle: {
-            color: "#67DBFB",
-          },
         },
       },
     ],
@@ -269,7 +253,6 @@ onMounted(() => {
 .map-chart {
   width: 80%;
   height: 80%;
-  /* background-color: wheat; */
 }
 </style>
 ```
@@ -328,14 +311,9 @@ emphasis: {
 
 本文中**地图下钻**和**返回上一级地图**的整体功能需求基本完善。
 
-- 对于新增功能待完善的：
-
-高亮显示区域这个功能，会阻碍鼠标移入时的样式展示，所以每次鼠标移入时，都要清除`regionsSetInterVal`这个定时器，那么导致定时器清除动画不会播放。
-解决方案：鼠标移出时应该重新开始这个计时器，并且要添加防抖，提升性能。（待完成）
-
 - 可拓展的新功能：
 
-添加动态3d柱状图
+添加动态3d柱状图 (已完成-github项目启动后访问路径：“/Vue3Point” 点击“城市消费水平”的内容，待使用柏林噪声优化柱状图分布)
 添加动态3d散点图
 添加动态3d折线图
 。。。等等功能待开发
