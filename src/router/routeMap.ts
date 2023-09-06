@@ -8,11 +8,19 @@ export const routes = [
     },
   },
   {
+    path: "/BaseMap",
+    component: () => import("../views/Index/BaseMap.vue"),
+    name: "BaseMap",
+    meta: {
+      navLink: "基础3D地图",
+    },
+  },
+  {
     path: "/Vue2MapDrill",
     component: () => import("../views/Index/vue2Version.vue"),
     name: "Vue2MapDrill",
     meta: {
-      navLink: "地图下钻Vue2版本",
+      navLink: "3D地图下钻Vue2版本",
     },
   },
   {
@@ -20,7 +28,7 @@ export const routes = [
     component: () => import("../views/Index/vue3Version.vue"),
     name: "Vue3MapDrill",
     meta: {
-      navLink: "地图下钻Vue3版本",
+      navLink: "3D地图下钻Vue3版本",
     },
   },
   {
@@ -31,12 +39,5 @@ export const routes = [
       navLink: "城市消费水平",
     },
   },
-  {
-    path: "/ScrollBar",
-    component: () => import("../views/ScrollBar/index.vue"),
-    name: "ScrollBar",
-    meta: {
-      navLink: "滚动柱状图",
-    },
-  },
+  
 ];

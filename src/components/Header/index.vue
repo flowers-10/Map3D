@@ -11,7 +11,7 @@ import { ref } from "vue"
 import { useRouter } from "vue-router";
 
 const router = useRouter()
-console.log(window?.location);
+// console.log(window?.location);
 const routeMap = ref(router.options.routes)
 
 </script>
