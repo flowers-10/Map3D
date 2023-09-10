@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import geoJson from "../../assets/JSON/HangZhou.json"; //省份的json格式
+import geoJson from "../../assets/JSON/China.json"; //省份的json格式
 
 import * as echarts from "echarts";
 import "echarts-gl"; //3D地图插件
@@ -20,7 +20,11 @@ export default {
       myChart.hideLoading();
       // 图表配置项
       let option = {
-        geo3D: {
+        tooltip: {
+          show: true,
+        },
+        geo: {
+          id: 99999992,
           map: "zhejiang",
           roam: true,
           itemStyle: {
@@ -31,7 +35,7 @@ export default {
             // areaColor: '#fff'
           },
           viewControl: {
-            autoRotate: true,
+            // autoRotate: true,
             autoRotateAfterStill: 3,
             distance: 120,
             minAlpha: 5, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
@@ -79,8 +83,72 @@ export default {
             },
           },
         },
+        series: [
+          {
+            name: "散点",
+            type: "scatter",
+            coordinateSystem: "geo",
+            symbolSize: 20,
+            label: {
+              show: true,
+              distance: 14,
+              position: "top",
+              backgroundColor: "transparent",
+              textStyle: {
+                color: "#fff",
+              },
+              formatter: (e: any) => {
+                return ` ${e.name}`;
+              },
+            },
+            tooltip: {
+              show: true,
+              formatter: (e: any) => {
+                console.log(e);
+
+                return ` ${e.name}`;
+              },
+            },
+            data: [
+              {
+                name: "",
+                value: [116.554322, 39.934412, -1],
+                itemStyle: {
+                  color: "transparent",
+                },
+              },
+              { name: "标签2", value: [97.738486, 37.403523, 0] },
+              { name: "标签3", value: [109.586346, 25.217832, 0] },
+              { name: "标签4", value: [118.417048, 33.33643, 0] },
+              { name: "标签5", value: [118.417048, 33.33643, 0] },
+              { name: "标签6", value: [132.546172, 46.523096, 0] },
+              {
+                name: "标签7",
+                value: [83.977308, 30.703477, 0],
+                itemStyle: {
+                  symbolSize: 0,
+                },
+              },
+            ],
+            zlevel: 100,
+            animation: true,
+          },
+        ],
       };
+
       myChart.setOption(option);
+      console.log(option);
+      let index = 0;
+
+      setInterval(() => {
+        index === 6 ? (index = 0) : "";
+        index++;
+        myChart.dispatchAction({
+          type: "showTip",
+          seriesIndex: 0,
+          dataIndex: index,
+        });
+      }, 1000);
     },
   },
   mounted() {

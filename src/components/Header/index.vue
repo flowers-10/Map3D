@@ -1,19 +1,23 @@
 <template>
   <header>
     <nav>
-      <router-link v-for="(item, index) in routeMap" :to="item.path" :key="index">{{ item!.meta!.navLink }}</router-link>
+      <router-link
+        v-for="(item, index) in routeMap"
+        :to="item.path"
+        :key="index"
+        >{{ item!.meta!.navLink }}</router-link
+      >
     </nav>
   </header>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 // console.log(window?.location);
-const routeMap = ref(router.options.routes)
-
+const routeMap = ref(router.options.routes);
 </script>
 
 <style scoped>
@@ -23,7 +27,7 @@ header {
   position: fixed;
   z-index: 99;
   background-color: #fff;
-  height: 8vh;
+  height: 5vh;
 }
 
 nav {
@@ -45,10 +49,10 @@ a {
 
 a:hover {
   background-color: #ccc;
-
 }
 
 .router-link-active {
   /* vue-router提供了这个类 */
   background: rgba(123, 207, 255, 0.933);
-}</style>
+}
+</style>
