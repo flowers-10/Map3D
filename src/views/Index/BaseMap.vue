@@ -24,64 +24,71 @@ export default {
           show: true,
         },
         geo: {
-          id: 99999992,
+          // 2D地图坐标系
+          show: true, // 不显示地图，用于为动效散点提供2D地图坐标系
           map: "zhejiang",
-          roam: true,
-          itemStyle: {
-            color: "#007aff",
-            opacity: 0.8,
-            borderWidth: 0.4,
-            borderColor: "#000",
-            // areaColor: '#fff'
-          },
-          viewControl: {
-            // autoRotate: true,
-            autoRotateAfterStill: 3,
-            distance: 120,
-            minAlpha: 5, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
-            maxAlpha: 90, // 上下旋转的最大 alpha 值。即视角能旋转到达最下面的角度。[ default: 90 ]
-            minBeta: -360, // 左右旋转的最小 beta 值。即视角能旋转到达最左的角度。[ default: -80 ]
-            maxBeta: 360, // 左右旋转的最大 beta 值。即视角能旋转到达最右的角度。[ default: 80 ]
-            animation: true, // 是否开启动画。[ default: true ]
-            animationDurationUpdate: 1000, // 过渡动画的时长。[ default: 1000 ]
-            animationEasingUpdate: "cubicInOut", // 过渡动画的缓动效果。[ default: cubicInOut ]
-          },
-
-          emphasis: {
-            disabled: true, //是否可以被选中
-            label: {
-              //移入时的高亮文本
-              show: true,
-              color: "#333", //显示字体颜色变淡
-              fontSize: 18, //显示字体变大
-            },
-            itemStyle: {
-              color: "#ff7aff", //显示移入的区块变粉色
-            },
-          },
+          roam: false, // 禁用缩放、拖拽
+          layoutCenter: ["50%", "47%"], // 地图中心位置
+          // layoutSize: "90%", // 控制地图尺寸（地图的宽度和高度都会改变）
+          // aspectScale: 0.78, // 控制地图长宽比（此值越小地图越窄，越大地图越宽）
+          zlevel: 1,
+        },
+        geo3D: {
+          // 3D地图坐标系
+          show: true, // 显示3D地图版块
+          map: "zhejiang",
+          top: "-20",
+          regionHeight: 16, // 地图版块厚度
           label: {
             show: true,
-            position: "top",
-            color: "#111", //地图初始化区域字体颜色
-            fontSize: 14,
-            lineHeight: 16,
+            borderRadius: 0,
+            distanca: 0,
+            textStyle: {
+              fontSize: 14,
+              color: "#C23531", // 地图初始化区域字体颜色
+              borderWidth: 1,
+              borderColor: "#FFFF10",
+            },
           },
-          shading: "lambert",
+          itemStyle: {
+            // 三维地理坐标系组件 中三维图形的视觉属性，包括颜色，透明度，描边等。
+            color: "rgba(252,85,49, 0.5)", // 地图板块的颜色
+            opacity: 1, // 图形的不透明度 [ default: 1 ]
+            borderWidth: 2, // (地图板块间的分隔线)图形描边的宽度。加上描边后可以更清晰的区分每个区域   [ default: 0 ]
+            borderColor: "#FFF500", // 图形描边的颜色。[ default: #333 ]
+          },
+          emphasis: {
+            label: {
+              show: true,
+              color: "#fff000",
+            },
+            itemStyle: {
+              color: "#ff0",
+              opacity: 0.5,
+            },
+          },
           light: {
-            //光照阴影
+            // 光照阴影
             main: {
-              // color: "#fff", //光照颜色
-              intensity: 1, //光照强度
-              //shadowQuality: 'high', //阴影亮度
-              shadow: true, //是否显示阴影
-              shadowQuality: "medium", //阴影质量 ultra //阴影亮度
-              alpha: 55,
+              color: "#FFFFFF", // 光照颜色
+              intensity: 2, // 光照强度
+              shadowQuality: "light", // 阴影亮度
+              shadow: true, // 是否显示阴影
+              alpha: 50,
               beta: 10,
             },
-            ambient: {
-              intensity: 0.7,
-            },
           },
+          viewControl: {
+            projection: "perspective",
+            autoRotate: false,
+            distance: 150, // 控制地图版块的大小
+            alpha: 72, // 地图版块垂直方向的角度
+            beta: 2, // 地图版块水平方向的角度
+            // rotateSensitivity: 0, // 禁用旋转
+            // panSensitivity: 0, // 禁用平移
+            // zoomSensitivity: 0, // 禁用缩放
+          },
+          zlevel: 2,
         },
         series: [
           {
