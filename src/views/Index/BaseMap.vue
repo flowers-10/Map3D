@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import geoJson from "../../assets/JSON/China.json"; //省份的json格式
+import geoJson from "../../assets/JSON/Zhejiang.json"; //省份的json格式
 
 import * as echarts from "echarts";
 import "echarts-gl"; //3D地图插件
@@ -20,13 +20,13 @@ export default {
         },
         geo: {
           show: true,
-          map: "china", // 重要！！！注册的地图名字叫啥，这里就填啥
+          map: "ok", // 重要！！！注册的地图名字叫啥，这里就填啥
           //  重要！！一定要配置好宽高，否则导致地图和3D地图不重合
           left: 0,
           top: 0,
           right: 0,
           bottom: 0,
-          width: 940,
+          width: 920,
         },
         series: [
           {
@@ -80,7 +80,7 @@ export default {
         },
         geo3D: {
           zlevel: 1,
-          map: "china", // 重要！！！注册的地图名字叫啥，这里就填啥
+          map: "ok", // 重要！！！注册的地图名字叫啥，这里就填啥
           shading: "color", // 重要！！！选择texture渲染的方式
           colorMaterial: {
             detailTexture: mapBg, //重要！！！2D地图的DOM作为纹理贴图放到3D上
@@ -120,14 +120,14 @@ export default {
           },
         ],
       };
-      // 渲染3D地图（已经把2D地图作为材质贴到3D地图上了）
+      // // 渲染3D地图（已经把2D地图作为材质贴到3D地图上了）
       chartDOM.setOption(option, true);
     },
     chartMap() {
       const myChart = echarts.init(
         document.getElementById("mapEchart") as HTMLElement
       );
-      echarts.registerMap("china", geoJson);
+      echarts.registerMap("ok", geoJson);
       this.Load3DMap(myChart);
 
      
