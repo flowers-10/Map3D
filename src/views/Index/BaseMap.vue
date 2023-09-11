@@ -1,8 +1,6 @@
 <template>
   <div class="map">
-    <div class="map-container">
-      <div class="map-chart" id="mapEchart"></div>
-    </div>
+    <div class="map-chart" id="mapEchart"></div>
   </div>
 </template>
 
@@ -14,81 +12,21 @@ import "echarts-gl"; //3D地图插件
 
 export default {
   methods: {
-    chartMap() {
-      var myChart = echarts.init(document.getElementById("mapEchart"));
-      echarts.registerMap("zhejiang", geoJson);
-      myChart.hideLoading();
-      // 图表配置项
-      let option = {
+    // 2D地图贴图的配置项
+    get2DMapOption() {
+      var chartOption = {
         tooltip: {
           show: true,
         },
         geo: {
-          // 2D地图坐标系
-          show: true, // 不显示地图，用于为动效散点提供2D地图坐标系
-          map: "zhejiang",
-          roam: false, // 禁用缩放、拖拽
-          layoutCenter: ["50%", "47%"], // 地图中心位置
-          // layoutSize: "90%", // 控制地图尺寸（地图的宽度和高度都会改变）
-          // aspectScale: 0.78, // 控制地图长宽比（此值越小地图越窄，越大地图越宽）
-          zlevel: 1,
-        },
-        geo3D: {
-          // 3D地图坐标系
-          show: true, // 显示3D地图版块
-          map: "zhejiang",
-          top: "-20",
-          regionHeight: 16, // 地图版块厚度
-          label: {
-            show: true,
-            borderRadius: 0,
-            distanca: 0,
-            textStyle: {
-              fontSize: 14,
-              color: "#C23531", // 地图初始化区域字体颜色
-              borderWidth: 1,
-              borderColor: "#FFFF10",
-            },
-          },
-          itemStyle: {
-            // 三维地理坐标系组件 中三维图形的视觉属性，包括颜色，透明度，描边等。
-            color: "rgba(252,85,49, 0.5)", // 地图板块的颜色
-            opacity: 1, // 图形的不透明度 [ default: 1 ]
-            borderWidth: 2, // (地图板块间的分隔线)图形描边的宽度。加上描边后可以更清晰的区分每个区域   [ default: 0 ]
-            borderColor: "#FFF500", // 图形描边的颜色。[ default: #333 ]
-          },
-          emphasis: {
-            label: {
-              show: true,
-              color: "#fff000",
-            },
-            itemStyle: {
-              color: "#ff0",
-              opacity: 0.5,
-            },
-          },
-          light: {
-            // 光照阴影
-            main: {
-              color: "#FFFFFF", // 光照颜色
-              intensity: 2, // 光照强度
-              shadowQuality: "light", // 阴影亮度
-              shadow: true, // 是否显示阴影
-              alpha: 50,
-              beta: 10,
-            },
-          },
-          viewControl: {
-            projection: "perspective",
-            autoRotate: false,
-            distance: 150, // 控制地图版块的大小
-            alpha: 72, // 地图版块垂直方向的角度
-            beta: 2, // 地图版块水平方向的角度
-            // rotateSensitivity: 0, // 禁用旋转
-            // panSensitivity: 0, // 禁用平移
-            // zoomSensitivity: 0, // 禁用缩放
-          },
-          zlevel: 2,
+          show: false,
+          map: "china", // 重要！！！注册的地图名字叫啥，这里就填啥
+          //  重要！！一定要配置好宽高，否则导致地图和3D地图不重合
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: 940,
         },
         series: [
           {
@@ -96,18 +34,6 @@ export default {
             type: "scatter",
             coordinateSystem: "geo",
             symbolSize: 20,
-            label: {
-              show: true,
-              distance: 14,
-              position: "top",
-              backgroundColor: "transparent",
-              textStyle: {
-                color: "#fff",
-              },
-              formatter: (e: any) => {
-                return ` ${e.name}`;
-              },
-            },
             tooltip: {
               show: true,
               formatter: (e: any) => {
@@ -116,46 +42,73 @@ export default {
                 return ` ${e.name}`;
               },
             },
+            // 随便写点模拟数据
             data: [
-              {
-                name: "",
-                value: [116.554322, 39.934412, -1],
-                itemStyle: {
-                  color: "transparent",
-                },
-              },
-              { name: "标签2", value: [97.738486, 37.403523, 0] },
-              { name: "标签3", value: [109.586346, 25.217832, 0] },
-              { name: "标签4", value: [118.417048, 33.33643, 0] },
-              { name: "标签5", value: [118.417048, 33.33643, 0] },
-              { name: "标签6", value: [132.546172, 46.523096, 0] },
-              {
-                name: "标签7",
-                value: [83.977308, 30.703477, 0],
-                itemStyle: {
-                  symbolSize: 0,
-                },
-              },
+              { name: "标签1", value: [116.554322, 39.934412, -1] },
+              { name: "标签2", value: [97.738486, 37.403523, 1] },
+              { name: "标签3", value: [109.586346, 25.217832, 2] },
+              { name: "标签4", value: [118.417048, 33.33643, 3] },
+              { name: "标签5", value: [118.417048, 33.33643, 4] },
+              { name: "标签6", value: [132.546172, 46.523096, 5] },
+              { name: "标签7", value: [83.977308, 30.703477, 6] },
             ],
-            zlevel: 100,
-            animation: true,
           },
         ],
       };
 
-      myChart.setOption(option);
-      console.log(option);
-      let index = 0;
+      return chartOption;
+    },
 
-      setInterval(() => {
-        index === 6 ? (index = 0) : "";
-        index++;
-        myChart.dispatchAction({
-          type: "showTip",
-          seriesIndex: 0,
-          dataIndex: index,
-        });
-      }, 1000);
+    Load3DMap(chartDOM: any) {
+      // 先渲染2D地图作为贴图
+      const canvas = document.createElement(`canvas`);
+      // 重要！！
+      var mapBg = echarts.init(canvas, undefined, {
+        // 重要！！一定要配置好宽高，否则导致地图和3D地图不重合
+        width: 1024,
+        height: 1024,
+      });
+      // 获取2D地图的配置项
+      const chartOption = this.get2DMapOption();
+      // 2D的地图DOM
+      mapBg.setOption(chartOption);
+      let index = 0;
+      // setInterval(() => {
+      //   index === 6 ? (index = 0) : "";
+      //   index++;
+      //   mapBg.dispatchAction({
+      //     type: "showTip",
+      //     seriesIndex: 0,
+      //     dataIndex: index,
+      //   });
+      // }, 1000);
+
+      // 3D地图配置项
+      const option = {
+        geo3D: {
+          map: "china", // 重要！！！注册的地图名字叫啥，这里就填啥
+          shading: "color", // 重要！！！选择texture渲染的方式
+          colorMaterial: {
+            detailTexture: mapBg, //重要！！！2D地图的DOM作为纹理贴图放到3D上
+            textureTiling: 1, // 纹理平铺，1是拉伸，数字表示纹理平铺次数
+          },
+          itemStyle: {
+            color: "#ccc",
+            opacity: 1,
+            borderWidth: 1,
+            borderColor: "#96ebf7",
+          },
+        },
+      };
+      // 渲染3D地图（已经把2D地图作为材质贴到3D地图上了）
+      chartDOM.setOption(option, true);
+    },
+    chartMap() {
+      const myChart = echarts.init(
+        document.getElementById("mapEchart") as HTMLElement
+      );
+      echarts.registerMap("china", geoJson);
+      this.Load3DMap(myChart);
     },
   },
   mounted() {
@@ -170,21 +123,6 @@ export default {
   justify-content: center;
   width: 100%;
   height: 100vh;
-}
-.map-container {
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  position: relative;
-}
-.map-container-title {
-  margin: 56px 0 16px;
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-  line-height: 30px;
-  display: flex;
-  justify-content: center;
 }
 
 .map-chart {
