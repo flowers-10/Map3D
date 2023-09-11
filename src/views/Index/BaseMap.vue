@@ -14,12 +14,12 @@ export default {
   methods: {
     // 2D地图贴图的配置项
     get2DMapOption() {
-      var chartOption = {
+      const chartOption = {
         tooltip: {
           show: true,
         },
         geo: {
-          show: false,
+          show: true,
           map: "china", // 重要！！！注册的地图名字叫啥，这里就填啥
           //  重要！！一定要配置好宽高，否则导致地图和3D地图不重合
           left: 0,
@@ -30,10 +30,11 @@ export default {
         },
         series: [
           {
+            zlevel: 100,
             name: "散点",
-            type: "scatter",
+            type: "effectScatter",
             coordinateSystem: "geo",
-            symbolSize: 20,
+            symbolSize: 30,
             tooltip: {
               show: true,
               formatter: (e: any) => {
@@ -72,20 +73,13 @@ export default {
       const chartOption = this.get2DMapOption();
       // 2D的地图DOM
       mapBg.setOption(chartOption);
-      let index = 0;
-      // setInterval(() => {
-      //   index === 6 ? (index = 0) : "";
-      //   index++;
-      //   mapBg.dispatchAction({
-      //     type: "showTip",
-      //     seriesIndex: 0,
-      //     dataIndex: index,
-      //   });
-      // }, 1000);
-
       // 3D地图配置项
       const option = {
+        tooltip: {
+          show: true,
+        },
         geo3D: {
+          zlevel: 1,
           map: "china", // 重要！！！注册的地图名字叫啥，这里就填啥
           shading: "color", // 重要！！！选择texture渲染的方式
           colorMaterial: {
@@ -99,6 +93,32 @@ export default {
             borderColor: "#96ebf7",
           },
         },
+        series: [
+          {
+            zlevel: 100,
+            type: "bar3D",
+            coordinateSystem: "geo3D",
+            barSize: 1,
+            tooltip: {
+              show: true,
+              formatter: (e: any) => {
+                console.log(e);
+
+                return ` ${e.name}`;
+              },
+            },
+            // 随便写点模拟数据
+            data: [
+              { name: "标签1", value: [116.554322, 39.934412, 10] },
+              { name: "标签2", value: [97.738486, 37.403523, 1] },
+              { name: "标签3", value: [109.586346, 25.217832, 2] },
+              { name: "标签4", value: [118.417048, 33.33643, 3] },
+              { name: "标签5", value: [118.417048, 33.33643, 4] },
+              { name: "标签6", value: [132.546172, 46.523096, 5] },
+              { name: "标签7", value: [83.977308, 30.703477, 6] },
+            ],
+          },
+        ],
       };
       // 渲染3D地图（已经把2D地图作为材质贴到3D地图上了）
       chartDOM.setOption(option, true);
@@ -109,6 +129,8 @@ export default {
       );
       echarts.registerMap("china", geoJson);
       this.Load3DMap(myChart);
+
+     
     },
   },
   mounted() {
