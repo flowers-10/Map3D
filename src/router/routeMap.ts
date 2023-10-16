@@ -39,5 +39,12 @@ export const routes = [
       navLink: "城市消费水平",
     },
   },
-  
+  {
+    path: "/ThreeMap",
+    component: () => import("../views/Three/Map.vue"),
+    name: "ThreeMap",
+    meta: {
+      navLink: "Threejs地图",
+    },
+  },
 ];
