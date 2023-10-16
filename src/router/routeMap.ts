@@ -25,7 +25,7 @@ export const routes = [
   },
   {
     path: "/Vue3MapDrill",
-    component: () => import("../views/Index/vue3Version.vue"),
+    component: () => import("../views/Point/vue3Version.vue"),
     name: "Vue3MapDrill",
     meta: {
       navLink: "3D地图下钻Vue3版本",
