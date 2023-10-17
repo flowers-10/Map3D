@@ -12,7 +12,6 @@ import * as dat from "lil-gui";
 
 export default {
   name: "Map",
-
   data() {
     return {};
   },
@@ -106,9 +105,9 @@ export default {
       }
       map.add(province);
     });
-    map.rotation.x = -Math.PI * 0
-    map.rotation.y = -Math.PI * 0
-    map.rotation.z = Math.PI * 0
+    map.rotation.x = parseFloat((-Math.PI * 0.62).toFixed(2))
+    map.rotation.y =  parseFloat((-Math.PI * 0.10).toFixed(2))
+    map.rotation.z = parseFloat((Math.PI * 0.19).toFixed(2))
 
      gui.add(map.rotation, "x", Math.PI * -1, Math.PI * 1, 0.01).name('mapRotationX');
     gui.add(map.rotation, "y", Math.PI * -1, Math.PI * 1,  0.01).name('mapRotationY');
