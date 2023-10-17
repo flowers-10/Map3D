@@ -8,6 +8,7 @@ import * as THREE from "three";
 import * as d3 from "d3";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import jsonData from "./json/china.json";
+import * as dat from "lil-gui";
 
 export default {
   name: "Map",
@@ -19,7 +20,10 @@ export default {
     /**
      * Base
      */
-    // Debug
+    /**
+     * Debug
+     */
+    const gui = new dat.GUI();
 
     // Canvas
     const canvas = document.querySelector("canvas.webgl");
@@ -102,19 +106,28 @@ export default {
       }
       map.add(province);
     });
-    map.rotation.x = -Math.PI * 0.48;
-    map.rotation.y = -Math.PI * 0.1;
-    map.rotation.z = Math.PI * 0.2;
+    map.rotation.x = -Math.PI * 0
+    map.rotation.y = -Math.PI * 0
+    map.rotation.z = Math.PI * 0
+
+     gui.add(map.rotation, "x", Math.PI * -1, Math.PI * 1, 0.01).name('mapRotationX');
+    gui.add(map.rotation, "y", Math.PI * -1, Math.PI * 1,  0.01).name('mapRotationY');
+    gui.add(map.rotation, "z", Math.PI * -1, Math.PI * 1,  0.01).name('mapRotationZ');
+
+
     scene.add(map);
 
     /**
      * Lights
      */
     const pointLight = new THREE.PointLight(0xffffff, 3);
-    pointLight.position.set(-20, 50, -60);
+    pointLight.position.set(-20, 50, 3);
     scene.add(pointLight);
-    // const pointLightHelper = new THREE.PointLightHelper(pointLight, 2);
-    // scene.add(pointLightHelper);
+    gui.add(pointLight.position, "x", -200, 200, 1).name('pointLightX');
+    gui.add(pointLight.position, "y", -200, 200, 1).name('pointLightY');
+    gui.add(pointLight.position, "z", -200, 200, 1).name('pointLightZ');
+    const pointLightHelper = new THREE.PointLightHelper(pointLight, 2);
+    scene.add(pointLightHelper);
 
     /**
      * Sizes
