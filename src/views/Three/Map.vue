@@ -102,17 +102,19 @@ export default {
       }
       map.add(province);
     });
-    map.rotation.x = Math.PI * 0;
-    map.rotation.y = Math.PI * 0;
-    map.rotation.z =Math.PI * 0;
+    map.rotation.x = -Math.PI * 0.48;
+    map.rotation.y = -Math.PI * 0.1;
+    map.rotation.z = Math.PI * 0.2;
     scene.add(map);
 
     /**
      * Lights
      */
     const pointLight = new THREE.PointLight(0xffffff, 3);
-    pointLight.position.set(20, 50, 50);
+    pointLight.position.set(-20, 50, -60);
     scene.add(pointLight);
+    // const pointLightHelper = new THREE.PointLightHelper(pointLight, 2);
+    // scene.add(pointLightHelper);
 
     /**
      * Sizes
