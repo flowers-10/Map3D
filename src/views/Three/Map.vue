@@ -7,7 +7,7 @@
 import * as THREE from "three";
 import * as d3 from "d3";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import jsonData from "./json/china.json";
+import jsonData from "../../assets/JSON/china1.json";
 import * as dat from "lil-gui";
 
 export default {
