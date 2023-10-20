@@ -12,17 +12,29 @@
 
 # Menu 
 ├── src 
+
 |  ├── views  
+
 |  |  ├── Index 
+
 |  |  |  ├── BaseMap.vue // 【3d地图】vue中使用echarts geo3D 
+
 |  |  |  ├── index.vue // 首页 
+
 |  |  |  ├── vue2Version.vue // 【vue2.0】Echarts3D地图下钻 (记得粘贴public内的图片，可自己替换) 
+
 |  |  |  └── vue3Version.vue // 【vue3.0】Echarts3D地图下钻 (记得粘贴public内的图片，可自己替换) 
+
 |  |  ├── Point 
+
 |  |  |  ├── generateUniformPoints.ts // 生成地图区域内散点 
+
 |  |  |  └── index.vue // 组件 
+
 |  |  └── Three 
+
 |  |     ├── Map.vue // 组件 
+
 |  |     └── map.js // three核心代码 
 
 # Setup
