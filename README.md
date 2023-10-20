@@ -11,7 +11,6 @@
 
 
 # Menu 
-map3D
 ├── src 
 |  ├── views  
 |  |  ├── Index 
