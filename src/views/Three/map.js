@@ -52,8 +52,8 @@ export const initThreeMap = () => {
   const map = new THREE.Object3D();
   const lines = new THREE.Object3D();
   const customUniforms = {
-    uTime: { value: 0 }
-}
+    uTime: { value: 0 },
+  };
   jsonData.features.forEach((elem, index) => {
     // 定一个省份3D对象
     const province = new THREE.Object3D();
@@ -94,15 +94,13 @@ export const initThreeMap = () => {
           roughness: 1,
           color: "red",
         });
-
         material1.onBeforeCompile = (shader) => {
           // console.log(shader);
-          shader.uniforms.uTime = customUniforms.uTime
+          shader.uniforms.uTime = customUniforms.uTime;
           shader.vertexShader = shader.vertexShader.replace(
             "#include <common>",
             `
                     #include <common>
-                    varying vec2 vUv;
                     varying vec3 model_world;
                 `
           );
@@ -111,13 +109,11 @@ export const initThreeMap = () => {
             "#include <begin_vertex>",
             `
                 #include <begin_vertex>
+                model_world = position;
                 vec4 modelPosition = modelMatrix * vec4(position, 1.);
-                model_world = modelPosition.xyz;
                 vec4 viewPosition = viewMatrix * modelPosition;
                 vec4 projectPosition = projectionMatrix * viewPosition;
                 gl_Position = projectPosition;
-                vUv = vec2(modelPosition.x / 0.5 + 0.5,1.0 - modelPosition.z / 0.5 + 0.5);
-                 
             `
           );
 
@@ -125,7 +121,6 @@ export const initThreeMap = () => {
             "#include <common>",
             `
                     #include <common>
-                    varying vec2 vUv;
                     varying vec3 model_world;
                     uniform float uTime;
 
@@ -148,19 +143,25 @@ export const initThreeMap = () => {
               #include <output_fragment>
               float Threshold = 20.;
               float noiseOffset = clamp(noise(model_world.x * 10. + sin(uTime) * 3.), 0., 1.);
-              float strength = smoothstep(1., 0., (model_world.y - .3) / .5) * noiseOffset;
-              gl_FragColor = vec4(vec3(gl_FragColor.x,gl_FragColor.y,gl_FragColor.z), strength );
+              float strength = smoothstep(1., 0., (model_world.z + 0.2) / 4.4) * noiseOffset;
+              gl_FragColor = vec4(gl_FragColor.xyz, strength );
 
             `
           );
         };
 
         const mesh = new THREE.Mesh(geometry, [material, material1]);
-
         // 设置高度将省区分开来
         // if (index % 2 === 0) {
         //   mesh.scale.set(1, 1, 1.2);
         // }
+
+        // mesh.geometry.computeBoundingBox();
+        // console.log(mesh.geometry.boundingBox, "boundingBox");
+        
+        // let { min, max } = mesh.geometry.boundingBox
+
+        // console.log(min.z,max.z );
         // 给mesh开启阴影
         mesh.castShadow = true;
         mesh.receiveShadow = true;
@@ -185,16 +186,15 @@ export const initThreeMap = () => {
 
     map.add(province);
   });
+
   scene.add(lines);
   scene.add(map);
 
   // PLANE
   const groundMaterial = new THREE.MeshStandardMaterial({
     color: 0x031837,
-    // specular: 0x111111,
     metalness: 0,
     roughness: 1,
-    // opacity: 0.2,
     opacity: 0.5,
     transparent: true,
   });
@@ -380,12 +380,12 @@ export const initThreeMap = () => {
    * Animate
    */
   const clock = new THREE.Clock();
-  console.log("map children MESH:", map.children);
+  console.log("map children MESH:", map);
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
 
     // Update material
-    customUniforms.uTime.value = elapsedTime
+    customUniforms.uTime.value = elapsedTime;
 
     // Update controls
     controls.update();
