@@ -142,7 +142,7 @@ export const initThreeMap = () => {
               #include <output_fragment>
               float Threshold = 20.;
               float noiseOffset = clamp(noise(model_world.x * 10. + sin(uTime) * 8.), 0., 1.);
-              float strength = smoothstep(1., 0., (model_world.z + 0.2) / 4.4) * noiseOffset;
+              float strength = smoothstep(1., 0., (model_world.z + 0.2) / 4.4) * noiseOffset * 4.;
               gl_FragColor = vec4(gl_FragColor.xyz, strength);
 
             `
