@@ -212,7 +212,7 @@ export const initThreeMap = () => {
    * Lights
    */
   const pointLight = new THREE.PointLight(0xffffff, 3);
-  pointLight.position.set(0, 10, 50);
+  pointLight.position.set(0, -80, 50);
   scene.add(pointLight);
   gui.add(pointLight.position, "x", -200, 200, 1).name("pointLightX");
   gui.add(pointLight.position, "y", -200, 200, 1).name("pointLightY");
