@@ -5,6 +5,8 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import {OutlinePass} from 'three/examples/jsm/postprocessing/OutlinePass.js';
+
 import jsonData from "../../assets/JSON/china1.json";
 
 import * as dat from "lil-gui";
@@ -92,7 +94,8 @@ export const initThreeMap = () => {
         const material1 = new THREE.MeshStandardMaterial({
           metalness: 1,
           roughness: 1,
-          color: "red",
+          color: color,
+          transparent:true,
         });
         material1.onBeforeCompile = (shader) => {
           // console.log(shader);
@@ -110,10 +113,6 @@ export const initThreeMap = () => {
             `
                 #include <begin_vertex>
                 model_world = position;
-                vec4 modelPosition = modelMatrix * vec4(position, 1.);
-                vec4 viewPosition = viewMatrix * modelPosition;
-                vec4 projectPosition = projectionMatrix * viewPosition;
-                gl_Position = projectPosition;
             `
           );
 
@@ -142,9 +141,9 @@ export const initThreeMap = () => {
             `
               #include <output_fragment>
               float Threshold = 20.;
-              float noiseOffset = clamp(noise(model_world.x * 10. + sin(uTime) * 3.), 0., 1.);
+              float noiseOffset = clamp(noise(model_world.x * 10. + sin(uTime) * 8.), 0., 1.);
               float strength = smoothstep(1., 0., (model_world.z + 0.2) / 4.4) * noiseOffset;
-              gl_FragColor = vec4(gl_FragColor.xyz, strength );
+              gl_FragColor = vec4(gl_FragColor.xyz, strength);
 
             `
           );
@@ -152,9 +151,9 @@ export const initThreeMap = () => {
 
         const mesh = new THREE.Mesh(geometry, [material, material1]);
         // 设置高度将省区分开来
-        // if (index % 2 === 0) {
-        //   mesh.scale.set(1, 1, 1.2);
-        // }
+        if (index % 2 === 0) {
+          mesh.scale.set(1, 1, 1.2);
+        }
 
         // mesh.geometry.computeBoundingBox();
         // console.log(mesh.geometry.boundingBox, "boundingBox");
@@ -168,10 +167,10 @@ export const initThreeMap = () => {
         mesh._color = color;
         const line = createLine(
           polygon,
-          extrudeSettings.depth + 0.3
-          // index % 2 === 0
-          //   ? extrudeSettings.depth * 1.2 + 0.3
-          //   : extrudeSettings.depth + 0.3
+          // extrudeSettings.depth + 0.3
+          index % 2 === 0
+            ? extrudeSettings.depth * 1.2 + 0.3
+            : extrudeSettings.depth + 0.3
         );
         lines.add(line);
         province.add(mesh);
@@ -312,7 +311,9 @@ export const initThreeMap = () => {
   finalComposer.addPass(renderPass);
 
   // 存储需要应用辉光效果的材质对象
-  const materials = {};
+  const materials = {
+
+  };
   // 将未应用辉光效果的物体暗化
   function darkenNonBloomed(obj) {
     if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
@@ -329,9 +330,9 @@ export const initThreeMap = () => {
       renderer.domElement.offsetWidth,
       renderer.domElement.offsetHeight
     ),
-    0.5, // 强度参数
+    0.3, // 强度参数
     0.1, // 半径参数
-    0.5 // 阈值参数
+    0.2 // 阈值参数
   );
   bloomComposer.addPass(bloomPass);
 
@@ -375,6 +376,8 @@ export const initThreeMap = () => {
   );
   shaderPass.needsSwap = true;
   finalComposer.addPass(shaderPass);
+
+
 
   /**
    * Animate
@@ -420,16 +423,16 @@ export const initThreeMap = () => {
     }
 
     // Render
-    renderer.render(scene, camera);
-    // // 实现局部辉光
-    // // 1. 利用 darkenNonBloomed 函数将除辉光物体外的其他物体的材质转成黑色
-    // // scene.traverse(darkenNonBloomed);
-    // // 2. 用 bloomComposer 产生辉光
-    // bloomComposer.render();
-    // // 3. 将转成黑色材质的物体还原成初始材质
-    // scene.traverse(restoreMaterial);
-    // // 4. 用 finalComposer 作最后渲染
-    // finalComposer.render();
+    // renderer.render(scene, camera);
+    // 实现局部辉光
+    // 1. 利用 darkenNonBloomed 函数将除辉光物体外的其他物体的材质转成黑色
+    // scene.traverse(darkenNonBloomed);
+    // 2. 用 bloomComposer 产生辉光
+    bloomComposer.render();
+    // 3. 将转成黑色材质的物体还原成初始材质
+    scene.traverse(restoreMaterial);
+    // 4. 用 finalComposer 作最后渲染
+    finalComposer.render();
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
