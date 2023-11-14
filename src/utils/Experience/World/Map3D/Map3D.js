@@ -127,7 +127,7 @@ export default class Map3D {
     // 设置材质着色器
     setMaterial(object) {
         object.onBeforeCompile = (shader) => {
-            console.log(shader);
+            // console.log(shader);
             shader.uniforms.uTime = this.customUniforms.uTime
             shader.vertexShader = shader.vertexShader.replace('#include <common>', mapVertexCommon)
 

@@ -13,7 +13,7 @@ import World from './World/Map3D/World'
 import BloomPass from './World/Map3D/BloomPass'
 import Raycaster from './World/Map3D/Raycaster'
 import OutlineEffect from './World/Map3D/OutlineEffect'
-import { Line2 } from 'three/examples/jsm/lines/Line2'
+import Css2DRenderer from './World/Map3D/css2DRenderer.js'
 
 let instance = null
 
@@ -39,6 +39,7 @@ export default class Experience {
         this.camera = new Camera(camera)
         this.light = new Light()
         this.renderer = new Renderer(renderer)
+        this.css2DRenderer = new Css2DRenderer()
         this.world = new World()
         // this.bloomPass = new BloomPass()
         this.outlineEffect = new OutlineEffect()
@@ -56,14 +57,16 @@ export default class Experience {
     resize() {
         this.camera?.resize()
         this.renderer?.resize()
+        this.css2DRenderer.resize()
     }
     update() {
         this.camera?.update()
         this.world?.update()
-        this.raycaster.update()
+        // this.raycaster.update()
         // this.bloomPass?.update()
         this.outlineEffect?.update()
         // this.renderer?.update()
+        this.css2DRenderer.update()
     }
     mouse() {
         // tooltip移动
