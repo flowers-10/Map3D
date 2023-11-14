@@ -6,6 +6,7 @@
 </template>
 <script>
 import { initThreeMap } from "./map";
+import {initThreeLine2} from "./line2";
 
 export default {
   name: "Map",
@@ -13,7 +14,8 @@ export default {
     return {};
   },
   mounted() {
-    initThreeMap();
+    // initThreeMap();
+    initThreeLine2()
   },
   beforeDestroy() {},
   methods: {},

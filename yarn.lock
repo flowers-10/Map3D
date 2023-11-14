@@ -1592,7 +1592,7 @@ d3-geo@1.7.1:
   dependencies:
     d3-array "1"
 
-d3-geo@3:
+d3-geo@3, d3-geo@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmmirror.com/d3-geo/-/d3-geo-3.1.0.tgz#74fd54e1f4cebd5185ac2039217a98d39b0a4c0e"
   integrity sha512-JEo5HxXDdDYXCaWdwLRt79y7giK8SbhZJbFWXqbRTolCHFI5jRqteLzCsq51NKbUoX0PjBVSohxrx+NoOUujYA==

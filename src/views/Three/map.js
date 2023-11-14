@@ -296,6 +296,7 @@ export const initThreeMap = () => {
   /**
    * Bloom
    */
+  console.log(camera,99999);
   // 后处理渲染图层（总共可后处理31层）
   const BLOOM_LAYER = 1;
   const bloomLayer = new THREE.Layers();
@@ -426,7 +427,7 @@ export const initThreeMap = () => {
     // renderer.render(scene, camera);
     // 实现局部辉光
     // 1. 利用 darkenNonBloomed 函数将除辉光物体外的其他物体的材质转成黑色
-    // scene.traverse(darkenNonBloomed);
+    scene.traverse(darkenNonBloomed);
     // 2. 用 bloomComposer 产生辉光
     bloomComposer.render();
     // 3. 将转成黑色材质的物体还原成初始材质
