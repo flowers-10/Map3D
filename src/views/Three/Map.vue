@@ -53,6 +53,7 @@ export default {
 </script>
 <style scoped>
 .china-chart {
+background-color: #000000;
   position: relative;
   width: 100%;
   height: 100vh;

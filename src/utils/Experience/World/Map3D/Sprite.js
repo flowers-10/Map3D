@@ -21,6 +21,7 @@ export default class Sprite {
                 ],
             },
         ])
+        console.log(this.spriteGroup);
     }
 
     createSprite(data) {
