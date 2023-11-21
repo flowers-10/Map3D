@@ -4,14 +4,21 @@ import Floor from './Floor'
 import Sprite from './Sprite'
 
 export default class World {
-    constructor() {
+    constructor(config) {
         this.experience = new Experience()
         this.scene = this.experience.scene
-        this.map3D = new Map3D()
+       
+        if (config.mapConfig.show) {
+            this.map3D = new Map3D(config.mapConfig)
+        }
+        if (config.spriteConfig.show) {
+            this.sprite = new Sprite(config.spriteConfig)
+            this.sprite.createSprite(config.spriteConfig.data)
+        }
+        console.log(this.scene);
         // this.floor = new Floor()
-        this.sprite = new Sprite()
     }
     update() {
-        this.map3D.update()
+        this.map3D?.update()
     }
 }

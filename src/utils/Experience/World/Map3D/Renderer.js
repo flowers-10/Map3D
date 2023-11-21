@@ -8,23 +8,24 @@ export default class Renderer {
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.camera = this.experience.camera
-        this.renderderConfig = config
+        this.rendererConfig = config
         this.setInstance()
     }
 
     setInstance() {
         this.instance = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: true,
-            alpha: true,
+            antialias: this.rendererConfig.antialias,
+            alpha: this.rendererConfig.alpha,
         })
-        // this.instance.useLegacyLights = true
+        this.instance.useLegacyLights = true
         // this.instance.toneMapping = THREE.CineonToneMapping
         // this.instance.toneMappingExposure = 1.75
         // this.instance.shadowMap.enabled = true
         // this.instance.shadowMap.type = THREE.PCFSoftShadowMap
-        this.renderderConfig.clearAlpha ? this.instance.setClearAlpha(this.renderderConfig.clearAlpha) : this.instance.setClearAlpha(0)
-        // this.instance.setClearColor('#fff')
+        this.instance.outputColorSpace = THREE.SRGBColorSpace 
+        this.rendererConfig.clearAlpha ? this.instance.setClearAlpha(this.rendererConfig.clearAlpha) : this.instance.setClearAlpha(0)
+        this.rendererConfig.clearColor ? this.instance.setClearColor(this.rendererConfig.clearColor) : null
         this.instance.setSize(this.sizes.width, this.sizes.height)
         this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     }

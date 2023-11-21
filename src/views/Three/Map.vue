@@ -1,36 +1,21 @@
 <template>
   <div ref="box" class="china-chart">
     <canvas class="webgl" ref="webgl" id="scene"></canvas>
-    <div id="tag">标签内容</div>
+    <!-- <div id="tag">标签内容</div> -->
   </div>
 </template>
 <script>
 import ThreeMap3D from "../../utils/Experience/ThreeMap3D";
-
+import { mapConfig } from './Config/mapConfig'
 export default {
   name: "Map",
   data() {
     return {
-
+      _three_instance:null
     };
   },
   mounted() {
-    new ThreeMap3D(this.$refs.webgl,{
-       camera: {
-                            fov: 75,
-                            near: 0.1,
-                            far: 1000,
-                            position: {
-                                x: 0,
-                                y: 0,
-                                z: 1.8,
-                            },
-                            lookAt: true,
-                        },
-                        renderer: {
-                            clearAlpha: 0,
-                        },
-    });
+     this._three_instance = new ThreeMap3D(this.$refs.webgl, mapConfig.chartOptions)
   },
   beforeDestroy() {},
   methods: {},

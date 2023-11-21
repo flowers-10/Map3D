@@ -6,3 +6,10 @@ void main(){
     vUv = uv;
 }
 `
+
+export const skyVertexCommon  = `#include <common> 
+varying vec2 vUv;`
+
+export const skyBeginVertex =  `
+#include <begin_vertex>
+vUv = uv;`  

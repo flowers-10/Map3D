@@ -21,7 +21,6 @@ export default class Mousemove extends EventEmitter {
 
             this.eventOffset.x = clientX
             this.eventOffset.y = clientY
-            // console.log(this.mouse.x,this.mouse.y);
             this.trigger('mousemove', null)
         }
 

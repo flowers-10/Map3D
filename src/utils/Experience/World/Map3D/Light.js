@@ -2,19 +2,52 @@ import * as THREE from 'three'
 import Experience from '../../ThreeMap3D'
 
 export default class Light {
-    constructor() {
+    constructor(config) {
         this.experience = new Experience()
         this.scene = this.experience.scene
-        this.setLight()
+        this.light = new THREE.Group()
+        this.light.name = 'light-group'
+        this.setLight(config)
     }
 
-    setLight() {
-        const pointLight = new THREE.PointLight(0xffffff, 5)
-        pointLight.position.set(0, -2, 1)
-        this.scene.add(pointLight)
-        const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.5)
-        this.scene.add(pointLightHelper)
-        let ambientLight = new THREE.AmbientLight(0xffffff, 1) // 环境光
-        this.scene.add(ambientLight)
+    setLight(config) {
+        if (Array.isArray(config) && !config.length) return console.error('please add light configuration')
+        let light
+        let lightHelper
+        config.forEach(({ color, groundColor, type, intensity, distance, angle, penumbra, position, decay, helper }) => {
+            switch (type) {
+                case 'point':
+                    light = new THREE.PointLight(color, intensity, distance)
+                    if (helper) {
+                        lightHelper = new THREE.PointLightHelper(light, 0.5)
+                    }
+                    break
+                case 'ambient':
+                    light = new THREE.AmbientLight(color, intensity) // 环境光
+                    break
+                case 'hemisphere':
+                    light = new THREE.HemisphereLight(color, groundColor, intensity)
+                    if (helper) {
+                        lightHelper = new THREE.HemisphereLightHelper(light, 0.5)
+                    }
+                    break
+                case 'spot':
+                    light = new THREE.SpotLight(color, intensity, distance, angle, penumbra, decay)
+                    if (helper) {
+                        lightHelper = new THREE.SpotLightHelper(light, 0.5)
+                    }
+                    break
+                default:
+                    break
+            }
+            light.position.set(position.x, position.y, position.z)
+            if (light.isSpotLight) {
+                this.light.add(light.target)
+            }
+
+            this.light.add(light)
+            this.light.add(lightHelper)
+        })
+        this.scene.add(this.light)
     }
 }
