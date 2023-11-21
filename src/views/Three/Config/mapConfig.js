@@ -242,26 +242,26 @@ export const mapConfig = {
         type: "point", // 点光源
         color: 0x3e99e5, // 颜色
         intensity: 6, // 强度
-        distance: 200,
+        distance: 285,
         helper: true, // 助手
         position: {
-          x: 0,
-          y: -10,
+          x: -4.3,
+          y: 17.7,
           z: 50,
         },
       },
-      // {
-      //     type: 'point', // 点光源
-      //     color: 0x3E99E5, // 颜色
-      //     intensity: 6, // 强度
-      //     distance: 100,
-      //     helper: true, // 助手
-      //     position: {
-      //         x: 2,
-      //         y: -5,
-      //         z: 30,
-      //     },
-      // },
+      {
+        type: "point", // 点光源
+        color: 0x3e99e5, // 颜色
+        intensity: 12, // 强度
+        distance: 151,
+        helper: true, // 助手
+        position: {
+          x: 5.1,
+          y: -24,
+          z: 53.7,
+        },
+      },
       // {
       //     type: 'ambient', // 环境光源
       //     color: 0xffffff, //颜色
