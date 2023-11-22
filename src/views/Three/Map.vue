@@ -33,6 +33,10 @@ export default {
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  background-image: url('../../assets/image/bg.png');
+   background-position: center;
+  background-size: cover; /* 或者使用contain，根据需要调整 */
+  background-repeat: no-repeat; /* 防止背景图重复显示 */
 }
 .webgl {
   position: absolute;

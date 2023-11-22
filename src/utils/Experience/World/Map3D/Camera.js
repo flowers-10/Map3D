@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Experience from '../../ThreeMap3D'
+import * as dat from "lil-gui";
 
 export default class Camera {
     constructor(config) {
@@ -8,6 +9,7 @@ export default class Camera {
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
         this.canvas = this.experience.canvas
+        this.gui = this.experience.gui
         this.cameraConfig = config
         this.setInstance()
         config.controls.show ? this.setControls() : null
@@ -20,6 +22,24 @@ export default class Camera {
             this.cameraConfig.far,
         )
         this.instance.position.set(this.cameraConfig.position.x, this.cameraConfig.position.y, this.cameraConfig.position.z)
+        this.gui
+        .add(this.instance.position, "x")
+        .min(-5)
+        .max(5)
+        .step(0.1)
+        .name("Cx");
+        this.gui
+        .add(this.instance.position, "y")
+        .min(-5)
+        .max(5)
+        .step(0.1)
+        .name("Cy");
+        this.gui
+        .add(this.instance.position, "z")
+        .min(-2)
+        .max(2)
+        .step(0.02)
+        .name("Cz");
         if (this.cameraConfig.lookAt) {
             this.instance.lookAt(this.scene.position)
         }
@@ -41,9 +61,9 @@ export default class Camera {
         this.instance.updateProjectionMatrix()
     }
     update() {
-        this.controls.update()
+        this.controls?.update()
     }
     dispose() {
-        this.controls.dispose()
+        this.controls?.dispose()
     }
 }

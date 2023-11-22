@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import * as dat from "lil-gui";
 
 import Sizes from './Utils/Sizes'
 import Time from './Utils/Time'
@@ -29,6 +30,7 @@ export default class Experience {
         this.canvas = canvas
         const { camreaConfig, rendererConfig, sources, passConfig, sizeConfig, lightConfig, worldConfig } = options
         // 初始化
+        this.gui = new dat.GUI({ width: 340 });
         this.sizes = new Sizes(sizeConfig)
         this.time = new Time()
         this.scene = new THREE.Scene()

@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import Experience from "../../ThreeMap3D";
-import * as dat from "lil-gui";
 
 export default class Light {
   constructor(config) {
@@ -8,7 +7,7 @@ export default class Light {
     this.scene = this.experience.scene;
     this.light = new THREE.Group();
     this.light.name = "light-group";
-    this.gui = new dat.GUI({ width: 340 });
+    this.gui = this.experience.gui
     this.setLight(config);
   }
 
@@ -87,7 +86,7 @@ export default class Light {
         this.gui
         .add(light.position, "y")
         .min(-100)
-        .max(100)
+        .max(300)
         .step(0.1)
         .name("y");
         this.gui

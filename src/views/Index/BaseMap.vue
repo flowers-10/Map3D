@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import geoJson from "../../assets/JSON/Zhejiang.json"; //省份的json格式
+import geoJson from "../../assets/JSON/custom.geo.json"; //省份的json格式
 
 import * as echarts from "echarts";
 import "echarts-gl"; //3D地图插件
@@ -18,14 +18,14 @@ export default {
       myChart.hideLoading();
       // 图表配置项
       let option = {
-        geo3D: {
+        geo: {
           map: "zhejiang",
           roam: true,
           itemStyle: {
-            color: "#007aff",
-            opacity: 0.8,
+            color: "#ffffff",
+            opacity: 1,
             borderWidth: 0.4,
-            borderColor: "#000"
+            borderColor: "transparent",
           },
           viewControl: {
             autoRotate: false,
@@ -52,13 +52,18 @@ export default {
             }
           },
           label: {
-            show: true,
+            show: false,
             position: "top",
             color: "#111", //地图初始化区域字体颜色
             fontSize: 14,
             lineHeight: 16
           },
-          shading: "lambert",
+         shading: "realistic",
+            realisticMaterial: {
+              detailTexture: "./texture/1.png",
+              roughness: 0.2,
+              metalness: 0,
+            },
           light: {
             //光照阴影
             main: {
@@ -90,6 +95,7 @@ export default {
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  
 }
 
 .map-chart {

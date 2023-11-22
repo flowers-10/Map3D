@@ -172,8 +172,8 @@ export const mapConfig = {
     },
     // 响应式尺寸配置
     sizeConfig: {
-      type: "parent", // window : 取全局, parent: 取父容器
-      id: "_Background_3D", // 父容器ID
+      type: "window", // window : 取全局, parent: 取父容器
+      // id: "_Background_3D", // 父容器ID
     },
     // 后处理配置项(开启影响性能)
     passConfig: {
@@ -208,7 +208,7 @@ export const mapConfig = {
       position: {
         x: 0,
         y: 0,
-        z: 2.2,
+        z: 1.86,
       },
       lookAt: true, // 指向原点
       controls: {
@@ -223,30 +223,15 @@ export const mapConfig = {
     },
     // 灯光配置项
     lightConfig: [
-      // {
-      //     type: 'spot', // 聚光灯
-      //     color: 0x78ff00, // 颜色
-      //     intensity: 20, // 强度
-      //     distance: 5,
-      //     angle: Math.PI * 0.1,
-      //     penumbra: 0.25,
-      //     decay:1,
-      //     helper: true, // 助手
-      //     position: {
-      //         x: 0,
-      //         y: 0,
-      //         z: 2,
-      //     },
-      // },
       {
         type: "point", // 点光源
         color: 0x3e99e5, // 颜色
         intensity: 6, // 强度
         distance: 285,
-        helper: true, // 助手
+        helper: false, // 助手
         position: {
-          x: -4.3,
-          y: 17.7,
+          x: 4.5,
+          y: 48,
           z: 50,
         },
       },
@@ -257,9 +242,21 @@ export const mapConfig = {
         distance: 151,
         helper: true, // 助手
         position: {
-          x: 5.1,
-          y: -24,
-          z: 53.7,
+          x: 0,
+          y: 0,
+          z: 50,
+        },
+      },
+      {
+        type: "point", // 点光源
+        color: 0x3e99e5, // 颜色
+        intensity: 12, // 强度
+        distance: 300,
+        helper: true, // 助手
+        position: {
+          x: -10,
+          y: 220,
+          z: 50,
         },
       },
       // {
