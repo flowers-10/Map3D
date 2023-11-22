@@ -1,6 +1,7 @@
 <template>
   <header>
-    <nav>
+    <div class="touch-panel"></div>
+    <nav class="nav-panel">
       <router-link
         v-for="(item, index) in routeMap"
         :to="item.path"
@@ -26,16 +27,20 @@ header {
 
   position: fixed;
   z-index: 99;
-  background-color: #fff;
+  background-color: transparent;
   height: 5vh;
 }
 
-nav {
+.nav-panel {
+  position: absolute;
+  z-index: 1;
   width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
   height: 100%;
+  top: -5vh;
+  transition: 0.3s all;
 }
 
 a {
@@ -44,15 +49,33 @@ a {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  transition: all 1s;
+  transition: all 0.1s;
 }
 
 a:hover {
   background-color: #ccc;
 }
+.nav-panel {
+  background: #fff;
+}
 
 .router-link-active {
   /* vue-router提供了这个类 */
   background: rgba(123, 207, 255, 0.933);
+}
+
+.touch-panel {
+  position: absolute;
+  height: 5vh;
+  width: 100%;
+  top: 0;
+  z-index: -1;
+  background-color: transparent;
+}
+.touch-panel:hover + .nav-panel {
+  top: 0px;
+}
+.nav-panel:hover {
+  top: 0px;
 }
 </style>

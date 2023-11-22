@@ -28,7 +28,7 @@ export default {
             borderColor: "#000"
           },
           viewControl: {
-            autoRotate: true,
+            autoRotate: false,
             autoRotateAfterStill: 3,
             distance: 120,
             minAlpha: 5, // 上下旋转的最小 alpha 值。即视角能旋转到达最上面的角度。[ default: 5 ]
