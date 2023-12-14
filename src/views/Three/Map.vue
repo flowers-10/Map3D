@@ -1,6 +1,7 @@
 <template>
   <div ref="box" class="china-chart">
     <canvas class="webgl" ref="webgl" id="scene"></canvas>
+    
     <!-- <div id="tag">标签内容</div> -->
   </div>
 </template>

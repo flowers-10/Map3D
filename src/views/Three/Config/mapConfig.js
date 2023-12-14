@@ -41,22 +41,22 @@ export const mapConfig = {
         series: [
           {
             show: true,
-            mapShow: true, // 地图显示
+            mapShow: false, // 地图显示
             lineShow: true, // 是否生成线
             textShow: false, // 是否生成区域名称
             name: "allMap",
             mapType: "parentJson", // 类型只有两种 parentJson:当前地区的包含子区域的json,subJson:只包含当前地区的整块json, (必传项)
-            shader: true, // 着色器特效开关 (开启影响性能)
+            shader: false, // 着色器特效开关 (开启影响性能)
             castShadow: false, // 投射阴影 开启影响性能
             receiveShadow: false, // 接受阴影 开启影响性能
             lineConfig: {
-              depth: 0.11, // 线要放到的高度
+              depth: 0.111, // 线要放到的高度
               color: "#A0E5FF",
               linewidth: 0.002,
             },
             textConfig: {
               textStyle: {
-                fontSize: 0.04,
+                fontSize: 0.02,
                 color: "#ffffff",
               },
             },
@@ -67,7 +67,7 @@ export const mapConfig = {
               metalness: 1,
               roughness: 1,
               extrudeSettings: {
-                depth: 0.1, // 地图拉伸深度
+                depth: 0.11, // 地图拉伸深度
                 bevelEnabled: false, //禁止倒角,默认true
                 bevelSegments: 1, //倒圆角：倒角细分精度，默认3
                 bevelSize: 0, //倒角尺寸:垂直拉伸方向
@@ -82,12 +82,12 @@ export const mapConfig = {
           },
           {
             show: true, // 总体显示
-            mapShow: false, // 地图显示
+            mapShow: true, // 地图显示
             lineShow: true, // 是否生成线
             textShow: true, // 地图文字
             name: "regionMap",
             mapType: "subJson", // 类型
-            shader: false, // 着色器开关
+            shader: true, // 着色器开关
             castShadow: true,
             receiveShadow: true,
             lineConfig: {
@@ -97,7 +97,22 @@ export const mapConfig = {
             },
             textConfig: {
               textStyle: {
-                fontSize: 0.04,
+                arrangement: 'horizontal',
+                fontSize: 0.042,
+                color: "#ffffff",
+              },
+              filterList: [
+                "长宁区",
+                "静安区",
+                "普陀区",
+                "徐汇区",
+                "黄浦区",
+                "虹口区",
+                "杨浦区",
+              ], // 需要特殊处理的
+              filterStyle: {
+                arrangement: 'vertical',
+                fontSize: 0.028,
                 color: "#ffffff",
               },
             },
@@ -177,7 +192,7 @@ export const mapConfig = {
     },
     // 后处理配置项(开启影响性能)
     passConfig: {
-      type: "outline", // outline:高亮边,none:普通渲染,bloom:辉光
+      type: "none", // outline:高亮边,none:普通渲染,bloom:辉光
       outlineConfig: {
         edgeStrength: 3, //边缘强度
         edgeGlow: 1, //缓冲接近
@@ -185,7 +200,7 @@ export const mapConfig = {
         pulsePeriod: 2, //脉冲周期
         gamma: true, // 伽马矫正
         antiAliasing: false, // 抗锯齿
-        showIndex: 1, // 当前需要展示特效的地图，根据serise里的配置项变动
+        showIndex: 1, // 当前需要展示特效的地图，根据series里的配置项变动
       },
       bloomConfig: {
         strength: 0.8, // 强度参数
@@ -201,7 +216,7 @@ export const mapConfig = {
       clearColor: "", // 背景色
     },
     // 相机配置项
-    camreaConfig: {
+    cameraConfig: {
       fov: 75,
       near: 0.1,
       far: 1000,
@@ -215,7 +230,7 @@ export const mapConfig = {
         show: true, // 开启控制器
         enableDamping: true, // 开启阻尼
         minPolarAngle: Math.PI * 0.25, // 最小极角为45度
-        maxPolarAngle: Math.PI * 0.75, // 最大极角为135度
+        maxPolarAngle: Math.PI * 0.55, // 最大极角为135度
         minAzimuthAngle: -Math.PI * 0.25, // 最小方位角为-45度
         maxAzimuthAngle: Math.PI * 0.25, // 最大方位角为45度
         enablePan: false, // 平移
@@ -240,7 +255,7 @@ export const mapConfig = {
         color: 0x3e99e5, // 颜色
         intensity: 12, // 强度
         distance: 151,
-        helper: true, // 助手
+        helper: false, // 助手
         position: {
           x: 0,
           y: 0,

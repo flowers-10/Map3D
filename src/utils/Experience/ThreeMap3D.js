@@ -28,7 +28,7 @@ export default class Experience {
 
         // 选项
         this.canvas = canvas
-        const { camreaConfig, rendererConfig, sources, passConfig, sizeConfig, lightConfig, worldConfig } = options
+        const { cameraConfig, rendererConfig, sources, passConfig, sizeConfig, lightConfig, worldConfig } = options
         // 初始化
         this.gui = new dat.GUI({ width: 340 });
         this.sizes = new Sizes(sizeConfig)
@@ -36,7 +36,7 @@ export default class Experience {
         this.scene = new THREE.Scene()
         this.resources = new Resources(sources)
         this.mousemove = new Mousemove()
-        this.camera = new Camera(camreaConfig)
+        this.camera = new Camera(cameraConfig)
         this.light = new Light(lightConfig)
         this.renderer = new Renderer(rendererConfig)
         this.world = new World(worldConfig)
