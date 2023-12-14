@@ -203,9 +203,9 @@ export const mapConfig = {
         showIndex: 1, // 当前需要展示特效的地图，根据series里的配置项变动
       },
       bloomConfig: {
-        strength: 0.8, // 强度参数
-        raduis: 0.5, // 半径参数
-        threshold: 0.5, // 阈值参数
+        strength: 1, // 强度参数
+        radius: 1, // 半径参数
+        threshold: 1, // 阈值参数
       },
     },
     // 渲染器配置项
