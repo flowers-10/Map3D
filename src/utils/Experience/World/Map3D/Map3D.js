@@ -93,7 +93,7 @@ export default class Map3D {
       color: lineConfig.color,
       linewidth: lineConfig.linewidth,
     });
-    console.log(mapJson);
+    // console.log(mapJson);
     mapJson.features.forEach((elem) => {
       // 高亮对象
       // 区域3D对象和区块线3D对象

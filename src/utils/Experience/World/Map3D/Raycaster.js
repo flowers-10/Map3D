@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import gsap from 'gsap';
 import Experience from "../../ThreeMap3D";
 
 export default class Raycaster {
@@ -53,12 +54,14 @@ export default class Raycaster {
             // 当前的区块
             console.log("before current intersect");
             this.currentIntersect?.object.scale.set(1, 1, 1);
+            gsap.to(this.currentIntersect?.object.scale,{duration: 1, x:1,y:1,z:1})
             this.currentIntersect?.object.material[0].color.set('#0E2649')
             this.currentIntersect = regionIntersects[0];
 
             // 之后的区块
             console.log("after current intersect");
-            this.currentIntersect?.object.scale.set(1, 1, 2);
+            // this.currentIntersect?.object.scale.set(1, 1, 2);
+            gsap.to(this.currentIntersect?.object.scale,{duration: 1, x:1,y:1,z:2})
             this.currentIntersect?.object.material[0].color.set('#000000')
 
           }
@@ -66,7 +69,7 @@ export default class Raycaster {
       } else {
         if (this.currentIntersect) {
           console.log("mouse leave");
-          this.currentIntersect?.object.scale.set(1, 1, 1);
+          gsap.to(this.currentIntersect?.object.scale,{duration: 1, x:1,y:1,z:1})
         }
         this.currentIntersect = null;
       }
