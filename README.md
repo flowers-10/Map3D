@@ -1,6 +1,7 @@
 # Map3D
-基于Vue框架、Echarts、Echarts-gl、Three包渲染的3D地图案例展示。
-3D map case display based on Vue framework, Echarts, Echarts gl and Three package rendering.
+基于Vue框架、Echarts、Echarts-gl、Threejs类库渲染的3D地图案例展示。
+
+3D map case display based on Vue framework, Echarts, Echarts gl, and Threejs package rendering.
 
 > 组件都已经封装好，直接复制文件拿走，不用重复造轮子。
 
