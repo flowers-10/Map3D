@@ -41,7 +41,7 @@ export default {
       );
       // 初始化map
       this.initMap(myChart, "map", "100000");
-      // 添加点击事件
+      // 添加点击事件1111
       myChart.on("click", (e: any) => {
         const newName: string = e.name;
         if (e.value.level === "district") return alert("该地区已经无法下钻");
