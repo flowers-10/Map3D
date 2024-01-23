@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     chartMap() {
-      // 初始化dom
+      // 初始化dom1
       const myChart = echarts.init(
         <HTMLElement>document.getElementById("mapEchart")
       );
