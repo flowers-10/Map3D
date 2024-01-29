@@ -4,34 +4,22 @@ import Floor from './Floor'
 import Sprite from './Sprite'
 
 export default class World {
-    constructor(config) {
+    constructor(config, sourceData) {
         this.experience = new Experience()
         this.scene = this.experience.scene
-        this.gui = this.experience.gui
-
-       
+        // Map相关配置
         if (config.mapConfig.show) {
             this.map3D = new Map3D(config.mapConfig)
-            this.map3D.map.rotation.x = -0.2
-
-            this.gui
-            .add(this.map3D.map.rotation, "x")
-            .min(-Math.PI)
-            .max(Math.PI)
-            .step(0.02)
-            .name("Mx");
-            this.gui
-            .add(this.map3D.map.rotation, "y")
-            .min(-Math.PI)
-            .max(Math.PI)
-            .step(0.02)
-            .name("My");
+            this.map3D.map.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z)
+            this.map3D.map.position.set(config.position.x, config.position.y, config.position.z)
         }
-        if (config.spriteConfig.show) {
-            this.sprite = new Sprite(config.spriteConfig)
-            this.sprite.createSprite(config.spriteConfig.data)
-        }
-        console.log(this.scene);
+        // 坐标精灵图相关配置
+        if(!sourceData) return
+        this.sprite = new Sprite()
+        this.sprite.createSprite(sourceData)
+        this.sprite.spriteGroup.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z)
+        this.sprite.spriteGroup.position.set(config.position.x, config.position.y, config.position.z)
+        //   地板相关配置
         // this.floor = new Floor()
     }
     update() {

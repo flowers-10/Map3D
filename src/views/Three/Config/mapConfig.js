@@ -5,47 +5,87 @@ export const mapConfig = {
   useSource: "v10", //使用源  v10/v8 ,默认v10
   name: "三维背景地图",
   type: "chart",
-  rootType: "chart",
+  rootType: "preset1",
   fetchOptions: {
-    //数据源，0-指标库，1-表单，2-dataCenter
     dataSource: 2,
     orgSource: "v10",
     sourceInfo: {
       isClassTarget: 0,
-      sourceName: "",
-      sourceId: "",
+      sourceName: "全部",
+      sourceId: "0",
     },
-    // 模拟化+模拟化数据
-    openAutoFetch: false,
-    autoFetchTimer: 60000 * 60, // 一小时进行更新
     dateType: 0,
-    dimenFormat: "yyyy-MM", // 展示维度类型0:年  1:半年  2:季  3:月
+    dimenFormat: "yyyy-MM",
     pageSize: 0,
-    //指标详情
-    targetDetails: [],
-    //维度详情
-    dimenDetails: [],
+    targetDetails: [
+      {
+        targetShowType: "main",
+        targetId: 46,
+        title: "在管项目数",
+        type: 86,
+        op: "sum",
+        format: {
+          thousandth: false,
+          decimalPlaces: 0,
+          hasUnit: true,
+          unit: "",
+        },
+        hasPercent: false,
+        growth: "",
+        sectionType: 1,
+        visible: true,
+        key: 1700637241778,
+        formula: null,
+        customizable: false,
+        isClassTarget: 0,
+      },
+    ],
+    dimenDetails: [
+      {
+        dimenId: "org",
+        title: "组织",
+        type: "string",
+        format: 0,
+        dimenType: "default",
+        reportType: 0,
+        visible: true,
+        isDataDictionary: false,
+        customUrl: null,
+        customOptions: null,
+      },
+    ],
     filterListV: {},
-    //排序方式
     sortBy: {
-      targetId: "", //排序依据的指标id
-      desc: 0, //是否降序，0-默认，1-降序，2-升序
+      targetId: "",
+      desc: 0,
     },
+    currentDate: 2023,
   },
   chartOptions: {
     chartName: "三维背景地图", // 内置图形名称
     worldConfig: {
+      position: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      rotation: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
       mapConfig: {
         show: true,
-        adcode: 310000, //地图编码
+        adcode: 100000, //地图编码
         series: [
           {
             show: true,
             mapShow: false, // 地图显示
             lineShow: true, // 是否生成线
             textShow: false, // 是否生成区域名称
-            name: "allMap",
-            mapType: "parentJson", // 类型只有两种 parentJson:当前地区的包含子区域的json,subJson:只包含当前地区的整块json, (必传项)
+            name: "轮廓地图",
+            mapId: 0,
+            mapType: "parentJson", // 类型只有两种 parentJson:当前地区的包含子区域的json,subJson:只包含当前地区的整块json (必填项)
             shader: false, // 着色器特效开关 (开启影响性能)
             castShadow: false, // 投射阴影 开启影响性能
             receiveShadow: false, // 接受阴影 开启影响性能
@@ -55,14 +95,19 @@ export const mapConfig = {
               linewidth: 0.002,
             },
             textConfig: {
+              textType: "canvas", // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
               textStyle: {
+                arrangement: "horizontal",
                 fontSize: 0.02,
                 color: "#ffffff",
+                bold: true,
+                lineHeight: 20,
+                fontFamily: "Arial",
               },
             },
             // 拉伸面配置
             extrudeFacesConfig: {
-              color: ["#3EB8F3"],
+              color: "#3EB8F3",
               transparent: true,
               metalness: 1,
               roughness: 1,
@@ -77,15 +122,16 @@ export const mapConfig = {
             // 横截面配置
             crossSectionConfig: {
               transparent: true,
-              color: ["#2B61A6", "#0B2230"],
+              color: "#2B61A6",
             },
           },
           {
             show: true, // 总体显示
             mapShow: true, // 地图显示
-            lineShow: true, // 是否生成线
+            lineShow: true, // 边框线显示
             textShow: true, // 地图文字
-            name: "regionMap",
+            name: "区域地图",
+            mapId: 1,
             mapType: "subJson", // 类型
             shader: true, // 着色器开关
             castShadow: true,
@@ -96,10 +142,14 @@ export const mapConfig = {
               linewidth: 0.001,
             },
             textConfig: {
+              textType: "canvas", // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
               textStyle: {
-                arrangement: 'horizontal',
-                fontSize: 0.042,
+                arrangement: "horizontal",
+                fontSize: 16,
                 color: "#ffffff",
+                bold: true,
+                lineHeight: 18,
+                fontFamily: "Arial",
               },
               filterList: [
                 "长宁区",
@@ -111,14 +161,14 @@ export const mapConfig = {
                 "杨浦区",
               ], // 需要特殊处理的
               filterStyle: {
-                arrangement: 'vertical',
+                arrangement: "vertical",
                 fontSize: 0.028,
                 color: "#ffffff",
               },
             },
             // 拉伸面配置
             extrudeFacesConfig: {
-              color: ["#3a7abd"],
+              color: "#3a7abd",
               transparent: true,
               metalness: 1,
               roughness: 1,
@@ -133,66 +183,60 @@ export const mapConfig = {
             // 横截面配置
             crossSectionConfig: {
               transparent: true,
-              color: ["#2B61A6", "#0E2649"],
+              color: "#2B61A6",
             },
           },
         ],
       },
       // 标签配置项
-      // data example: { x:经度,y:纬度,texture:纹理,scaleX:x大小倍率,scaleY:y倍率, allInfo:数据 }
       spriteConfig: {
+        scale: 0.1,
+        height: 0.16,
+      },
+      // 提示框配置项
+      tooltipConfig: {
         show: true,
-        data: [
+        animation: true,
+        duration: 2000,
+        type: "Medium", // Extra-Large：超大，Large：大， Medium：中
+        offsetX: 150,
+        offsetY: 150,
+        allInfo: [
           {
-            longitude: 121.560686,
-            latitude: 31.292357,
-            z: 0.181,
-            value: 1000,
-            title: "上海大学",
-            texture: "locationTexture",
-            scaleX: 0.17,
-            scaleY: 0.17,
-            allInfo: [
-              { targetName: "项目地址", resultValue: "胡同口五二七路" },
-              {
-                targetName: "项目简介",
-                resultValue: "主要学生床铺管理、环保设备(工程)、学生维修",
-              },
-              { targetName: "项目经理", resultValue: "方晓彤" },
-              { targetName: "联系方式", resultValue: "16888888888" },
-            ],
+            key: "precinctLocation",
+            targetName: "项目地址",
+            resultValue: "",
+            show: true,
           },
           {
-            longitude: 121.201939,
-            latitude: 31.172799,
-            z: 0.181,
-            value: 1000,
-            title: "浦西大学",
-            texture: "locationTexture",
-            scaleX: 0.17,
-            scaleY: 0.17,
-            allInfo: [
-              { targetName: "项目地址", resultValue: "黄埔东路1993号" },
-              {
-                targetName: "项目简介",
-                resultValue:
-                  "主要负责学生强身健体、延年益寿，达到无坚不摧的效果。",
-              },
-              { targetName: "项目经理", resultValue: "令狐冲" },
-              { targetName: "联系方式", resultValue: "193888888888" },
-            ],
+            key: "precinctIntroduction",
+            targetName: "项目简介",
+            resultValue: "",
+            show: true,
+          },
+          {
+            key: "proManager",
+            targetName: "项目经理",
+            resultValue: "",
+            show: true,
+          },
+          {
+            key: "proManagerPhone",
+            targetName: "联系电话",
+            resultValue: "",
+            show: true,
           },
         ],
       },
     },
     // 响应式尺寸配置
     sizeConfig: {
-      type: "window", // window : 取全局, parent: 取父容器
-      // id: "_Background_3D", // 父容器ID
+      type: "parent", // window : 取全局, parent: 取父容器
+      id: "_Background_3D", // 父容器ID
     },
     // 后处理配置项(开启影响性能)
     passConfig: {
-      type: "outline", // outline:高亮边,none:普通渲染,bloom:辉光
+      type: "none", // outline:高亮边,none:普通渲染,bloom:辉光
       outlineConfig: {
         edgeStrength: 3, //边缘强度
         edgeGlow: 1, //缓冲接近
@@ -203,14 +247,14 @@ export const mapConfig = {
         showIndex: 1, // 当前需要展示特效的地图，根据series里的配置项变动
       },
       bloomConfig: {
-        strength: 1, // 强度参数
-        radius: 1, // 半径参数
-        threshold: 1, // 阈值参数
+        strength: 0.8, // 强度参数
+        raduis: 0.5, // 半径参数
+        threshold: 0.5, // 阈值参数
       },
     },
     // 渲染器配置项
     rendererConfig: {
-      antialias: false, //开启锯齿 (影响性能)
+      antialias: false, //开启抗锯齿 (影响性能)
       alpha: true, // 开启背景透明
       clearAlpha: 0, // 透明背景度
       clearColor: "", // 背景色
@@ -223,16 +267,16 @@ export const mapConfig = {
       position: {
         x: 0,
         y: 0,
-        z: 1.86,
+        z: 2.2,
       },
       lookAt: true, // 指向原点
       controls: {
         show: true, // 开启控制器
         enableDamping: true, // 开启阻尼
-        minPolarAngle: Math.PI * 0.25, // 最小极角为45度
-        maxPolarAngle: Math.PI * 0.55, // 最大极角为135度
-        minAzimuthAngle: -Math.PI * 0.25, // 最小方位角为-45度
-        maxAzimuthAngle: Math.PI * 0.25, // 最大方位角为45度
+        minPolarAngle: Math.PI * 0.25, // 最小极角
+        maxPolarAngle: Math.PI * 0.75, // 最大极角
+        minAzimuthAngle: -Math.PI * 0.45, // 最小方位角
+        maxAzimuthAngle: Math.PI * 0.25, // 最大方位角
         enablePan: false, // 平移
       },
     },
@@ -240,50 +284,48 @@ export const mapConfig = {
     lightConfig: [
       {
         type: "point", // 点光源
-        color: 0x3e99e5, // 颜色
-        intensity: 6, // 强度
-        distance: 285,
+        color: "#3e99e5", // 颜色
+        intensity: 3, // 强度
+        distance: 500,
         helper: false, // 助手
+        lightId: 0,
+        lightName: "光源1",
         position: {
-          x: 4.5,
+          x: -10,
           y: 48,
           z: 50,
         },
       },
+      //  实现渐变色
       {
         type: "point", // 点光源
-        color: 0x3e99e5, // 颜色
-        intensity: 12, // 强度
-        distance: 151,
+        color: "#3e99e5", // 颜色
+        intensity: 3, // 强度
+        distance: 285,
         helper: false, // 助手
+        lightId: 1,
+        lightName: "光源2",
         position: {
-          x: 0,
-          y: 0,
+          x: 1,
+          y: -5,
           z: 50,
         },
       },
+      // 侧边特效打光
       {
         type: "point", // 点光源
-        color: 0x3e99e5, // 颜色
-        intensity: 12, // 强度
-        distance: 300,
-        helper: true, // 助手
+        color: "#3e99e5", // 颜色
+        intensity: 10, // 强度
+        distance: 285,
+        helper: false, // 助手
+        lightId: 2,
+        lightName: "光源3",
         position: {
-          x: -10,
-          y: 220,
-          z: 50,
+          x: 1,
+          y: -28,
+          z: 3,
         },
       },
-      // {
-      //     type: 'ambient', // 环境光源
-      //     color: 0xffffff, //颜色
-      //     intensity: 1, // 强度
-      //     position: {
-      //         x: 0,
-      //         y: 0,
-      //         z: 0,
-      //     },
-      // },
     ],
     // 引入外部资源
     sources: [

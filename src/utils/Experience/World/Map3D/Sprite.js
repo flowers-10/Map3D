@@ -2,14 +2,15 @@ import * as THREE from 'three'
 import Experience from '../../ThreeMap3D'
 
 export default class Sprite {
-    constructor(config) {
+    constructor() {
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.resources = this.experience.resources
     }
-
+    // 创建坐标精灵
     createSprite(data) {
-        if (!data.length) return console.error('Please use the array type for the data configuration items in spriteConfig.')
+        if (!data.length) return console.error('tips: Please use the array type for the data configuration items in spriteConfig.')
+        this.scale = data[0].scaleX
         this.spriteGroup = new THREE.Group()
         this.spriteGroup.name = 'location-tips'
         //  wait
@@ -23,6 +24,16 @@ export default class Sprite {
                 const spriteMaterial = new THREE.SpriteMaterial({
                     map: texture, //设置精灵纹理贴图
                 })
+                // 透明遮挡问题/GPU过滤
+                spriteMaterial.onBeforeCompile = (shader) => {
+                    shader.fragmentShader = shader.fragmentShader.replace(
+                        '#include <opaque_fragment>',
+                        `
+                    #include <opaque_fragment>
+                    if(gl_FragColor.a <.8){discard;}
+                    `,
+                    )
+                }
                 const sprite = new THREE.Sprite(spriteMaterial)
                 sprite.scale.set(item.scaleX, item.scaleY, 1) //只需要设置x、y两个分量就可以
 
@@ -34,8 +45,9 @@ export default class Sprite {
             this.scene.add(this.spriteGroup)
         })
     }
+    // 创建文字精灵 （已弃用，文字失真后续可调整像素问题）
     createTextSprite(data, options) {
-        if (!data.length) return console.error('Please use the array type for the data configuration items in textSprite.')
+        if (!data.length) return console.error('tips: Please use the array type for the data configuration items in textSprite.')
         this.textSpriteGroup = new THREE.Group()
         this.textSpriteGroup.name = 'textSprite'
         // 创建Canvas元素
