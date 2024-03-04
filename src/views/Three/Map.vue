@@ -1,5 +1,5 @@
 <template>
-  <div ref="box" class="china-chart">
+  <div ref="box" class="china-chart" id="_Background_3D">
     <canvas class="webgl" ref="webgl" id="scene"></canvas>
     
     <!-- <div id="tag">标签内容</div> -->

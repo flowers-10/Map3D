@@ -20,7 +20,7 @@ export default class World {
         this.sprite.spriteGroup.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z)
         this.sprite.spriteGroup.position.set(config.position.x, config.position.y, config.position.z)
         //   地板相关配置
-        // this.floor = new Floor()
+        this.floor = new Floor()
     }
     update() {
         this.map3D?.update()
