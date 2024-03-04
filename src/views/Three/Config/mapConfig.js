@@ -76,7 +76,7 @@ export const mapConfig = {
       },
       mapConfig: {
         show: true,
-        adcode: 100000, //地图编码
+        adcode: 310000, //地图编码
         series: [
           {
             show: true,
