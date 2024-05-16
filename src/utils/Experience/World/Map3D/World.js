@@ -14,15 +14,23 @@ export default class World {
             this.map3D.map.position.set(config.position.x, config.position.y, config.position.z)
         }
         // 坐标精灵图相关配置
-        if(!sourceData) return
-        this.sprite = new Sprite()
-        this.sprite.createSprite(sourceData)
-        this.sprite.spriteGroup.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z)
-        this.sprite.spriteGroup.position.set(config.position.x, config.position.y, config.position.z)
+        if (sourceData) {
+            this.sprite = new Sprite()
+            this.sprite.createSprite(sourceData)
+            this.sprite.type = config.spriteConfig.type || 'blue'
+            this.sprite.spriteGroup.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z)
+            this.sprite.spriteGroup.position.set(config.position.x, config.position.y, config.position.z)
+        }
         //   地板相关配置
-        this.floor = new Floor()
+        if (config.hasOwnProperty('floorConfig') &&config.floorConfig.show) {
+            this.floor = new Floor(config.floorConfig)
+            this.floor.floorGroup.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z)
+            this.floor.floorGroup.position.set(config.position.x, config.position.y, config.position.z)
+        }
     }
     update() {
         this.map3D?.update()
+        this.floor?.update()
+        this.sprite?.computedSpritePosition()
     }
 }

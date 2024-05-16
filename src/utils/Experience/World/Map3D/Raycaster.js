@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Experience from '../../ThreeMap3D'
+// import { eventBus } from '@BI/utils/eventBus'
 
 export default class Raycaster {
     constructor(tooltipConfig) {
@@ -12,9 +13,11 @@ export default class Raycaster {
         this.mouseOffset = this.experience.mousemove.eventOffset
         this.camera = this.experience.camera.instance
         this.distance = this.experience.camera.distance
+        this.resources = this.experience.resources
         this.raycaster = new THREE.Raycaster()
-        this.spriteShow = true
         // 坐标精灵图相关属性
+        this.spriteShow = true
+        this.spriteType = this.experience.world.sprite?.type || 'blue'
         if (this.experience.world.sprite) {
             this.spriteGroup = this.experience.world.sprite.spriteGroup?.children
             this.scale = this.experience.world.sprite.scale // 精灵图当前倍率
@@ -24,12 +27,14 @@ export default class Raycaster {
             this.spriteShow = false
             console.error('tips: Coordinate sprite is not initialized.')
         }
+
         // 地图相关属性
         this.objectsToMap = this.experience.world.map3D.map.children
         this.currentIntersect = null // 当前激活的地图
         this.animation = true // 是否开启动画
+
         // 提示框相关属性
-        this.tooltipShow = tooltipConfig?.show || true
+        this.tooltipShow = tooltipConfig.show
         this.tooltipConfig = tooltipConfig
         this.index = 0 // 只触发一次
         this.tooltipIndex = 0
@@ -41,6 +46,7 @@ export default class Raycaster {
         this.raycaster.setFromCamera(this.mouse, this.camera)
         this.tooltipShow ? this.dispatchHoverAction() : null
         this.spriteShow ? this.locationController() : null
+        this.dispatchRegionAction()
     }
     // 鼠标移入tooltip动画
     dispatchHoverAction() {
@@ -66,14 +72,15 @@ export default class Raycaster {
                 this.animation = false // 停止自动轮播行为
                 this.tooltipTimer2 = 0 // 充值
                 div.style.display = 'block'
-                div.style.left = this.mouseOffset.x + 10 + 'px'
-                div.style.top = this.mouseOffset.y + 'px'
+                const scale = 1 / +localStorage.getItem('scale') || 1
+                div.style.left = this.mouseOffset.x * scale + 20 + 'px'
+                div.style.top = this.mouseOffset.y * scale + 20 + 'px'
                 // 坐标精灵图放大
                 this.currentSprite?.scale.set(this.scale, this.scale, 1)
                 this.currentSprite = intersects[0].object
                 this.currentSprite.scale.set(this.scale * 1.5, this.scale * 1.5, 1)
                 // 派发sprite信息给tooltip组件
-               
+                // eventBus.$emit('_tooltip_info', { ...intersects[0].object.properties, type: 'default' })
             }
         }
     }
@@ -95,22 +102,69 @@ export default class Raycaster {
             // 将世界坐标转换为屏幕坐标
             const screenPos = center.clone().project(this.camera)
             // 将屏幕坐标转换为像素坐标
-            const pixelPos = new THREE.Vector2(((screenPos.x + 1) * this.sizes.width) / 2, ((-screenPos.y + 1) * this.sizes.height) / 2)
+            const halfWidth = this.sizes.width / 2
+            const halfHeight = this.sizes.height / 2
+            const offsetX = Number(this.tooltipConfig.offsetX) || 0
+            const offsetY = Number(this.tooltipConfig.offsetY) || 0
+            let finallyX = 0
+            let divX = 0
+            let divY = 0
+            const pixelPos = new THREE.Vector2((screenPos.x + 1) * halfWidth, (-screenPos.y + 1) * halfHeight)
+            const widthMap = {
+                'Extra-Large': 320,
+                Large: 240,
+                Medium: 160,
+            }
             // console.log('pixelPos:', pixelPos)
 
             const div = document.getElementById('three_tooltip')
             if (div && pixelPos) {
                 // 开始轮播提示框
-                const offsetX = Number(this.tooltipConfig.offsetX) || 0 
-                const offsetY = Number(this.tooltipConfig.offsetY) || 0
                 div.style.display = 'block'
-                div.style.left = Number(pixelPos.x.toFixed(0)) + offsetX + 'px'
-                div.style.top = Number(pixelPos.y.toFixed(0)) - offsetY + 'px'
+                if (pixelPos.x > halfWidth) {
+                    divX = Number(pixelPos.x.toFixed(0)) + offsetX || 0
+                    finallyX= offsetX
+                    divY = Number(pixelPos.y.toFixed(0)) - offsetY
+                } else {
+                    const tooltipWidth = widthMap[this.tooltipConfig.type] || 160
+                    divX = Number(pixelPos.x.toFixed(0)) - offsetX - tooltipWidth || 0
+                    finallyX = -offsetX
+                    divY = Number(pixelPos.y.toFixed(0)) - offsetY
+                }
+                div.style.left = divX + 'px'
+                div.style.top = divY + 'px'
                 this.currentSprite ? (this.currentSprite.renderOrder = 1) : null
                 this.currentSprite?.scale.set(this.scale, this.scale, 1)
+                if (this.spriteType && this.spriteType !== 'random' && this.currentSprite) {
+                    const texture = this.resources.items[this.spriteType]
+                    if(texture && texture.hasOwnProperty('encoding')) {
+                        texture.encoding = THREE.sRGBEncoding
+                    }
+                    this.currentSprite.material.map = texture
+                    this.currentSprite.material.needsUpdate = true
+                }
+
                 this.currentSprite = this.spriteGroup[index % len]
-                this.currentSprite.renderOrder = 2
+
+                if (this.spriteType && this.spriteType !== 'random' && this.currentSprite) {
+                    // todo
+                    const texture = this.resources.items['locationTextureRed']
+                    if(texture && texture.hasOwnProperty('encoding')) {
+                        texture.encoding = THREE.sRGBEncoding
+                    }
+                    this.currentSprite.material.map = texture
+                    this.currentSprite.material.needsUpdate = true
+                }
+                this.currentSprite.renderOrder = 10
                 this.currentSprite.scale.set(this.scale * 2, this.scale * 2, 1)
+                // eventBus.$emit('_tooltip_info', {
+                //     ...this.currentSprite.properties,
+                //     type: 'lines',
+                //     x: pixelPos.x,
+                //     y: pixelPos.y,
+                //     offsetX:finallyX,
+                //     offsetY,
+                // })
             } else {
                 div.style.display = 'none'
             }
@@ -170,16 +224,22 @@ export default class Raycaster {
     }
     // 根据控制器相机高度动态缩放坐标
     locationController() {
+        // 记录上一次更新的精灵图的信息
+        let lastSpriteName = this.currentSprite?.name || '';
+        let lastSpriteId = this.currentSprite?.id || '';
+    
         const initialDistance = 2.2 // 初始距离
         const initialScale = this.experience.world.sprite.scale // 初始缩放值
         const distance = this.experience.camera.controls.getDistance()
-        // 当相机没有发生高度变化时不触发相关行为
         if (distance === this.currentDistance) return
         this.currentDistance = distance
-        this.scale = (initialScale / (initialDistance / distance)).toFixed(2) // 计算缩放值
-        // console.log( this.scale);
+        this.scale = (initialScale / (initialDistance / distance)).toFixed(2)
         this.spriteGroup.forEach((item) => {
-            item.scale.set(this.scale, this.scale, 1) // 将缩放值应用到scaleX和scaleY上
+            // 判断精灵图是否已经更新过，如果是就不进行缩放操作
+            if ((item.name && item.name === lastSpriteName) || (item.id && item.id === lastSpriteId)) {
+                return;
+            }
+            item.scale.set(this.scale, this.scale, 1)
         })
     }
 }

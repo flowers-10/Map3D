@@ -32,6 +32,7 @@ export default class Map3D {
         this.sizes = this.experience.sizes
         this.resources = this.experience.resources
         this.jsonHelper = new JSONHelper(config.adcode)
+        this.scale = config.scale || 0.1
         this.map = new THREE.Group()
         this.map.name = 'Map3D'
         this.map3DConfig = config
@@ -50,8 +51,7 @@ export default class Map3D {
         const json = await this.jsonHelper.getMapJSON()
 
         let { center, scale } = this.createCenter(json.parentJson)
-        center[1] += 0.13
-        scale /= 10
+        scale *= this.scale
         this.projection = d3geo.geoMercator().center(center).scale(scale).translate([0, 0])
         series.forEach((item) => {
             if (item.show) {
@@ -107,14 +107,18 @@ export default class Map3D {
             region.properties = elem.properties
             lineRegion.properties = elem.properties
             if (option.textShow) {
+                let { x = 0, y = 0, z = 0 } = textConfig.rotation || {}
                 if (textConfig.textType === 'canvas') {
-                    const text = this.createCanvasText(elem, textConfig.textStyle, lineConfig)
+                    const text = this.createCanvasText(elem, textConfig, lineConfig)
+                    text.rotation.set(x, y, z)
                     textRegion.add(text)
-                }else {
+                } else {
                     const text = this.createText(lineConfig, textConfig, elem, textMaterial)
+                    text.rotation.set(x, y, z)
                     textRegion.add(text)
-                }  
+                }
             }
+
             regionMap.add(region)
             regionMap.add(lineRegion)
             regionMap.add(textRegion)
@@ -251,61 +255,35 @@ export default class Map3D {
         return text
     }
     // 创建canvas贴图文字
-    createCanvasText(elem, opt, lineConfig) {
+    createCanvasText(elem, textConfig, lineConfig) {
+        const module = textConfig.filterList.includes(elem.properties.name)
         const value = elem.properties.name
-        opt = {
-            fontSize: 18,
-            bold: true,
-            color: '#ffffff',
-            lineHeight: 20,
-            maxWidth: 150,
-            maxHeight: 80,
-            width: 600,
-            height: 200,
-            fontFamily: 'Arial',
-            ...opt,
-        }
         const canvas = document.createElement('canvas')
+        // canvas图片平滑过度
+        canvas.style.imageRendering = 'optimizeSpeed'
         const ctx = canvas.getContext('2d')
+        // 配置图像平滑属性
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
         const scaleRatio = 3.5
-
-        ctx.font = `${+opt.fontSize * scaleRatio}px ${opt.fontFamily}`
-        let width = 0
-        let lineTextArray = []
-        let lineText = ''
-
-        for (let i = 0; i < value.length; i++) {
-            const char = value.charAt(i)
-            const w = ctx.measureText(char).width
-            width += w
-
-            if (opt.maxWidth && width > opt.maxWidth * scaleRatio) {
-                lineTextArray.push(lineText)
-                lineText = ''
-                width = w
-            }
-            lineText += char
-        }
-
-        lineTextArray.push(lineText)
+        const opt = module ? textConfig.filterStyle : textConfig.textStyle
+        const font = `${opt.bold ? 'bold ' : ''}${opt.fontSize * scaleRatio}px ${opt.fontFamily}`
 
         let totalWidth = 0
         let totalHeight = 0
-
-        if (lineTextArray.length == 1) {
-            totalWidth = width
-            totalHeight = opt.lineHeight * scaleRatio
-        } else {
-            totalWidth = opt.maxWidth * scaleRatio
-            totalHeight = opt.lineHeight * scaleRatio * lineTextArray.length
+        for (let i = 0; i < value.length; i++) {
+            const char = value.charAt(i)
+            ctx.font = font
+            const textWidth = ctx.measureText(char).width
+            totalWidth += textWidth
         }
-        canvas.setAttribute('width', `${totalWidth}`)
-        canvas.setAttribute('height', `${totalHeight}`)
-
-        for (let i = 0; i < lineTextArray.length; i++) {
-            ctx.font = `${opt.bold ? 'bold ' : ''}${+opt.fontSize * scaleRatio}px ${opt.fontFamily}`
-            ctx.fillStyle = opt.color
-            ctx.fillText(lineTextArray[i], 0, (+opt.fontSize + i * opt.lineHeight) * scaleRatio)
+        if (opt.arrangement === 'horizontal') {
+            totalHeight = opt.lineHeight * scaleRatio
+            this.drawTextHorizontally(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
+        } else {
+            totalWidth = opt.fontSize * scaleRatio
+            totalHeight = value.length * opt.lineHeight * scaleRatio
+            this.drawTextVertically(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
         }
 
         const texture = new THREE.Texture(canvas)
@@ -389,6 +367,30 @@ export default class Map3D {
             result += text[i] + '\n'
         }
         return result
+    }
+    // canvas处理横向文字
+    drawTextHorizontally(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight) {
+        canvas.setAttribute('width', `${totalWidth}`)
+        canvas.setAttribute('height', `${totalHeight}`)
+        ctx.font = font
+        ctx.fillStyle = opt.color
+        // 抗锯齿
+        ctx.imageSmoothingEnabled = true
+
+        ctx.fillText(value, 0, opt.fontSize * scaleRatio)
+    }
+    // canvas处理竖向文字
+    drawTextVertically(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight) {
+        canvas.setAttribute('width', `${totalWidth}`)
+        canvas.setAttribute('height', `${totalHeight}`)
+
+        for (let i = 0; i < value.length; i++) {
+            ctx.font = font
+            ctx.fillStyle = opt.color
+            // 抗锯齿
+            ctx.imageSmoothingEnabled = true
+            ctx.fillText(value[i], 0, (+opt.fontSize + i * opt.lineHeight) * scaleRatio)
+        }
     }
 
     update() {

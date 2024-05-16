@@ -12,7 +12,7 @@ import City3D from './World/City3D/City3D'
 let instance = null
 
 export default class Experience {
-    constructor(canvas,options) {
+    constructor(canvas, options) {
         //  Singleton
         if (instance) {
             return instance
@@ -23,7 +23,7 @@ export default class Experience {
 
         // 选项
         this.canvas = canvas
-        const {camera,renderer,} = options
+        const { camera, renderer, } = options
         // 初始化
         this.sizes = new Sizes()
         this.time = new Time()
@@ -75,7 +75,7 @@ export default class Experience {
         this.scene?.clear()
         // 销毁渲染器
         this.renderer?.dispose()
-        // 销毁轨道控制器 
+        // 销毁轨道控制器
         this.camera?.dispose()
         // 销毁实例
         instance = null

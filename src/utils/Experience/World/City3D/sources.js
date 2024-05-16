@@ -1,10 +1,9 @@
-let pathName = location.pathname.includes('ChartsCab') ? '/ChartsCab/' : location.pathname
+import { loadRemoteStatic } from "@BI/utils/core/getUI";
 
 export default [
   {
     name: "shanghai",
     type: "gltfModel",
-    path: location.origin + pathName + 'static/shanghai.gltf',
+    path:  loadRemoteStatic('shanghai.gltf') ,
   },
-  
 ];

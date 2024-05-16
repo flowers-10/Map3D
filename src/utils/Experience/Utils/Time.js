@@ -9,6 +9,8 @@ export default class Time extends EventEmitter {
         this.current = this.start
         this.elapsed = 0
         this.delta = 16
+        this.timer = 0
+        this.index = 0
         this.tick()
     }
 
@@ -25,5 +27,14 @@ export default class Time extends EventEmitter {
     }
     release() {
         window.cancelAnimationFrame(this.tick)
+    }
+    tickS(interval = 1000,fn) {
+        this.timer += this.delta
+        if(this.timer >= interval) {
+            this.index++
+            this.timer = 0
+            // console.log('每' + interval + '毫秒执行的操作',this.index);
+            fn(this.index)
+        }
     }
 }

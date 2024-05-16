@@ -9,10 +9,9 @@ export default class Mousemove extends EventEmitter {
             y: 0,
         }
         this.mouse = new THREE.Vector2()
-
         this.mouseMoveHandler = (event) => {
             // 父级并非满屏，所以需要减去父级的left 和 top
-            let { top, left, width, height } = this.canvas.getBoundingClientRect()
+            let { top = 0, left = 0, width = 0, height = 0 } = this.canvas?.getBoundingClientRect()
             let clientX = event.clientX - left
             let clientY = event.clientY - top
 
@@ -24,7 +23,7 @@ export default class Mousemove extends EventEmitter {
             this.trigger('mousemove', null)
         }
 
-        window.addEventListener('mousemove', this.mouseMoveHandler, false)
+        this.canvas ? window.addEventListener('mousemove', this.mouseMoveHandler, false) : null
     }
 
     release() {

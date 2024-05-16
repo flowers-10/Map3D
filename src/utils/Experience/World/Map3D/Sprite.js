@@ -1,10 +1,12 @@
 import * as THREE from 'three'
 import Experience from '../../ThreeMap3D'
-
+// import { eventBus } from '@BI/utils/eventBus'
 export default class Sprite {
     constructor() {
         this.experience = new Experience()
         this.scene = this.experience.scene
+        this.camera = this.experience.camera.instance
+        this.sizes = this.experience.sizes
         this.resources = this.experience.resources
     }
     // 创建坐标精灵
@@ -15,8 +17,8 @@ export default class Sprite {
         this.spriteGroup.name = 'location-tips'
         //  wait
         this.resources.on('ready', async () => {
-            this.projection = await this.experience.world.map3D.getProjection()
-
+            this.projection = await this.experience.world?.map3D?.getProjection()
+            if (!this.projection) return
             // Setup
             data.forEach((item) => {
                 const texture = this.resources.items[item.texture]
@@ -92,5 +94,33 @@ export default class Sprite {
         })
 
         this.scene.add(this.textSpriteGroup)
+    }
+    computedSpritePosition() {
+        const spriteGroup = this.spriteGroup.children
+        const arr = []
+        spriteGroup.forEach((item) => {
+            if (item.properties.separately) {
+                // 获取sprite的中心点在世界坐标系中的坐标
+                const center = item.getWorldPosition(new THREE.Vector3())
+                // 将世界坐标转换为屏幕坐标
+                const screenPos = center.clone().project(this.camera)
+                // 将屏幕坐标转换为像素坐标
+                const halfWidth = this.sizes.width / 2
+                const halfHeight = this.sizes.height / 2
+                const pixelPos = new THREE.Vector2((screenPos.x + 1) * halfWidth, (-screenPos.y + 1) * halfHeight)
+                const type = this.experience.raycaster.tooltipConfig.type || 'Medium'
+                const widthMap = {
+                    'Extra-Large': 320,
+                    Large: 240,
+                    Medium: 160,
+                }
+                arr.push({
+                    ...item.properties,
+                    x: pixelPos.x - widthMap[type] / 2,
+                    y: pixelPos.y - 70,
+                })
+            }
+        })
+        // eventBus.$emit('_tooltip_groups', arr)
     }
 }
