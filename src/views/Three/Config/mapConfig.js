@@ -206,7 +206,7 @@ export const mapConfig = {
           },
           // 地板配置项
           floorConfig: {
-              show: false,
+              show: true,
               series: [
                   {
                       id: 1,
