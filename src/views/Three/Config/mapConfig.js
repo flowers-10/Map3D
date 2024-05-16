@@ -236,7 +236,7 @@ export const mapConfig = {
     },
     // 后处理配置项(开启影响性能)
     passConfig: {
-      type: "none", // outline:高亮边,none:普通渲染,bloom:辉光
+      type: "outline", // outline:高亮边,none:普通渲染,bloom:辉光
       outlineConfig: {
         edgeStrength: 3, //边缘强度
         edgeGlow: 1, //缓冲接近

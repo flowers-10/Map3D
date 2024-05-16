@@ -1,7 +1,7 @@
 <template>
   <div class="investment-screen">
     <svg
-      style="position: absolute; left: 20px; top: 20px; cursor: pointer"
+      style="position: absolute; left: 20px; top: 20px; cursor: pointer;z-index:20"
       @click="backMap"
       t="1681180771137"
       class="icon"
@@ -89,30 +89,8 @@ export default {
       const option = {
         geo3D: {
           zlevel: -100,
-          show: true,
-          type: "map3D",
+          show: false,
           map: geoName, // 地图类型。echarts-gl 中使用的地图类型同 geo 组件相同
-          regionHeight: 2,
-          shading: "realistic",
-          realisticMaterial: {
-            detailTexture: "./1.jpeg",
-            roughness: 0.2,
-            metalness: 0,
-          },
-          regions: [
-            {
-              name: mapData[0].name,
-              itemStyle: {
-                color: "#ff9900",
-              },
-            },
-          ], //默认高亮区域
-          emphasis: {
-            label: { show: false },
-            itemStyle: {
-              color: "transparent",
-            },
-          },
         },
         series: [
           {
@@ -132,17 +110,16 @@ export default {
                 return ` ${e.name} `;
               },
             },
+            itemStyle: {
+              color: "#18B6FE",
+            },
             shading: "realistic",
             realisticMaterial: {
-              detailTexture: "./4.jpeg",
+              detailTexture: "./1.jpeg",
               roughness: 0.2,
               metalness: 0,
             },
-            itemStyle: {
-              borderWidth: 1.5,
-              borderColor: "#5FB9DA",
-              color: "transparent",
-            },
+
             emphasis: {
               label: {
                 show: true,
@@ -154,9 +131,6 @@ export default {
                     image: "./2.png",
                   },
                 },
-              },
-              itemStyle: {
-                color: "#18B6FE",
               },
             },
           },
@@ -184,7 +158,6 @@ export default {
   mounted() {
     this.chartMap();
     console.log(1);
-    
   },
 };
 </script>
