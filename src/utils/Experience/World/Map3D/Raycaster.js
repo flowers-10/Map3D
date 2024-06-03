@@ -46,7 +46,7 @@ export default class Raycaster {
         this.raycaster.setFromCamera(this.mouse, this.camera)
         this.tooltipShow ? this.dispatchHoverAction() : null
         this.spriteShow ? this.locationController() : null
-        this.dispatchRegionAction()
+        // this.dispatchRegionAction()
     }
     // 鼠标移入tooltip动画
     dispatchHoverAction() {

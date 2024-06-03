@@ -256,7 +256,6 @@ export default class Map3D {
     }
     // 创建canvas贴图文字
     createCanvasText(elem, textConfig, lineConfig) {
-        const module = textConfig.filterList.includes(elem.properties.name)
         const value = elem.properties.name
         const canvas = document.createElement('canvas')
         // canvas图片平滑过度
@@ -266,7 +265,7 @@ export default class Map3D {
         ctx.imageSmoothingEnabled = true
         ctx.imageSmoothingQuality = 'high'
         const scaleRatio = 3.5
-        const opt = module ? textConfig.filterStyle : textConfig.textStyle
+        const opt = textConfig.textStyle
         const font = `${opt.bold ? 'bold ' : ''}${opt.fontSize * scaleRatio}px ${opt.fontFamily}`
 
         let totalWidth = 0
@@ -277,15 +276,21 @@ export default class Map3D {
             const textWidth = ctx.measureText(char).width
             totalWidth += textWidth
         }
-        if (opt.arrangement === 'horizontal') {
+        // if (opt.arrangement === 'horizontal') {
             totalHeight = opt.lineHeight * scaleRatio
+            // todo this better
+            totalWidth = 4000
+            totalHeight = 2000
             this.drawTextHorizontally(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
-        } else {
-            totalWidth = opt.fontSize * scaleRatio
-            totalHeight = value.length * opt.lineHeight * scaleRatio
-            this.drawTextVertically(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
-        }
-
+        // } else {
+        //     totalWidth = opt.fontSize * scaleRatio
+        //     totalHeight = value.length * opt.lineHeight * scaleRatio
+        //     // todo
+        //     totalWidth = 4000
+        //     totalHeight = 2000
+        //     this.drawTextVertically(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
+        // }
+     
         const texture = new THREE.Texture(canvas)
         texture.needsUpdate = true
         texture.colorSpace = THREE.SRGBColorSpace

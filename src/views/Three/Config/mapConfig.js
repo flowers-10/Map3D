@@ -97,7 +97,7 @@ export const mapConfig = {
                           linewidth: 0.002,
                       },
                       textConfig: {
-                          textType: 'text3D', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
+                          textType: 'canvas', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
                           rotation: {
                               x: 0,
                               y: 0,
@@ -105,7 +105,7 @@ export const mapConfig = {
                           },
                           textStyle: {
                               arrangement: 'horizontal',
-                              fontSize: 0.02,
+                              fontSize: 20,
                               color: '#ffffff',
                               bold: true,
                               lineHeight: 20,
@@ -114,7 +114,7 @@ export const mapConfig = {
                           filterList: ['长宁区', '静安区', '普陀区', '徐汇区', '黄浦区', '虹口区', '杨浦区'], // 需要特殊处理的
                           filterStyle: {
                               arrangement: 'vertical',
-                              fontSize: 0.028,
+                              fontSize: 28,
                               color: '#ffffff',
                               bold: true,
                               lineHeight: 20,
@@ -158,7 +158,7 @@ export const mapConfig = {
                           linewidth: 0.001,
                       },
                       textConfig: {
-                          textType: 'text3D', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
+                          textType: 'canvas', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
                           rotation: {
                               x: 0,
                               y: 0,
@@ -166,7 +166,7 @@ export const mapConfig = {
                           },
                           textStyle: {
                               arrangement: 'horizontal',
-                              fontSize: 0.04,
+                              fontSize: 18,
                               color: '#ffffff',
                               bold: true,
                               lineHeight: 20,
@@ -175,7 +175,7 @@ export const mapConfig = {
                           filterList: ['长宁区', '静安区', '普陀区', '徐汇区', '黄浦区', '虹口区', '杨浦区'], // 需要特殊处理的
                           filterStyle: {
                               arrangement: 'vertical',
-                              fontSize: 0.028,
+                              fontSize: 28,
                               color: '#ffffff',
                               bold: true,
                               lineHeight: 20,
@@ -272,7 +272,7 @@ export const mapConfig = {
       },
       // 后处理配置项(开启影响性能)
       passConfig: {
-          type: 'outline', // outline:高亮边,none:普通渲染,bloom:辉光
+          type: 'none', // outline:高亮边,none:普通渲染,bloom:辉光
           outlineConfig: {
               edgeStrength: 3, //边缘强度
               edgeGlow: 1, //缓冲接近
