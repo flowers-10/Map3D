@@ -97,7 +97,7 @@ export const mapConfig = {
                           linewidth: 0.002,
                       },
                       textConfig: {
-                          textType: 'canvas', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
+                          textType: 'dom', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
                           rotation: {
                               x: 0,
                               y: 0,
@@ -158,7 +158,7 @@ export const mapConfig = {
                           linewidth: 0.001,
                       },
                       textConfig: {
-                          textType: 'canvas', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
+                          textType: 'dom', // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
                           rotation: {
                               x: 0,
                               y: 0,

@@ -30,6 +30,8 @@ export default class World {
     }
     update() {
         this.map3D?.update()
+        this.map3D.computedTextPosition()
+
         this.floor?.update()
         this.sprite?.computedSpritePosition()
     }

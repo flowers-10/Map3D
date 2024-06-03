@@ -29,6 +29,7 @@ export default class Map3D {
         this.scene = this.experience.scene
 
         this.time = this.experience.time
+        this.camera = this.experience.camera.instance
         this.sizes = this.experience.sizes
         this.resources = this.experience.resources
         this.jsonHelper = new JSONHelper(config.adcode)
@@ -108,7 +109,11 @@ export default class Map3D {
             lineRegion.properties = elem.properties
             if (option.textShow) {
                 let { x = 0, y = 0, z = 0 } = textConfig.rotation || {}
-                if (textConfig.textType === 'canvas') {
+                if (textConfig.textType === 'dom') {
+                    const text = this.createParticles(elem,lineConfig)
+                    text.rotation.set(x, y, z)
+                    textRegion.add(text)
+                }else if (textConfig.textType === 'canvas') {
                     const text = this.createCanvasText(elem, textConfig, lineConfig)
                     text.rotation.set(x, y, z)
                     textRegion.add(text)
@@ -127,7 +132,9 @@ export default class Map3D {
 
         this.map.add(map)
         this.scene.add(this.map)
+        console.log(map,12321321);
     }
+    
     // 根据地图的JSON数据生成中心点
     createCenter(mapJson) {
         const path = d3geo.geoPath()
@@ -220,6 +227,26 @@ export default class Map3D {
 
         return new Line2(lineGeometry, lineMaterial)
     }
+    createParticles(elem,lineConfig) {
+        const { center } = this.createCenter(elem)
+        let [x, y] = this.projection(center)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const positions = [x, -y,lineConfig.depth + 0.1];
+
+        particlesGeometry.setAttribute(
+            "position",
+            new THREE.Float32BufferAttribute( positions, 3 )
+          );
+          const particlesMaterial = new THREE.PointsMaterial({
+            color: '#000',
+            size: 0.02,
+            sizeattenuation: true,
+          });
+          particlesMaterial.transparent = true;
+          particlesMaterial.depthWrite = false;
+          const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+          return particles
+    }
     // 创建3D文字
     createText(lineConfig, textConfig, elem, textMaterial) {
         const fontSize = textConfig.filterList.includes(elem.properties.name)
@@ -256,6 +283,7 @@ export default class Map3D {
     }
     // 创建canvas贴图文字
     createCanvasText(elem, textConfig, lineConfig) {
+        const module = textConfig.filterList.includes(elem.properties.name)
         const value = elem.properties.name
         const canvas = document.createElement('canvas')
         // canvas图片平滑过度
@@ -265,7 +293,7 @@ export default class Map3D {
         ctx.imageSmoothingEnabled = true
         ctx.imageSmoothingQuality = 'high'
         const scaleRatio = 3.5
-        const opt = textConfig.textStyle
+        const opt = module ? textConfig.filterStyle : textConfig.textStyle
         const font = `${opt.bold ? 'bold ' : ''}${opt.fontSize * scaleRatio}px ${opt.fontFamily}`
 
         let totalWidth = 0
@@ -276,21 +304,15 @@ export default class Map3D {
             const textWidth = ctx.measureText(char).width
             totalWidth += textWidth
         }
-        // if (opt.arrangement === 'horizontal') {
+        if (opt.arrangement === 'horizontal') {
             totalHeight = opt.lineHeight * scaleRatio
-            // todo this better
-            totalWidth = 4000
-            totalHeight = 2000
             this.drawTextHorizontally(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
-        // } else {
-        //     totalWidth = opt.fontSize * scaleRatio
-        //     totalHeight = value.length * opt.lineHeight * scaleRatio
-        //     // todo
-        //     totalWidth = 4000
-        //     totalHeight = 2000
-        //     this.drawTextVertically(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
-        // }
-     
+        } else {
+            totalWidth = opt.fontSize * scaleRatio
+            totalHeight = value.length * opt.lineHeight * scaleRatio
+            this.drawTextVertically(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight)
+        }
+
         const texture = new THREE.Texture(canvas)
         texture.needsUpdate = true
         texture.colorSpace = THREE.SRGBColorSpace
@@ -396,6 +418,33 @@ export default class Map3D {
             ctx.imageSmoothingEnabled = true
             ctx.fillText(value[i], 0, (+opt.fontSize + i * opt.lineHeight) * scaleRatio)
         }
+    }
+
+    computedTextPosition() {
+        const arr = []
+        const arrSet = []
+        
+        this.map?.children?.[1]?.children.map((item,index) => {
+            item.children[2].children[0].mapText = item.name
+            arr.push( item.children[2].children[0] ) 
+        })
+        arr.forEach((item) => {
+                // 获取sprite的中心点在世界坐标系中的坐标
+                const center = item.getWorldPosition(new THREE.Vector3())
+                // 将世界坐标转换为屏幕坐标
+                const screenPos = center.clone().project(this.camera)
+                // 将屏幕坐标转换为像素坐标
+                const halfWidth = this.sizes.width / 2
+                const halfHeight = this.sizes.height / 2
+                const pixelPos = new THREE.Vector2((screenPos.x + 1) * halfWidth, (-screenPos.y + 1) * halfHeight)
+                arrSet.push({
+                    name:item.mapText,
+                    x: pixelPos.x ,
+                    y: pixelPos.y,
+                })
+        })
+        console.log(arrSet);
+        // eventBus.$emit('_tooltip_groups', arr)
     }
 
     update() {
