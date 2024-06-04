@@ -47,7 +47,7 @@ export default class Map3D {
      * 遍历配置项，请求JSON数据，动态创建地图
      * @param {Array} series
      */
-    async mapGenerator(series) {
+    async mapGenerator (series) {
         if (!Array.isArray(series)) return console.error('mapConfig series is not Array')
         const json = await this.jsonHelper.getMapJSON()
 
@@ -65,7 +65,7 @@ export default class Map3D {
      * @param {JSON} mapJson
      * @param {lineConfig,extrudeFacesConfig,crossSectionConfig,textConfig} option
      */
-    createMap(mapJson, option) {
+    createMap (mapJson, option) {
         const { lineConfig, extrudeFacesConfig, crossSectionConfig, textConfig } = option
         const map = new THREE.Group()
         map.name = option.name
@@ -110,10 +110,10 @@ export default class Map3D {
             if (option.textShow) {
                 let { x = 0, y = 0, z = 0 } = textConfig.rotation || {}
                 if (textConfig.textType === 'dom') {
-                    const text = this.createParticles(elem,lineConfig)
+                    const text = this.createParticles(elem, lineConfig)
                     text.rotation.set(x, y, z)
                     textRegion.add(text)
-                }else if (textConfig.textType === 'canvas') {
+                } else if (textConfig.textType === 'canvas') {
                     const text = this.createCanvasText(elem, textConfig, lineConfig)
                     text.rotation.set(x, y, z)
                     textRegion.add(text)
@@ -132,11 +132,11 @@ export default class Map3D {
 
         this.map.add(map)
         this.scene.add(this.map)
-        console.log(map,12321321);
+        console.log(map, 12321321)
     }
-    
+
     // 根据地图的JSON数据生成中心点
-    createCenter(mapJson) {
+    createCenter (mapJson) {
         const path = d3geo.geoPath()
         // 获取地理数据的范围
         const bounds = path.bounds(mapJson)
@@ -153,7 +153,7 @@ export default class Map3D {
         return { center, scale }
     }
     // 生成公共材质
-    createMaterial(crossSectionConfig, extrudeFacesConfig, textConfig, lineConfig) {
+    createMaterial (crossSectionConfig, extrudeFacesConfig, textConfig, lineConfig) {
         const texture = this.resources.items.bgTexture
         texture.repeat.set(2, 2) // 在x和y方向上重复两次纹理
         texture.wrapS = THREE.RepeatWrapping
@@ -185,7 +185,7 @@ export default class Map3D {
         return { texture, material, material1, textMaterial, lineMaterial }
     }
     // 生成地图块
-    createMapPolygon(elem, texture, option, polygon, extrudeFacesConfig, material, material1) {
+    createMapPolygon (elem, texture, option, polygon, extrudeFacesConfig, material, material1) {
         const shape = new THREE.Shape()
         for (let i = 0; i < polygon.length; i++) {
             let [x, y] = this.projection(polygon[i])
@@ -216,7 +216,7 @@ export default class Map3D {
         return mesh
     }
     // 生成Line2线
-    createLine(polygon, option, lineMaterial) {
+    createLine (polygon, option, lineMaterial) {
         const lineGeometry = new LineGeometry()
         const pointArray = []
         for (let i = 0; i < polygon.length; i++) {
@@ -227,28 +227,29 @@ export default class Map3D {
 
         return new Line2(lineGeometry, lineMaterial)
     }
-    createParticles(elem,lineConfig) {
+    createParticles (elem, lineConfig) {
         const { center } = this.createCenter(elem)
         let [x, y] = this.projection(center)
-        const particlesGeometry = new THREE.BufferGeometry();
-        const positions = [x, -y,lineConfig.depth + 0.1];
+        const particlesGeometry = new THREE.BufferGeometry()
+        const positions = [x, -y, lineConfig.depth + 0.1]
 
         particlesGeometry.setAttribute(
             "position",
-            new THREE.Float32BufferAttribute( positions, 3 )
-          );
-          const particlesMaterial = new THREE.PointsMaterial({
+            new THREE.Float32BufferAttribute([0, 0, 0], 3)
+        )
+        const particlesMaterial = new THREE.PointsMaterial({
             color: '#000',
             size: 0.02,
             sizeattenuation: true,
-          });
-          particlesMaterial.transparent = true;
-          particlesMaterial.depthWrite = false;
-          const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-          return particles
+        })
+        particlesMaterial.transparent = true
+        particlesMaterial.depthWrite = false
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial)
+        particles.position.fromArray(positions)
+        return particles
     }
     // 创建3D文字
-    createText(lineConfig, textConfig, elem, textMaterial) {
+    createText (lineConfig, textConfig, elem, textMaterial) {
         const fontSize = textConfig.filterList.includes(elem.properties.name)
             ? textConfig.filterStyle.fontSize
             : textConfig.textStyle.fontSize
@@ -282,7 +283,7 @@ export default class Map3D {
         return text
     }
     // 创建canvas贴图文字
-    createCanvasText(elem, textConfig, lineConfig) {
+    createCanvasText (elem, textConfig, lineConfig) {
         const module = textConfig.filterList.includes(elem.properties.name)
         const value = elem.properties.name
         const canvas = document.createElement('canvas')
@@ -343,7 +344,7 @@ export default class Map3D {
         return mesh
     }
     // 获取墨卡托投影
-    getProjection() {
+    getProjection () {
         return new Promise((resolve, reject) => {
             const checkProjection = () => {
                 if (this.projection) {
@@ -356,7 +357,7 @@ export default class Map3D {
         })
     }
     // 设置拉伸面材质着色器
-    setMaterial(object) {
+    setMaterial (object) {
         object.onBeforeCompile = (shader) => {
             shader.uniforms.uTime = this.customUniforms.uTime
             shader.uniforms.depth = this.customUniforms.depth
@@ -371,7 +372,7 @@ export default class Map3D {
         }
     }
     // 设置横截面材质着色器
-    setCrossSectionMaterial(object) {
+    setCrossSectionMaterial (object) {
         object.onBeforeCompile = (shader) => {
             shader.uniforms.iTime = this.crossSectionUniforms.iTime
 
@@ -386,7 +387,7 @@ export default class Map3D {
     }
 
     // 处理文字
-    verticalText(type, text) {
+    verticalText (type, text) {
         if (!text.length) return
         if (type === 'horizontal') return text
         var result = ''
@@ -396,7 +397,7 @@ export default class Map3D {
         return result
     }
     // canvas处理横向文字
-    drawTextHorizontally(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight) {
+    drawTextHorizontally (canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight) {
         canvas.setAttribute('width', `${totalWidth}`)
         canvas.setAttribute('height', `${totalHeight}`)
         ctx.font = font
@@ -407,7 +408,7 @@ export default class Map3D {
         ctx.fillText(value, 0, opt.fontSize * scaleRatio)
     }
     // canvas处理竖向文字
-    drawTextVertically(canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight) {
+    drawTextVertically (canvas, ctx, opt, value, scaleRatio, font, totalWidth, totalHeight) {
         canvas.setAttribute('width', `${totalWidth}`)
         canvas.setAttribute('height', `${totalHeight}`)
 
@@ -420,34 +421,35 @@ export default class Map3D {
         }
     }
 
-    computedTextPosition() {
+    computedTextPosition () {
         const arr = []
         const arrSet = []
-        
-        this.map?.children?.[1]?.children.map((item,index) => {
+
+        this.map?.children?.[1]?.children.map((item, index) => {
             item.children[2].children[0].mapText = item.name
-            arr.push( item.children[2].children[0] ) 
+            arr.push(item.children[2].children[0])
         })
         arr.forEach((item) => {
-                // 获取sprite的中心点在世界坐标系中的坐标
-                const center = item.getWorldPosition(new THREE.Vector3())
-                // 将世界坐标转换为屏幕坐标
-                const screenPos = center.clone().project(this.camera)
-                // 将屏幕坐标转换为像素坐标
-                const halfWidth = this.sizes.width / 2
-                const halfHeight = this.sizes.height / 2
-                const pixelPos = new THREE.Vector2((screenPos.x + 1) * halfWidth, (-screenPos.y + 1) * halfHeight)
-                arrSet.push({
-                    name:item.mapText,
-                    x: pixelPos.x ,
-                    y: pixelPos.y,
-                })
+            item.updateMatrixWorld()
+            // 获取sprite的中心点在世界坐标系中的坐标
+            const center = item.getWorldPosition(new THREE.Vector3())
+            // 将世界坐标转换为屏幕坐标
+            const screenPos = center.clone().project(this.camera)
+            // 将屏幕坐标转换为像素坐标
+            const halfWidth = this.sizes.width / 2
+            const halfHeight = this.sizes.height / 2
+            const pixelPos = new THREE.Vector2((screenPos.x + 1) * halfWidth, (-screenPos.y + 1) * halfHeight)
+            arrSet.push({
+                name: item.mapText,
+                x: pixelPos.x,
+                y: pixelPos.y,
+            })
         })
-        console.log(arrSet);
+        console.log(arrSet)
         // eventBus.$emit('_tooltip_groups', arr)
     }
 
-    update() {
+    update () {
         if (this.customUniforms && this.customUniforms.uTime) {
             this.customUniforms.uTime.value = this.time.elapsedTime * 0.5
         }
