@@ -424,11 +424,17 @@ export default class Map3D {
     computedTextPosition () {
         const arr = []
         const arrSet = []
-
-        this.map?.children?.[1]?.children.map((item, index) => {
-            item.children[2].children[0].mapText = item.name
-            arr.push(item.children[2].children[0])
-        })
+        this.map?.children.map((item) => {
+            if (item.name === "区域地图") {
+              item?.children.map((itemX) => {
+                itemX?.children.map((itemY) => {
+                  if (itemY.name === "textRegion") {
+                    arr.push(itemY.children[0]);
+                  }
+                });
+              });
+            }
+          });
         arr.forEach((item) => {
             item.updateMatrixWorld()
             // 获取sprite的中心点在世界坐标系中的坐标

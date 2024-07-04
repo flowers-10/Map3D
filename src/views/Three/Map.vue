@@ -1,7 +1,6 @@
 <template>
   <div ref="box" class="china-chart" id="_Background_3D">
     <canvas class="webgl" ref="webgl" id="scene"></canvas>
-    
     <!-- <div id="tag">标签内容</div> -->
   </div>
 </template>
@@ -34,7 +33,6 @@ export default {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background-image: url('../../assets/image/bg.png');
    background-position: center;
   background-size: cover; /* 或者使用contain，根据需要调整 */
   background-repeat: no-repeat; /* 防止背景图重复显示 */
