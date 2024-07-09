@@ -22,6 +22,7 @@ export default {
     );
   },
   beforeDestroy() {
+    this._three_instance?.dispose();
   },
   methods: {},
 };

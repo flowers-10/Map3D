@@ -7,8 +7,6 @@ float distanceTo(vec2 src,vec2 dst){
 }
 varying vec3 vPosition;
 uniform float height;
-uniform float uStartTime;
-uniform vec3 uSize;
 uniform vec3 uFlowColor;
 uniform vec3 uCityColor;
 void main(){
