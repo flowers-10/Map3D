@@ -32,7 +32,7 @@ export default class Experience {
       {
         name: "shanghai",
         type: "gltfModel",
-        path: "./public/gltf/shanghai.gltf",
+        path: "/gltf/shanghai.gltf",
       },
     ]);
     this.camera = new Camera(camera);
