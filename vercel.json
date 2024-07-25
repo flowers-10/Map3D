@@ -1,0 +1,44 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/node",
+        "config": {
+          "maxLambdaSize": "75mb"
+        }
+      },
+      {
+        "src": "index.html",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "dist",
+          "command": "npm run build",
+          "env": {
+            "NODE_ENV": "production"
+          },
+          "output": {
+            "clean": true
+          },
+          "postbuild": {
+            "command": "npm run postbuild",
+            "env": {
+              "BUILD_DIR": "$VERCEL_BUILD_OUTPUT_DIR"
+            }
+          },
+          "files": [
+            "dist/**/*",
+            "public/**/*",
+            "src/**/*.{js,jsx,ts,tsx}",
+            "!**/node_modules/**"
+          ]
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": [{ "src": "/[^.]+", "dest": "/", "status": 200 }],
+        "dest": "/index.html"
+      }
+    ]
+  }
