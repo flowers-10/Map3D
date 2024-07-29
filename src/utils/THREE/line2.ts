@@ -6,7 +6,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as GeometryUtils from "three/examples/jsm/utils/GeometryUtils.js";
 export const initThreeLine2 = () => {
   // Canvas
-  const canvas = document.querySelector("canvas.webgl");
+  const canvas = document.querySelector("canvas.webgl") as HTMLCanvasElement;
 
   // Scene
   const scene = new THREE.Scene();
