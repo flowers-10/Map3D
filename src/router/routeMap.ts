@@ -47,12 +47,12 @@ export const routes = [
   //     navLink: "Threejs地图",
   //   },
   // },
-  // {
-  //   path: "/ThreeCity",
-  //   component: () => import("../views/Three/City.vue"),
-  //   name: "ThreeCity",
-  //   meta: {
-  //     navLink: "Threejs城市",
-  //   },
-  // },
+  {
+    path: "/ThreeCity",
+    component: () => import("../views/Three/City.vue"),
+    name: "ThreeCity",
+    meta: {
+      navLink: "Threejs城市",
+    },
+  },
 ];
