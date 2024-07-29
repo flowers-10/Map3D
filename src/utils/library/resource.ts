@@ -9,7 +9,7 @@ const IS_IN_SET_LIST = ['cabMT', 'dataScreen', 'cab']
  * @returns {*}
  */
 
-export const resourcepath = (val, type = 'origin') => {
+export const resourcepath = (val:string, type = 'origin') => {
     const httpStart = val.indexOf('http://') === 0
     const base64Start = val.indexOf('data:image/') === 0
 
@@ -31,7 +31,7 @@ export const resourcepath = (val, type = 'origin') => {
  * @param {str} url
  * @return {promise}
  */
-export const loadJs = (url) => {
+export const loadJs = (url:string) => {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script')
         script.src = url
@@ -47,7 +47,7 @@ export const loadJs = (url) => {
  * @param {str} url
  * @return {promise}
  */
-export const loadCss = (url) => {
+export const loadCss = (url:string) => {
     return new Promise((resolve, reject) => {
         const link = document.createElement('link')
         link.rel = 'stylesheet'
@@ -63,7 +63,7 @@ export const loadCss = (url) => {
  * @param {str} url
  * @return {promise}
  */
-export const loadInJs = (url) => {
+export const loadInJs = (url:string) => {
     let pathName = location.pathname.includes('ChartsCab')
         ? '/ChartsCab/'
         : IS_IN_SET_LIST.includes(location.pathname.split('/')[1])
@@ -85,7 +85,7 @@ export const loadInJs = (url) => {
  * @param {str} url
  * @return {promise}
  */
-export const loadInCss = (url) => {
+export const loadInCss = (url:string) => {
     let pathName = location.pathname.includes('ChartsCab')
         ? '/ChartsCab/'
         : IS_IN_SET_LIST.includes(location.pathname.split('/')[1])

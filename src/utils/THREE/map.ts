@@ -21,8 +21,8 @@ export const initThreeMap = () => {
   const gui = new dat.GUI();
 
   // DOM
-  const canvas = document.querySelector("canvas.webgl");
-  const provinceInfo = document.querySelector("#provinceInfo");
+  const canvas :HTMLCanvasElement = document.querySelector("canvas.webgl") as HTMLCanvasElement;
+  const provinceInfo :HTMLCanvasElement = document.querySelector("#provinceInfo")as HTMLCanvasElement;
 
   // Scene
   const scene = new THREE.Scene();
@@ -31,7 +31,7 @@ export const initThreeMap = () => {
    * Object
    */
   // 墨卡托投影转换
-  const createLine = (polygon, depth) => {
+  const createLine = (polygon:any[], depth:number) => {
     const lineGeometry = new THREE.BufferGeometry();
     const pointArray = [];
     for (let i = 0; i < polygon.length; i++) {
@@ -56,15 +56,15 @@ export const initThreeMap = () => {
   const customUniforms = {
     uTime: { value: 0 },
   };
-  jsonData.features.forEach((elem, index) => {
+  jsonData.features.forEach((elem:any, index) => {
     // 定一个省份3D对象
-    const province = new THREE.Object3D();
+    const province:any = new THREE.Object3D();
     // 每个的 坐标 数组
     const { coordinates } = elem.geometry;
     const color = COLOR_ARR[index % COLOR_ARR.length];
     // 循环坐标数组
-    coordinates.forEach((multiPolygon) => {
-      multiPolygon.forEach((polygon) => {
+    coordinates.forEach((multiPolygon:any[]) => {
+      multiPolygon.forEach((polygon:any[]) => {
         const shape = new THREE.Shape();
 
         for (let i = 0; i < polygon.length; i++) {
@@ -97,7 +97,7 @@ export const initThreeMap = () => {
           color: color,
           transparent:true,
         });
-        material1.onBeforeCompile = (shader) => {
+        material1.onBeforeCompile = (shader:any) => {
           // console.log(shader);
           shader.uniforms.uTime = customUniforms.uTime;
           shader.vertexShader = shader.vertexShader.replace(
@@ -149,7 +149,7 @@ export const initThreeMap = () => {
           );
         };
 
-        const mesh = new THREE.Mesh(geometry, [material, material1]);
+        const mesh:any = new THREE.Mesh(geometry, [material, material1]);
         // 设置高度将省区分开来
         if (index % 2 === 0) {
           mesh.scale.set(1, 1, 1.2);
@@ -177,8 +177,8 @@ export const initThreeMap = () => {
       });
     });
     // 将geo的属性放到省份模型中
-    province.properties = elem.properties;
-    if (elem.properties.centorid) {
+    province.properties = elem.properties ;
+    if (elem.properties.centorid ) {
       const [x, y] = projection(elem.properties.centorid);
       province.properties._centroid = [x, y];
     }
@@ -258,14 +258,14 @@ export const initThreeMap = () => {
   scene.add(camera);
 
   // Controls
-  const controls = new OrbitControls(camera, canvas);
+  const controls = new OrbitControls(camera, canvas as HTMLCanvasElement);
   controls.enableDamping = true;
 
   /**
    * Renderer
    */
   const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
+    canvas: canvas as HTMLCanvasElement,
     antialias: true,
   });
   renderer.shadowMap.enabled = true;
@@ -275,8 +275,11 @@ export const initThreeMap = () => {
   // Raycaster
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
-  const eventOffset = {};
-  function onMouseMove(event) {
+  const eventOffset = {
+    x:0,
+    y:0
+  };
+  function onMouseMove(event:any) {
     // 父级并非满屏，所以需要减去父级的left 和 top
     let { top, left, width, height } = canvas.getBoundingClientRect();
     let clientX = event.clientX - left;
@@ -312,11 +315,11 @@ export const initThreeMap = () => {
   finalComposer.addPass(renderPass);
 
   // 存储需要应用辉光效果的材质对象
-  const materials = {
+  const materials:any = {
 
   };
   // 将未应用辉光效果的物体暗化
-  function darkenNonBloomed(obj) {
+  function darkenNonBloomed(obj:any) {
     if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
       // 保存原始材质
       materials[obj.uuid] = obj.material;
@@ -339,7 +342,7 @@ export const initThreeMap = () => {
 
   // 恢复物体原始材质
   const darkMaterial = new THREE.MeshBasicMaterial({ color: "black" });
-  function restoreMaterial(obj) {
+  function restoreMaterial(obj:any) {
     if (materials[obj.uuid]) {
       // 恢复原始材质
       obj.material = materials[obj.uuid];
@@ -385,6 +388,10 @@ export const initThreeMap = () => {
    */
   const clock = new THREE.Clock();
   console.log("map children MESH:", map);
+
+  interface MeshWithProperties extends THREE.Mesh {
+    properties: any;
+}
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
 
@@ -406,13 +413,13 @@ export const initThreeMap = () => {
     }
     for (const intersect of intersects) {
       // intersect.object.material.color.set('#0000ff')
-
+      
       if (intersect.object instanceof THREE.Mesh) {
-        if (intersect.object.parent) {
-          if (intersect.object.parent.properties) {
+        
+        const parentObject = intersect.object.parent as MeshWithProperties | undefined;
+        if (parentObject && parentObject.properties) {
             provinceInfo.style.display = "flex";
-            provinceInfo.innerHTML = intersect.object.parent.properties?.name;
-          }
+            provinceInfo.innerHTML = parentObject.properties.name;
         }
       }
     }

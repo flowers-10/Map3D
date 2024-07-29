@@ -1,5 +1,6 @@
 <template>
   <div class="investment-screen">
+    <div style="position: absolute; top: 20px; left: 20px;color:aliceblue;">Vercel版本由于阿里巴巴地图json接口跨域所以无法访问！请使用dev开发模式测试该功能(如果想要上线使用，可以使用高德、百度、腾讯地图等收费接口返回json文件！)</div>
     <svg
       style="position: absolute; left: 20px; top: 20px; cursor: pointer"
       @click="backMap"
