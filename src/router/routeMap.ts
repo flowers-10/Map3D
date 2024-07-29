@@ -9,24 +9,24 @@ export const routes = [
   },
   {
     path: "/BaseMap",
-    component: () => import("../views/Index/BaseMap.vue"),
+    component: () => import("../views/Echarts/BaseMap.vue"),
     name: "BaseMap",
     meta: {
-      navLink: "基础3D地图",
+      navLink: "基础地图",
     },
   },
   {
-    path: "/Vue2MapDrill",
-    component: () => import("../views/Index/vue2Version.vue"),
-    name: "Vue2MapDrill",
+    path: "/Map3DVue2",
+    component: () => import("../views/Echarts/Map3DVue2.vue"),
+    name: "Map3DVue2",
     meta: {
       navLink: "3D地图下钻Vue2版本",
     },
   },
   {
-    path: "/Vue3MapDrill",
-    component: () => import("../views/Index/vue3Version.vue"),
-    name: "Vue3MapDrill",
+    path: "/Map3DVue3",
+    component: () => import("../views/Echarts/Map3DVue3.vue"),
+    name: "Map3DVue3",
     meta: {
       navLink: "3D地图下钻Vue3版本",
     },
