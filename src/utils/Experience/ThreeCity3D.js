@@ -2,10 +2,9 @@ import * as THREE from "three";
 
 import Sizes from "./Utils/Sizes";
 import Time from "./Utils/Time";
-import Resources from "./Utils/Resources.js";
+import Resources from "./Utils/Resources";
 
-import sources from "./World/City3D/sources";
-import Camera from "./World/City3D/Camera.js";
+import Camera from "./World/City3D/Camera";
 import Renderer from "./World/City3D/Renderer";
 import City3D from "./World/City3D/City3D";
 
