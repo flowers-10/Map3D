@@ -6,7 +6,6 @@ import EventEmitter from "./EventEmitter.js";
 export default class Resources extends EventEmitter {
   constructor(sources) {
     super();
-    console.log(sources, 111);
     // Options
     this.sources = sources;
 
