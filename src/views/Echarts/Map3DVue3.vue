@@ -1,6 +1,8 @@
 <template>
   <div class="investment-screen">
-    <div style="position: absolute; top: 20px; left: 20px;color:aliceblue;">Vercel版本由于阿里巴巴地图json接口跨域所以无法访问！请使用dev开发模式测试该功能(如果想要上线使用，可以使用高德、百度、腾讯地图等收费接口返回json文件！)</div>
+    <div style="position: absolute; top: 20px; left: 20px; color: aliceblue">
+      Vercel版本由于阿里巴巴地图json接口跨域所以无法访问！请使用dev开发模式测试该功能(如果想要上线使用，可以使用高德、百度、腾讯地图等收费接口返回json文件！)
+    </div>
     <svg
       style="position: absolute; left: 20px; top: 20px; cursor: pointer"
       @click="backMap"
@@ -78,6 +80,10 @@ const initMap = async (
 
 // 请求地图json数据，并过滤成地图data配置项
 const getMapJSON = async (adcode: string = "100000", geoName: string) => {
+  // datav的接口只让开发环境用，如果需要上线，那么组件中获取json文件的接口替换成收费接口即可
+  // 可以选择高德api获取json文件（高德记得给我打钱啊！）高德文档：
+  // https://lbs.amap.com/api/amap-ui/reference-amap-ui/geo/district-explorer
+
   const res = await axios.get(
     `https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`
   );
