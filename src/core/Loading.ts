@@ -6,16 +6,24 @@ import BaseThree from "./BaseThree";
 
 export default class LoadingManager extends BaseThree {
     public loadingManager: THREE.LoadingManager;
+    private _loadingContainer!: HTMLDivElement
     constructor(config: any, instance: ThreeInstance) {
         super(instance);
-        const overlayMaterial = this.createOverlay();
-        this.createLoadingBar()
+        this.createLoading()
         const loadingBarElement = document.querySelector('.loading-bar') as HTMLDivElement
 
         this.loadingManager = new THREE.LoadingManager(
             // Loaded
             () => {
-                gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0, delay: 1 })
+                // gsap.to(overlayMaterial.uniforms.uAlpha, {
+                //     duration: 0.34, value: 0, delay: 0, onComplete: () => {
+                //         this._loadingMesh.removeFromParent()
+                //     }
+                // })
+                gsap.set(this._loadingContainer.style, { opacity: 1 })
+                gsap.to(this._loadingContainer.style, {
+                    duration: 5, opacity: 0, ease: "power1.inOut"
+                })
 
                 window.setTimeout(() => {
                     loadingBarElement.style.transform = 'scaleX(0)'
@@ -33,10 +41,20 @@ export default class LoadingManager extends BaseThree {
             }
         );
     }
-    createLoadingBar() {
+    createLoading() {
+        const loadingPage = document.createElement('div');
+        loadingPage.className = 'loading-page';
+        loadingPage.style.position = 'fixed';
+        loadingPage.style.top = '0';
+        loadingPage.style.left = '0';
+        loadingPage.style.width = '100%';
+        loadingPage.style.height = '100vh';
+        loadingPage.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        loadingPage.style.pointerEvents = 'none';
+        document.body.appendChild(loadingPage);
         const loadingBar = document.createElement('div');
         loadingBar.className = 'loading-bar';
-        document.body.appendChild(loadingBar);
+        loadingPage.appendChild(loadingBar);
         loadingBar.style.position = 'absolute';
         loadingBar.style.top = "50%"
         loadingBar.style.width = '100%';
@@ -46,6 +64,7 @@ export default class LoadingManager extends BaseThree {
         loadingBar.style.transformOrigin = 'top left';
         loadingBar.style.transition = 'transform  0.5s';
 
+        this._loadingContainer = loadingPage
 
     }
     createOverlay() {
