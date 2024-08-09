@@ -130,7 +130,7 @@ export default class ThreeInstance {
     this.mousemove.release();
     /* 销毁场景里的几何体 材质等 */
     this.scene.traverse((child: any) => {
-      child.geometry.dispose();
+      child?.geometry?.dispose();
       if (child instanceof THREE.Group || child instanceof THREE.Object3D) {
         this.clearGroup(child);
       }
