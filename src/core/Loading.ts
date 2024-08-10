@@ -8,38 +8,50 @@ export default class LoadingManager extends BaseThree {
   constructor(config: any, instance: ThreeInstance) {
     super(instance);
     this.createLoading();
-    const loadingBarElement = document.querySelector(
-      ".loading-bar"
-    ) as HTMLDivElement;
 
     this.loadingManager = new THREE.LoadingManager(
       // Loaded
       () => {
-        const element = document.querySelector(".loading-page") as HTMLDivElement;
-        if (element) {
-          gsap.set(element.style, { opacity: 1 });
-          gsap.to(element.style, {
-            duration: 5,
-            opacity: 0,
-            ease: "power1.inOut",
-          });
-
-          window.setTimeout(() => {
-            loadingBarElement.style.transform = "scaleX(0)";
-            loadingBarElement.style.transformOrigin = "100% 0";
-            loadingBarElement.style.transition = "transform 1.5s ease-in-out";
-          }, 500);
-        }
+        console.log("Loaded");
+        this.endLoading();
       },
       // Progress
       (url, loaded, total) => {
-        const progressRatio = loaded / total;
-        loadingBarElement.style.transform = `scaleX(${progressRatio})`;
+        console.log("Progress");
+
+        this.endLoadingBar(loaded, total);
       },
       () => {
         console.log("error");
       }
     );
+  }
+  endLoadingBar(loaded: number, total: number) {
+    const loadingBarElement = document.querySelector(
+      ".loading-bar"
+    ) as HTMLDivElement;
+    const progressRatio = loaded / total;
+    loadingBarElement.style.transform = `scaleX(${progressRatio})`;
+  }
+  endLoading() {
+    const loadingBarElement = document.querySelector(
+      ".loading-bar"
+    ) as HTMLDivElement;
+    const element = document.querySelector(".loading-page") as HTMLDivElement;
+    if (element) {
+      gsap.set(element.style, { opacity: 1 });
+      gsap.to(element.style, {
+        duration: 5,
+        opacity: 0,
+        ease: "power1.inOut",
+      });
+
+      window.setTimeout(() => {
+        loadingBarElement.style.transform = "scaleX(0)";
+        loadingBarElement.style.transformOrigin = "100% 0";
+        loadingBarElement.style.transition = "transform 1.5s ease-in-out";
+      }, 500);
+    }
   }
   createLoading() {
     const element = document.querySelector(".loading-page");

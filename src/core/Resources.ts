@@ -30,9 +30,9 @@ export default class Resources extends EventEmitter {
     this.loaded = 0;
     this.loaders = {
       gltfLoader: new GLTFLoader(loadingManager),
-      textureLoader: new THREE.TextureLoader(),
+      textureLoader: new THREE.TextureLoader(loadingManager),
       cubeTextureLoader: new THREE.CubeTextureLoader(loadingManager),
-      fontLoader: new FontLoader(),
+      fontLoader: new FontLoader(loadingManager),
     };
     this.loaders.gltfLoader.setDRACOLoader(dracoLoader);
 
