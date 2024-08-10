@@ -34,10 +34,8 @@ export default class Sizes extends EventEmitter {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
       }
-
-      if (this.height < 200) {
-        this.height = 1080;
-      }
+      console.log(this.width, this.height,11111);
+      
       this.trigger("resize", null);
     };
     this.resizeHandler();

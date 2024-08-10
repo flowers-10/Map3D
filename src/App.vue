@@ -7,4 +7,11 @@ import HeaderVue from './components/Header/index.vue'
   <router-view></router-view>
 </template>
 
-<style scoped></style>
+<style>
+#app {
+  height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+</style>

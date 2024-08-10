@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import path from "path";
 import vue from "@vitejs/plugin-vue";
+import glsl from "vite-plugin-glsl";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -31,7 +32,7 @@ export default defineConfig({
       output: {
         assetFileNames: (assetInfo: any) => {
           if (/\.(mp4|webm|ogg|mp3|wav|flac|aac)$/.test(assetInfo.name)) {
-            return `media/[name].[hash][ext]`; 
+            return `media/[name].[hash][ext]`;
           }
           // else if (/\.(glb|hdr)$/.test(assetInfo.name)) { // 匹配资源文件后缀 可以自定义存放位置
           return `assets/[name]-[hash].[ext]`; // 不匹配的资源文件存放至assets，以[name]-[hash].[ext]命名规则，注意两处的命名规则不同
@@ -40,5 +41,11 @@ export default defineConfig({
     },
   },
 
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    glsl({
+      compress: true,
+      watch: true,
+    }),
+  ],
 });
