@@ -1,6 +1,2 @@
-export * from './Bloom/vertexShader'
-export * from './Bloom/fragmentShader'
-export * from './City3D/vertexShader'
-export * from './City3D/fragmentShader'
 export * from './Map3D/vertexShader'
 export * from './Map3D/fragmentShader'

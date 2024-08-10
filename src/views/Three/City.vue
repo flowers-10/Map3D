@@ -10,8 +10,8 @@ import * as THREE from "three";
 import gsap from "gsap";
 import ThreeInstance from "../../core/ThreeInstance";
 import { CONFIG_OPT } from "../../core/config/configOpt";
-import { fragmentShader } from "../../Shader/City3D/fragmentShader";
-import { vertexShader } from "../../Shader/City3D/vertexShader";
+import  fragmentShader  from "../../Shader/City3D/fragmentShader.glsl";
+import  vertexShader  from "../../Shader/City3D/vertexShader.glsl";
 
 const canvasDom = ref();
 const instance = ref();
