@@ -1,5 +1,9 @@
 <template>
   <div style="box-sizing: border-box">
+    <div style="position: absolute; top: 20px; left: 20px; color: aliceblue;font-size: 20px;">
+      threejs路由切换时上一个场景会占用内存,重新刷新即可解决，此问题等待后续版本优化！
+      todo: 地图动画待添加！
+    </div>
     <canvas class="webgl" ref="canvasDom"></canvas>
   </div>
 </template>
