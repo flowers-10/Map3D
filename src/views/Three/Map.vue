@@ -1,6 +1,14 @@
 <template>
   <div style="box-sizing: border-box">
-    <div style="position: absolute; top: 20px; left: 20px; color: aliceblue;font-size: 20px;">
+    <div
+      style="
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: aliceblue;
+        font-size: 20px;
+      "
+    >
       threejs路由切换时上一个场景会占用内存,重新刷新即可解决，此问题等待后续版本优化！
       todo: 地图动画待添加！
     </div>
@@ -16,7 +24,6 @@ import * as d3geo from "d3-geo";
 import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 import {
   mapVertexCommon,
@@ -137,19 +144,19 @@ CONFIG_OPT.sources = [
   },
   {
     name: "border1Texture",
-    type: "TEXTURE", // type类型 {texture:纹理,gltfModel:3D模型, cubeTexture:环境贴图}
+    type: "TEXTURE",
     show: true,
     path: "/texture/rotationBorder1.png",
   },
   {
     name: "border2Texture",
-    type: "TEXTURE", // type类型 {texture:纹理,gltfModel:3D模型, cubeTexture:环境贴图}
+    type: "TEXTURE",
     show: true,
     path: "/texture/rotationBorder2.png",
   },
   {
     name: "focusMoveBgTexture",
-    type: "TEXTURE", // type类型 {texture:纹理,gltfModel:3D模型, cubeTexture:环境贴图}
+    type: "TEXTURE",
     show: true,
     path: "/texture/focus_move_bg.png",
   },
@@ -165,15 +172,15 @@ CONFIG_OPT.sources = [
 const series = [
   {
     show: true,
-    mapShow: false, // 地图显示
-    lineShow: true, // 是否生成线
-    textShow: false, // 是否生成区域名称
+    mapShow: false,
+    lineShow: true,
+    textShow: false,
     name: "轮廓地图",
     mapId: 0,
-    mapType: "parentJson", // 类型只有两种 parentJson:当前地区的包含子区域的json,subJson:只包含当前地区的整块json (必填项)
-    shader: false, // 着色器特效开关 (开启影响性能)
-    castShadow: false, // 投射阴影 开启影响性能
-    receiveShadow: false, // 接受阴影 开启影响性能
+    mapType: "parentJson",
+    shader: false,
+    castShadow: false,
+    receiveShadow: false,
     lineConfig: {
       depth: 0.111, // 线要放到的高度
       color: "#A0E5FF",
@@ -202,7 +209,7 @@ const series = [
         "黄浦区",
         "虹口区",
         "杨浦区",
-      ], // 需要特殊处理的
+      ],
       filterStyle: {
         arrangement: "vertical",
         fontSize: 28,
@@ -212,44 +219,42 @@ const series = [
         fontFamily: "Arial",
       },
     },
-    // 拉伸面配置
     extrudeFacesConfig: {
       color: "#3EB8F3",
       transparent: true,
       metalness: 1,
       roughness: 1,
       extrudeSettings: {
-        depth: 0.11, // 地图拉伸深度
-        bevelEnabled: false, //禁止倒角,默认true
-        bevelSegments: 1, //倒圆角：倒角细分精度，默认3
-        bevelSize: 0, //倒角尺寸:垂直拉伸方向
-        bevelThickness: 0, //倒角尺寸:拉伸方向
+        depth: 0.11,
+        bevelEnabled: false,
+        bevelSegments: 1,
+        bevelSize: 0,
+        bevelThickness: 0,
       },
     },
-    // 横截面配置
     crossSectionConfig: {
       transparent: true,
       color: "#2B61A6",
     },
   },
   {
-    show: true, // 总体显示
-    mapShow: true, // 地图显示
-    lineShow: true, // 边框线显示
-    textShow: true, // 地图文字
+    show: true,
+    mapShow: true,
+    lineShow: true,
+    textShow: true,
     name: "区域地图",
     mapId: 1,
-    mapType: "subJson", // 类型
-    shader: true, // 着色器开关
+    mapType: "subJson",
+    shader: true,
     castShadow: true,
     receiveShadow: true,
     lineConfig: {
-      depth: 0.11, // 线要放到的高度
+      depth: 0.11,
       color: "#ffffff",
       linewidth: 0.001,
     },
     textConfig: {
-      textType: "dom", // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
+      textType: "dom",
       rotation: {
         x: 0,
         y: 0,
@@ -263,15 +268,7 @@ const series = [
         lineHeight: 20,
         fontFamily: "Arial",
       },
-      filterList: [
-        "长宁区",
-        "静安区",
-        "普陀区",
-        "徐汇区",
-        "黄浦区",
-        "虹口区",
-        "杨浦区",
-      ], // 需要特殊处理的
+      filterList: [],
       filterStyle: {
         arrangement: "vertical",
         fontSize: 28,
@@ -281,21 +278,19 @@ const series = [
         fontFamily: "Arial",
       },
     },
-    // 拉伸面配置
     extrudeFacesConfig: {
       color: "#3a7abd",
       transparent: true,
       metalness: 1,
       roughness: 1,
       extrudeSettings: {
-        depth: 0.1, // 地图拉伸深度
-        bevelEnabled: false, //禁止倒角,默认true
-        bevelSegments: 1, //倒圆角：倒角细分精度，默认3
-        bevelSize: 0, //倒角尺寸:垂直拉伸方向
-        bevelThickness: 0, //倒角尺寸:拉伸方向
+        depth: 0.1,
+        bevelEnabled: false,
+        bevelSegments: 1,
+        bevelSize: 0,
+        bevelThickness: 0,
       },
     },
-    // 横截面配置
     crossSectionConfig: {
       transparent: true,
       color: "#2B61A6",
@@ -332,13 +327,11 @@ const createMap = (mapJson: any, option: any, projection: any) => {
   const map = new THREE.Group();
   map.name = option.name;
   const texture = instance.value.resources.items.bgTexture;
-  texture.repeat.set(2, 2); // 在x和y方向上重复两次纹理
+  texture.repeat.set(2, 2);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.colorSpace = THREE.SRGBColorSpace;
 
-  // 使用公共材质用来提升性能
-  // 横截面公共材质
   const material = new THREE.MeshPhongMaterial({
     shininess: 200,
     color: crossSectionConfig.color,
@@ -346,28 +339,18 @@ const createMap = (mapJson: any, option: any, projection: any) => {
     map: texture,
   });
   material.color.convertSRGBToLinear();
-  // 拉伸面公共材质
   const material1 = new THREE.MeshStandardMaterial({
     metalness: extrudeFacesConfig.metalness,
     roughness: extrudeFacesConfig.roughness,
     color: extrudeFacesConfig.color,
     transparent: extrudeFacesConfig.transparent,
   });
-  // 文字公共材质
-  const textMaterial = new THREE.MeshBasicMaterial({
-    wireframe: false,
-    color: textConfig.textStyle.color,
-  });
-  // 线公共材质
   const lineMaterial = new LineMaterial({
     color: lineConfig.color,
     linewidth: lineConfig.linewidth,
   });
 
-  // 总地图
   mapJson.features.forEach((elem: any) => {
-    // 高亮对象
-    // 区域3D对象和区块线3D对象
     const region: any = new THREE.Group();
     const lineRegion: any = new THREE.Group();
     const textRegion: any = new THREE.Group();
@@ -377,11 +360,8 @@ const createMap = (mapJson: any, option: any, projection: any) => {
     region.name = "region";
     lineRegion.name = "lineRegion";
     textRegion.name = "textRegion";
-    // 坐标数组
     const { coordinates } = elem.geometry;
-    // 遍历坐标数组生成地图块
     coordinates.forEach((multiPolygon: any) => {
-      // 获得地图块详情数据开始绘制地图
       multiPolygon.forEach((polygon: any) => {
         if (option.mapShow) {
           const shape = new THREE.Shape();
@@ -393,13 +373,11 @@ const createMap = (mapJson: any, option: any, projection: any) => {
             }
             shape.lineTo(x, -y);
           }
-          //  拉伸几何体
           const geometry = new THREE.ExtrudeGeometry(
             shape,
             extrudeFacesConfig.extrudeSettings
           );
           if (option.shader) {
-            // 横截面部分材质
             crossSectionUniforms = {
               iTime: { value: 0 },
               iTexture: { value: texture },
@@ -431,7 +409,6 @@ const createMap = (mapJson: any, option: any, projection: any) => {
               uTime: { value: 0 },
               depth: { value: extrudeFacesConfig.extrudeSettings.depth },
             };
-            // 拉伸部分材质
             material1.onBeforeCompile = (shader) => {
               shader.uniforms.uTime = customUniforms.uTime;
               shader.uniforms.depth = customUniforms.depth;
@@ -474,7 +451,6 @@ const createMap = (mapJson: any, option: any, projection: any) => {
         }
       });
     });
-    // 将geo的属性放到省份模型中
     region.properties = elem.properties;
     lineRegion.properties = elem.properties;
     if (option.textShow) {
@@ -534,8 +510,6 @@ onMounted(() => {
   instance.value.time.on("tick", () => {});
 });
 onBeforeUnmount(() => {
-  console.log('我被卸载');
-  
   instance.value.dispose();
 });
 </script>
