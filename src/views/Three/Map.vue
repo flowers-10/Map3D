@@ -1,5 +1,5 @@
 <template>
-  <div style="box-sizing: border-box">
+  <div style="box-sizing: border-box;background: #000;">
     <div
       style="
         position: absolute;
@@ -45,6 +45,7 @@ import ThreeInstance from "../../core/ThreeInstance";
 import { CONFIG_OPT } from "../../core/config/configOpt";
 import parentJson from "../../assets/JSON/parentJson.json";
 import subJson from "../../assets/JSON/subJson.json";
+import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 
 const canvasDom = ref();
 const instance = ref();
@@ -182,12 +183,12 @@ const series = [
     castShadow: false,
     receiveShadow: false,
     lineConfig: {
-      depth: 0.111, // 线要放到的高度
+      depth: 0.111, 
       color: "#A0E5FF",
       linewidth: 0.002,
     },
     textConfig: {
-      textType: "dom", // text3D （可能有锯齿） or canvas (过滤字体暂未开放)
+      textType: "dom", 
       rotation: {
         x: 0,
         y: 0,
@@ -201,15 +202,7 @@ const series = [
         lineHeight: 20,
         fontFamily: "Arial",
       },
-      filterList: [
-        "长宁区",
-        "静安区",
-        "普陀区",
-        "徐汇区",
-        "黄浦区",
-        "虹口区",
-        "杨浦区",
-      ],
+      filterList: [],
       filterStyle: {
         arrangement: "vertical",
         fontSize: 28,
@@ -324,26 +317,42 @@ let customUniforms: any = null;
 const createMap = (mapJson: any, option: any, projection: any) => {
   const { lineConfig, extrudeFacesConfig, crossSectionConfig, textConfig } =
     option;
-  const map = new THREE.Group();
-  map.name = option.name;
   const texture = instance.value.resources.items.bgTexture;
   texture.repeat.set(2, 2);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.colorSpace = THREE.SRGBColorSpace;
+  customUniforms = {
+    uTime: { value: 0 },
+    depth: { value: extrudeFacesConfig.extrudeSettings.depth },
+  };
+  crossSectionUniforms = {
+    iTime: { value: 0 },
+    iTexture: { value: texture },
+  };
+  const map = new THREE.Group();
+  map.name = option.name;
 
-  const material = new THREE.MeshPhongMaterial({
+  const crossSectionMaterial = new CustomShaderMaterial({
+    baseMaterial: THREE.MeshPhongMaterial,
     shininess: 200,
     color: crossSectionConfig.color,
     transparent: crossSectionConfig.transparent,
     map: texture,
+    uniforms: customUniforms,
+    vertexShader: ``,
+    fragmentShader: ``,
   });
-  material.color.convertSRGBToLinear();
-  const material1 = new THREE.MeshStandardMaterial({
+
+  const extrudeFacesMaterial = new CustomShaderMaterial({
+    baseMaterial: THREE.MeshStandardMaterial,
     metalness: extrudeFacesConfig.metalness,
     roughness: extrudeFacesConfig.roughness,
     color: extrudeFacesConfig.color,
     transparent: extrudeFacesConfig.transparent,
+    uniforms: customUniforms,
+    vertexShader: ``,
+    fragmentShader: ``,
   });
   const lineMaterial = new LineMaterial({
     color: lineConfig.color,
@@ -378,11 +387,7 @@ const createMap = (mapJson: any, option: any, projection: any) => {
             extrudeFacesConfig.extrudeSettings
           );
           if (option.shader) {
-            crossSectionUniforms = {
-              iTime: { value: 0 },
-              iTexture: { value: texture },
-            };
-            material.onBeforeCompile = (shader) => {
+            crossSectionMaterial.onBeforeCompile = (shader) => {
               shader.uniforms.iTime = crossSectionUniforms.iTime;
 
               shader.vertexShader = shader.vertexShader.replace(
@@ -405,11 +410,8 @@ const createMap = (mapJson: any, option: any, projection: any) => {
                 skyOutputFragment
               );
             };
-            customUniforms = {
-              uTime: { value: 0 },
-              depth: { value: extrudeFacesConfig.extrudeSettings.depth },
-            };
-            material1.onBeforeCompile = (shader) => {
+
+            extrudeFacesMaterial.onBeforeCompile = (shader) => {
               shader.uniforms.uTime = customUniforms.uTime;
               shader.uniforms.depth = customUniforms.depth;
               shader.vertexShader = shader.vertexShader.replace(
@@ -430,7 +432,10 @@ const createMap = (mapJson: any, option: any, projection: any) => {
               );
             };
           }
-          const mesh = new THREE.Mesh(geometry, [material, material1]);
+          const mesh = new THREE.Mesh(geometry, [
+            crossSectionMaterial,
+            extrudeFacesMaterial,
+          ]);
           mesh.name = elem.properties.name;
 
           region.add(mesh);
@@ -507,7 +512,14 @@ onMounted(() => {
     });
   });
 
-  instance.value.time.on("tick", () => {});
+  instance.value.time.on("tick", () => {
+    if (customUniforms && customUniforms.uTime) {
+      customUniforms.uTime.value = instance.value.time.elapsedTime * 0.5;
+    }
+    if (crossSectionUniforms && crossSectionUniforms.iTime) {
+      crossSectionUniforms.iTime.value = instance.value.time.elapsedTime;
+    }
+  });
 });
 onBeforeUnmount(() => {
   instance.value.dispose();

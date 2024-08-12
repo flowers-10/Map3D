@@ -50,7 +50,7 @@ export const CONFIG_OPT: ConfigOptType = {
     antialias: true,
     alpha: true,
     clearAlpha: 0,
-    clearColor: "#3e3e3e",
+    clearColor: "",
   },
   light: [
     {
