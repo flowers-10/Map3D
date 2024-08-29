@@ -11,28 +11,13 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import * as THREE from "three";
 import gsap from "gsap";
-import ThreeInstance from "../../core/ThreeInstance";
-import { CONFIG_OPT } from "../../core/config/configOpt";
-import  fragmentShader  from "../../Shader/City3D/fragmentShader.glsl";
-import  vertexShader  from "../../Shader/City3D/vertexShader.glsl";
+import * as AUTO from "three-auto";
+import fragmentShader from "../../Shader/City3D/fragmentShader.glsl";
+import vertexShader from "../../Shader/City3D/vertexShader.glsl";
 
 const canvasDom = ref();
-const instance = ref();
+const instance = ref<AUTO.ThreeInstance>();
 
-CONFIG_OPT.camera.position = {
-  x: 600,
-  y: 600,
-  z: 600,
-};
-
-CONFIG_OPT.sources = [
-  {
-    name: "shanghai",
-    type: "GLTF",
-    show: true,
-    path: "/gltf/shanghai.gltf",
-  },
-];
 
 const uniforms = {
   height: { value: 20 },
@@ -44,13 +29,13 @@ const uniforms = {
   },
 };
 const shader = new THREE.ShaderMaterial({
-    uniforms: uniforms,
-    vertexShader: vertexShader,
-    fragmentShader: fragmentShader,
-    transparent: true,
-  });
+  uniforms: uniforms,
+  vertexShader: vertexShader,
+  fragmentShader: fragmentShader,
+  transparent: true,
+});
 
-const setCityMaterial = (object: any, instance: ThreeInstance) => {
+const setCityMaterial = (object: any, instance: AUTO.ThreeInstance) => {
   const city = new THREE.Mesh(object.geometry, shader);
   city.position.set(object.position.x, object.position.y, object.position.z);
   city.name = "city";
@@ -58,7 +43,7 @@ const setCityMaterial = (object: any, instance: ThreeInstance) => {
   city.rotateX(-Math.PI / 2);
 };
 // 设置材质线条勾勒着色器
-const setCityLineMaterial = (object: any, instance: ThreeInstance) => {
+const setCityLineMaterial = (object: any, instance: AUTO.ThreeInstance) => {
   const edges = new THREE.EdgesGeometry(object.geometry, 1);
   //设置模型的材质
   const lineMaterial = new THREE.LineBasicMaterial({
@@ -76,15 +61,25 @@ const setCityLineMaterial = (object: any, instance: ThreeInstance) => {
 };
 
 onMounted(() => {
-  instance.value = new ThreeInstance(canvasDom.value, CONFIG_OPT);
-  instance.value.resources.on("ready", () => {
+  instance.value = new AUTO.ThreeAuto(canvasDom.value);
+  const resources = new AUTO.Resources([
+    {
+      name: "shanghai",
+      type: "GLTF",
+      show: true,
+      path: "/gltf/shanghai.gltf",
+    },
+  ], 'circle')
+  resources.on("ready", () => {
+   
     // Setup
-    instance.value.resources.items.shanghai.scene.traverse((child: any) => {
+    resources.items.shanghai.scene.traverse((child: any) => {
       // 设置线框材质
       if (child.isMesh) {
         //这个判断模型是楼房还是其他  加载不同的材质
         if (["CITY_UNTRIANGULATED"].includes(child.name)) {
           // 拿到模型线框的Geometry
+          if(!instance.value) return
           setCityLineMaterial(child, instance.value);
           setCityMaterial(child, instance.value);
         } else if (["ROADS"].includes(child.name)) {
@@ -99,6 +94,7 @@ onMounted(() => {
             child.position.y,
             child.position.z
           );
+          if(!instance.value) return
           instance.value.scene.add(mesh);
         } else {
           //地面
@@ -106,6 +102,7 @@ onMounted(() => {
             color: "#040912",
           });
           const mesh = new THREE.Mesh(child.geometry, material);
+          if(!instance.value) return
           instance.value.scene.add(mesh);
           mesh.rotateX(-Math.PI / 2);
           mesh.position.set(
@@ -126,6 +123,7 @@ onMounted(() => {
   });
 });
 onBeforeUnmount(() => {
+  if(!instance.value) return
   instance.value.dispose();
 });
 </script>
