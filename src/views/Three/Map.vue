@@ -41,8 +41,7 @@ import {
   skyFragmentCommon,
   skyOutputFragment,
 } from "../../Shader/StattySky/fragmentShader";
-import ThreeInstance from "../../core/ThreeInstance";
-import { CONFIG_OPT } from "../../core/config/configOpt";
+import * as AUTO from "three-auto";
 import parentJson from "../../assets/JSON/parentJson.json";
 import subJson from "../../assets/JSON/subJson.json";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
@@ -50,75 +49,7 @@ import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 const canvasDom = ref();
 const instance = ref();
 
-CONFIG_OPT.camera = {
-  fov: 75,
-  near: 0.1,
-  far: 1000,
-  position: {
-    x: 0,
-    y: 0,
-    z: 1.6,
-  },
-  lookAt: true,
-  controls: {
-    show: true,
-    enableDamping: true,
-    minPolarAngle: Math.PI * 0.25,
-    maxPolarAngle: Math.PI * 0.75,
-    minAzimuthAngle: -Math.PI * 0.45,
-    maxAzimuthAngle: Math.PI * 0.25,
-    enablePan: false,
-  },
-};
-
-CONFIG_OPT.light = [
-  {
-    type: "point", // 点光源
-    color: "#3e99e5", // 颜色
-    intensity: 3, // 强度
-    distance: 500,
-    helper: false, // 助手
-    lightId: 0,
-    lightName: "光源1",
-    position: {
-      x: -10,
-      y: 48,
-      z: 50,
-    },
-  },
-  //  实现渐变色
-  {
-    type: "point", // 点光源
-    color: "#3e99e5", // 颜色
-    intensity: 3, // 强度
-    distance: 285,
-    helper: false, // 助手
-    lightId: 1,
-    lightName: "光源2",
-    position: {
-      x: 1,
-      y: -5,
-      z: 50,
-    },
-  },
-  // 侧边特效打光
-  {
-    type: "point", // 点光源
-    color: "#3e99e5", // 颜色
-    intensity: 10, // 强度
-    distance: 285,
-    helper: false, // 助手
-    lightId: 2,
-    lightName: "光源3",
-    position: {
-      x: 1,
-      y: -28,
-      z: 3,
-    },
-  },
-];
-
-CONFIG_OPT.sources = [
+const sources:AUTO.SourcesItems[] = [
   {
     name: "locationTexture",
     type: "TEXTURE", // type类型 {texture:纹理,gltfModel:3D模型, cubeTexture:环境贴图}
@@ -297,7 +228,7 @@ const json: any = {
   subJson,
 };
 
-const createCenter = (mapJson: any, instance: ThreeInstance) => {
+const createCenter = (mapJson: any, instance: AUTO.ThreeInstance) => {
   const path = d3geo.geoPath();
   const bounds = path.bounds(mapJson);
   const width = bounds[1][0] - bounds[0][0];
@@ -314,10 +245,10 @@ const createCenter = (mapJson: any, instance: ThreeInstance) => {
 let crossSectionUniforms: any = null;
 let customUniforms: any = null;
 
-const createMap = (mapJson: any, option: any, projection: any) => {
+const createMap = (mapJson: any, option: any, projection: any,items:any) => {
   const { lineConfig, extrudeFacesConfig, crossSectionConfig, textConfig } =
     option;
-  const texture = instance.value.resources.items.bgTexture;
+  const texture = items.bgTexture;
   texture.repeat.set(2, 2);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
@@ -497,17 +428,18 @@ const createMap = (mapJson: any, option: any, projection: any) => {
 };
 
 onMounted(() => {
-  instance.value = new ThreeInstance(canvasDom.value, CONFIG_OPT);
+  instance.value = new AUTO.ThreeAuto(canvasDom.value);
   let { center, scale } = createCenter(parentJson, instance.value);
   const projection = d3geo
     .geoMercator()
     .center(center)
     .scale(scale * 0.1)
     .translate([0, 0]);
-  instance.value.resources.on("ready", () => {
+  const resources = new AUTO.Resources(sources)
+  resources.on("ready", () => {
     series.forEach((item: any) => {
       if (item.show) {
-        createMap(json[item.mapType], item, projection);
+        createMap(json[item.mapType], item, projection,resources.items);
       }
     });
   });
