@@ -57,9 +57,10 @@ export const useThreeCity = (canvas: HTMLCanvasElement):AUTO.ThreeInstance => {
     },
   ], 'circle')
   resources.on("ready", () => {
-
+    console.log(resources.items);
+    
     // Setup
-    resources.items.shanghai.scene.traverse((child: any) => {
+    resources.items.get('shanghai').scene.traverse((child: any) => {
       // 设置线框材质
       if (child.isMesh) {
         //这个判断模型是楼房还是其他  加载不同的材质
