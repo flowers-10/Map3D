@@ -24,51 +24,31 @@ import parentJson from "../assets/JSON/parentJson.json";
 import subJson from "../assets/JSON/subJson.json";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 
-const light = [
+const light: AUTO.LightItems[] = [
   {
     type: "point", // 点光源
     color: "#3e99e5", // 颜色
-    intensity: 3, // 强度
+    intensity: 300, // 强度
     distance: 500,
-    helper: false, // 助手
+    helper: true, // 助手
     lightId: 0,
     lightName: "光源1",
     position: {
-      x: -10,
-      y: 48,
-      z: 50,
+      x: 2,
+      y: 2,
+      z: 0,
     },
   },
   //  实现渐变色
   {
-    type: "point", // 点光源
-    color: "#3e99e5", // 颜色
+    type: "ambient", // 点光源
+    color: "#fff", // 颜色
     intensity: 3, // 强度
-    distance: 285,
     helper: false, // 助手
     lightId: 1,
     lightName: "光源2",
-    position: {
-      x: 1,
-      y: -5,
-      z: 50,
-    },
   },
-  // 侧边特效打光
-  {
-    type: "point", // 点光源
-    color: "#3e99e5", // 颜色
-    intensity: 10, // 强度
-    distance: 285,
-    helper: false, // 助手
-    lightId: 2,
-    lightName: "光源3",
-    position: {
-      x: 1,
-      y: -28,
-      z: 3,
-    },
-  },
+ 
 ];
 
 const sources: AUTO.SourcesItems[] = [
@@ -136,9 +116,9 @@ const series = [
     castShadow: false,
     receiveShadow: false,
     lineConfig: {
-      depth: 0.111,
+      depth: 0.122,
       color: "#A0E5FF",
-      linewidth: 0.002,
+      linewidth: 3.5,
     },
     textConfig: {
       textType: "dom",
@@ -171,7 +151,7 @@ const series = [
       metalness: 1,
       roughness: 1,
       extrudeSettings: {
-        depth: 0.11,
+        depth: 0.12,
         bevelEnabled: false,
         bevelSegments: 1,
         bevelSize: 0,
@@ -195,9 +175,9 @@ const series = [
     castShadow: true,
     receiveShadow: true,
     lineConfig: {
-      depth: 0.11,
+      depth: 0.12,
       color: "#ffffff",
-      linewidth: 0.001,
+      linewidth: 2,
     },
     textConfig: {
       textType: "dom",
@@ -230,7 +210,7 @@ const series = [
       metalness: 1,
       roughness: 1,
       extrudeSettings: {
-        depth: 0.1,
+        depth: 0.12,
         bevelEnabled: false,
         bevelSegments: 1,
         bevelSize: 0,
@@ -267,14 +247,16 @@ const createCenter = (mapJson: any, instance: AUTO.ThreeInstance) => {
 let crossSectionUniforms: any = null;
 let customUniforms: any = null;
 
-const createMap = (mapJson: any, option: any, projection: any, items: any,instance:any) => {
+const createMap = (
+  mapJson: any,
+  option: any,
+  projection: any,
+  items: any,
+  instance: any
+) => {
   const { lineConfig, extrudeFacesConfig, crossSectionConfig, textConfig } =
     option;
   const texture = items.bgTexture;
-  texture.repeat.set(2, 2);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.colorSpace = THREE.SRGBColorSpace;
   customUniforms = {
     uTime: { value: 0 },
     depth: { value: extrudeFacesConfig.extrudeSettings.depth },
@@ -398,7 +380,7 @@ const createMap = (mapJson: any, option: any, projection: any, items: any,instan
           const pointArray = [];
           for (let i = 0; i < polygon.length; i++) {
             let [x, y] = projection(polygon[i]);
-            pointArray.push(new THREE.Vector3(x, -y, option.depth));
+            pointArray.push(new THREE.Vector3(x, -y, lineConfig.depth));
           }
           lineGeometry.setPositions(
             pointArray.map(({ x, y, z }) => [x, y, z]).flat()
@@ -451,21 +433,33 @@ const createMap = (mapJson: any, option: any, projection: any, items: any,instan
 
 export const useThreeMap = (canvas: HTMLCanvasElement) => {
   const instance: AUTO.ThreeAuto = new AUTO.ThreeAuto(canvas);
+  new AUTO.Light(light, instance);
   (instance.camera.instance as THREE.PerspectiveCamera).fov = 75;
   instance.camera.instance.near = 0.1;
-  instance.camera.instance.far = 0.1;
-  instance.camera.instance.position.set(0, 0, 1.6);
+  instance.camera.instance.far = 1000;
+  instance.camera.instance.position.set(0, 0, 2.0);
+  instance.camera.controls.minPolarAngle = -100
+  instance.camera.controls.maxPolarAngle = 100
+  instance.camera.controls.minAzimuthAngle = -100
+  instance.camera.controls.maxAzimuthAngle = 100
+  instance.renderer.instance.setClearAlpha(0.2)
   let { center, scale } = createCenter(parentJson, instance);
   const projection = d3geo
     .geoMercator()
     .center(center)
     .scale(scale * 0.1)
     .translate([0, 0]);
-  const resources = new AUTO.Resources(sources)
+  const resources = new AUTO.Resources(sources);
   resources.on("ready", () => {
     series.forEach((item: any) => {
       if (item.show) {
-        createMap(json[item.mapType], item, projection,resources.items,instance);
+        createMap(
+          json[item.mapType],
+          item,
+          projection,
+          resources.items,
+          instance
+        );
       }
     });
   });
@@ -478,5 +472,5 @@ export const useThreeMap = (canvas: HTMLCanvasElement) => {
       crossSectionUniforms.iTime.value = instance.time.elapsedTime;
     }
   });
-  return instance
+  return instance;
 };

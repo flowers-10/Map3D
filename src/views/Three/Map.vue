@@ -1,5 +1,5 @@
 <template>
-  <div style="box-sizing: border-box;background: #000;">
+  <div style="box-sizing: border-box;background: black;">
     <div
       style="
         position: absolute;
