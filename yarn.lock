@@ -1295,10 +1295,10 @@
   resolved "https://registry.npmmirror.com/@types/stats.js/-/stats.js-0.17.3.tgz#705446e12ce0fad618557dd88236f51148b7a935"
   integrity sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==
 
-"@types/three@^0.166.0":
-  version "0.166.0"
-  resolved "https://registry.npmjs.org/@types/three/-/three-0.166.0.tgz#a220b9ffecb7b650e2fdc6ef982285e651ec5dbe"
-  integrity sha512-FHMnpcdhdbdOOIYbfkTkUVpYMW53odxbTRwd0/xJpYnTzEsjnVnondGAvHZb4z06UW0vo6WPVuvH0/9qrxKx7g==
+"@types/three@^0.167.1":
+  version "0.167.2"
+  resolved "https://registry.npmjs.org/@types/three/-/three-0.167.2.tgz#51d12194fdf96ac228f91037a30cd4afb6e49978"
+  integrity sha512-onxnIUNYpXcZJ5DTiIsxfnr4F9kAWkkxAUWx5yqzz/u0a4IygCLCjMuOl2DEeCxyJdJ2nOJZvKpu48sBMqfmkQ==
   dependencies:
     "@tweenjs/tween.js" "~23.1.2"
     "@types/stats.js" "*"
@@ -2209,11 +2209,6 @@ postcss@^8.1.10, postcss@^8.4.27:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postprocessing@^6.36.0:
-  version "6.36.0"
-  resolved "https://registry.npmjs.org/postprocessing/-/postprocessing-6.36.0.tgz#e795c986f85d1a500e13d9c6e25a140e1156f25f"
-  integrity sha512-7V2t8Yi+Edh0FybErMdBV3CCJ/tTeNeLh6z+i0VczwZ6HGV3XyRfC8v4Ps9a6tjawcTvatLptQzX8QnDlU8BXw==
-
 proxy-from-env@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmmirror.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
@@ -2341,13 +2336,12 @@ string_decoder@~0.10.x:
   resolved "https://registry.npmmirror.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
   integrity sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==
 
-three-auto@^0.1.12:
-  version "0.1.12"
-  resolved "https://registry.npmjs.org/three-auto/-/three-auto-0.1.12.tgz#c46110859c3f92f32d0f502090bc510ac5b98f29"
-  integrity sha512-RTUXxXd3EtjNajF7AdnGsHn6cSppD2xNrBM+QuDQagAEec5B4UivX2PmoxBbaiVmCbnvVKY7CkQDBzuHGJFNPQ==
+three-auto@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.npmjs.org/three-auto/-/three-auto-0.2.4.tgz#7f1477bc8c22c4a89fd0b5ceb013bf41ea219dca"
+  integrity sha512-CJc1I+otBX/3AAgIb8nM6BQgaL5eM0I/NYWK68eyjiEp1SImMkotbzIWqB7t+QozKS/hAWDystatBQrcO8sAug==
   dependencies:
-    postprocessing "^6.36.0"
-    vite-plugin-glsl "^1.3.0"
+    d3-geo "^3.1.0"
 
 three-custom-shader-material@^5.4.0:
   version "5.4.0"
@@ -2359,10 +2353,10 @@ three-custom-shader-material@^5.4.0:
     glsl-tokenizer "^2.1.5"
     object-hash "^3.0.0"
 
-three@^0.166.0:
-  version "0.166.1"
-  resolved "https://registry.npmjs.org/three/-/three-0.166.1.tgz#322cfc48fff4e751cd47d61fd1558c387d098d7c"
-  integrity sha512-LtuafkKHHzm61AQA1be2MAYIw1IjmhOUxhBa0prrLpEMWbV7ijvxCRHjSgHPGp2493wLBzwKV46tA9nivLEgKg==
+three@^0.158.0:
+  version "0.158.0"
+  resolved "https://registry.npmjs.org/three/-/three-0.158.0.tgz#03ddd5b60ce9c31be8fb69f27a6d9efd49908ac3"
+  integrity sha512-TALj4EOpdDPF1henk2Q+s17K61uEAAWQ7TJB68nr7FKxqwyDr3msOt5IWdbGm4TaWKjrtWS8DJJWe9JnvsWOhQ==
 
 through2@^0.6.3:
   version "0.6.5"

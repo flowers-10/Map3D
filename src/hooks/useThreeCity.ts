@@ -3,7 +3,6 @@ import * as AUTO from "three-auto";
 import fragmentShader from "@/Shader/City3D/fragmentShader.glsl";
 import vertexShader from "@/Shader/City3D/vertexShader.glsl";
 
-
 const uniforms = {
   height: { value: 20 },
   uFlowColor: {
@@ -45,28 +44,44 @@ const setCityLineMaterial = (object: any, instance: AUTO.ThreeInstance) => {
   lineS.rotateX(-Math.PI / 2);
 };
 
-
-export const useThreeCity = (canvas: HTMLCanvasElement):AUTO.ThreeInstance => {
-  const instance = new AUTO.ThreeAuto(canvas);
-  const resources = new AUTO.Resources([
-    {
-      name: "shanghai",
-      type: "GLTF",
-      show: true,
-      path: "/gltf/shanghai.gltf",
+export const useThreeCity = (canvas: HTMLCanvasElement): AUTO.ThreeInstance => {
+  const options:any = {
+    camera: {
+      fov: 60,
+      near: 1,
+      far: 10000,
+      position: {
+        x: 600,
+        y: 600,
+        z: 600,
+      },
     },
-  ], 'circle')
+    renderer: {
+      clearAlpha: 1,
+      clearColor: "#302E37",
+    },
+  }
+  const instance = new AUTO.ThreeAuto(canvas, options);
+  const resources = new AUTO.Resources(
+    [
+      {
+        name: "shanghai",
+        type: "GLTF",
+        show: true,
+        path: "/gltf/shanghai.gltf",
+      },
+    ],
+    "circle"
+  );
   resources.on("ready", () => {
-    console.log(resources.items);
-    
     // Setup
-    resources.items.get('shanghai').scene.traverse((child: any) => {
+    resources.items.get("shanghai").scene.traverse((child: any) => {
       // 设置线框材质
       if (child.isMesh) {
         //这个判断模型是楼房还是其他  加载不同的材质
         if (["CITY_UNTRIANGULATED"].includes(child.name)) {
           // 拿到模型线框的Geometry
-          if (!instance) return
+          if (!instance) return;
           setCityLineMaterial(child, instance);
           setCityMaterial(child, instance);
         } else if (["ROADS"].includes(child.name)) {
@@ -81,7 +96,7 @@ export const useThreeCity = (canvas: HTMLCanvasElement):AUTO.ThreeInstance => {
             child.position.y,
             child.position.z
           );
-          if (!instance) return
+          if (!instance) return;
           instance.scene.add(mesh);
         } else {
           //地面
@@ -89,7 +104,7 @@ export const useThreeCity = (canvas: HTMLCanvasElement):AUTO.ThreeInstance => {
             color: "#040912",
           });
           const mesh = new THREE.Mesh(child.geometry, material);
-          if (!instance) return
+          if (!instance) return;
           instance.scene.add(mesh);
           mesh.rotateX(-Math.PI / 2);
           mesh.position.set(
@@ -107,5 +122,5 @@ export const useThreeCity = (canvas: HTMLCanvasElement):AUTO.ThreeInstance => {
       uniforms.height.value = 0;
     }
   });
-  return instance
+  return instance;
 };
