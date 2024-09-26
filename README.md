@@ -1,5 +1,5 @@
 # Map3D
-demo:[https://map-3d-sand.vercel.app/](https://map-3d-sand.vercel.app/)
+demo:[https://map3d.vercel.app/#/](https://map3d.vercel.app/#/)
 
 基于Vue框架、Echarts、Echarts-gl、Threejs类库渲染的3D地图案例展示。
 
