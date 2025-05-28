@@ -1856,13 +1856,13 @@ echarts-gl@^2.0.9:
     claygl "^1.2.1"
     zrender "^5.1.1"
 
-echarts@5.1.2:
-  version "5.1.2"
-  resolved "https://registry.npmmirror.com/echarts/-/echarts-5.1.2.tgz#aa1ab0cef5b74fa2f7c620261a5f286893d30fd1"
-  integrity sha512-okUhO4sw22vwZp+rTPNjd/bvTdpug4K4sHNHyrV8NdAncIX9/AarlolFqtJCAYKGFYhUBNjIWu1EznFrSWTFxg==
+echarts@5.5.0:
+  version "5.5.0"
+  resolved "https://registry.npmjs.org/echarts/-/echarts-5.5.0.tgz#c13945a7f3acdd67c134d8a9ac67e917830113ac"
+  integrity sha512-rNYnNCzqDAPCr4m/fqyUFv7fD9qIsd50S6GDFgO1DxZhncCsNsG7IfUlAlvZe5oSEQxtsjnHiUuppzccry93Xw==
   dependencies:
-    tslib "2.0.3"
-    zrender "5.1.1"
+    tslib "2.3.0"
+    zrender "5.5.0"
 
 esbuild@^0.18.10:
   version "0.18.20"
@@ -2084,6 +2084,11 @@ lil-gui@^0.18.2:
   version "0.18.2"
   resolved "https://registry.npmmirror.com/lil-gui/-/lil-gui-0.18.2.tgz#e28a627be6a38bb80e9237817ad2c530eeb76279"
   integrity sha512-DgdrLy3/KGC0PiQLKgOcJMPItP4xY4iWgJ9+91Zaxfr8GCTmMps05QS9w9jW7yspILlbscbquwjOwxmWnSx5Uw==
+
+lil-gui@^0.19.2:
+  version "0.19.2"
+  resolved "https://registry.npmjs.org/lil-gui/-/lil-gui-0.19.2.tgz#774bf46f1f43ec5fec00884af46b8060786f97fc"
+  integrity sha512-nU8j4ND702ouGfQZoaTN4dfXxacvGOAVK0DtmZBVcUYUAeYQXLQAjAN50igMHiba3T5jZyKEjXZU+Ntm1Qs6ZQ==
 
 lodash.assign@^4.2.0:
   version "4.2.0"
@@ -2336,12 +2341,12 @@ string_decoder@~0.10.x:
   resolved "https://registry.npmmirror.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
   integrity sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==
 
-three-auto@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.npmjs.org/three-auto/-/three-auto-0.2.4.tgz#7f1477bc8c22c4a89fd0b5ceb013bf41ea219dca"
-  integrity sha512-CJc1I+otBX/3AAgIb8nM6BQgaL5eM0I/NYWK68eyjiEp1SImMkotbzIWqB7t+QozKS/hAWDystatBQrcO8sAug==
+three-auto@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/three-auto/-/three-auto-0.3.1.tgz#754040f003d4f290fe2d999ce5c322c9ae463695"
+  integrity sha512-BK3TH7NrXujnNG4PGTHlZg5udpKOoH0rWRpB4m0+AH7BgeGcletmG0hRl0fzrVOw/FeEo/dfh6fX6mlzJYinhA==
   dependencies:
-    d3-geo "^3.1.0"
+    lil-gui "^0.19.2"
 
 three-custom-shader-material@^5.4.0:
   version "5.4.0"
@@ -2389,11 +2394,6 @@ topojson-server@3.x:
   integrity sha512-/VS9j/ffKr2XAOjlZ9CgyyeLmgJ9dMwq6Y0YEON8O7p/tGGk+dCWnrE03zEdu7i4L7YsFZLEPZPzCvcB7lEEXw==
   dependencies:
     commander "2"
-
-tslib@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npmmirror.com/tslib/-/tslib-2.0.3.tgz#8e0741ac45fc0c226e58a17bfc3e64b9bc6ca61c"
-  integrity sha512-uZtkfKblCEQtZKBF6EBXVZeQNl82yqtDQdv+eck8u7tdPxjLu2/lp5/uPW+um2tpuxINHWy3GhiccY7QgEaVHQ==
 
 tslib@2.3.0:
   version "2.3.0"
@@ -2478,12 +2478,12 @@ yallist@^4.0.0:
   resolved "https://registry.npmmirror.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
-zrender@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.npmmirror.com/zrender/-/zrender-5.1.1.tgz#0515f4f8cc0f4742f02a6b8819550a6d13d64c5c"
-  integrity sha512-oeWlmUZPQdS9f5hK4pV21tHPqA3wgQ7CkKkw7l0CCBgWlJ/FP+lRgLFtUBW6yam4JX8y9CdHJo1o587VVrbcoQ==
+zrender@5.5.0:
+  version "5.5.0"
+  resolved "https://registry.npmjs.org/zrender/-/zrender-5.5.0.tgz#54d0d6c4eda81a96d9f60a9cd74dc48ea026bc1e"
+  integrity sha512-O3MilSi/9mwoovx77m6ROZM7sXShR/O/JIanvzTwjN3FORfLSr81PsUGd7jlaYOeds9d8tw82oP44+3YucVo+w==
   dependencies:
-    tslib "2.0.3"
+    tslib "2.3.0"
 
 zrender@^5.1.1:
   version "5.4.4"

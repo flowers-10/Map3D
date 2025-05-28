@@ -51,9 +51,14 @@ export const useThreeCity = (canvas: HTMLCanvasElement): AUTO.ThreeInstance => {
       near: 1,
       far: 10000,
       position: {
-        x: 600,
-        y: 600,
-        z: 600,
+        x: 0,
+        y: 70,
+        z: -300,
+      },
+      controls: {
+        enable: true,
+        enableDamping: true,
+        enablePan: true,
       },
     },
     renderer: {
