@@ -48,6 +48,14 @@ export const routes = [
     },
   },
   {
+    path: "/ThreeMap2",
+    component: () => import("../views/Three/Map2.vue"),
+    name: "ThreeMap",
+    meta: {
+      navLink: "Threejs地图2",
+    },
+  },
+  {
     path: "/ThreeCity",
     component: () => import("../views/Three/City.vue"),
     name: "ThreeCity",
