@@ -47,7 +47,7 @@ onMounted(() => {
       antialias: true,
       alpha: true,
       clearAlpha: 1,
-      clearColor: "#fff",
+      clearColor: "#000",
     },
     series: [
       {

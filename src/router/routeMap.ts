@@ -50,7 +50,7 @@ export const routes = [
   {
     path: "/ThreeMap2",
     component: () => import("../views/Three/Map2.vue"),
-    name: "ThreeMap",
+    name: "ThreeMap2",
     meta: {
       navLink: "Threejs地图2",
     },
