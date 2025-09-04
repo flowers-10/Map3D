@@ -2341,10 +2341,10 @@ string_decoder@~0.10.x:
   resolved "https://registry.npmmirror.com/string_decoder/-/string_decoder-0.10.31.tgz#62e203bc41766c6c28c9fc84301dab1c5310fa94"
   integrity sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==
 
-three-auto@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/three-auto/-/three-auto-0.3.1.tgz#754040f003d4f290fe2d999ce5c322c9ae463695"
-  integrity sha512-BK3TH7NrXujnNG4PGTHlZg5udpKOoH0rWRpB4m0+AH7BgeGcletmG0hRl0fzrVOw/FeEo/dfh6fX6mlzJYinhA==
+three-auto@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.npmjs.org/three-auto/-/three-auto-0.3.3.tgz#407fc16d921b275ff9f656fd5111b689fddc723e"
+  integrity sha512-/yJw4khIyOdSIEktwcUj/kPeCHo4lNfX4DcB/XZl5GVcUTU2nxcPbh+r9MA5gup+5pHJvgpU+uYZbIljFD+KYw==
   dependencies:
     lil-gui "^0.19.2"
 

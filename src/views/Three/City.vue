@@ -16,7 +16,7 @@ onMounted(() => {
 });
 onBeforeUnmount(() => {
   if (!instance.value) return
-  (instance.value as any).dispose();
+  // (instance.value as any).dispose();
 });
 </script>
 

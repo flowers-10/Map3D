@@ -63,6 +63,11 @@ onMounted(() => {
         selectedOffset: 2.5,
         eventName: "click",
         data: [],
+        scale: {
+          x: 0.8,
+          y: 0.8,
+          z: 1,
+        },
         tooltip: {
           className: "three-auto-tooltip",
           background: "rgba(255,255,255,1)",
@@ -130,7 +135,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   instance.value?.scene?.remove();
   if (!instance.value) return;
-  (instance.value as any).dispose();
+  // (instance.value as any).dispose();
 });
 </script>
 

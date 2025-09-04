@@ -8,7 +8,7 @@
 
 <script setup>
 // 引入工具
-import geoJson from "@assets/JSON/china1.json"; //该文件路径改成自己项目中的文件路径即可
+import geoJson from "@assets/JSON/China.json"; //该文件路径改成自己项目中的文件路径即可
 import * as echarts from "echarts";
 // import "echarts-gl"; //3D地图插件
 import { onMounted } from "vue";
@@ -42,12 +42,12 @@ const areaList = [
 // 定义echarts方法
 const chartMap = () => {
   var myChart = echarts.init(document.getElementById("mapEchart"));
-  geoJson.features = geoJson.features.filter((item) => {
-    return ["湖南省", "湖北省", "广东省"].includes(item.properties.name);
-  });
+  // geoJson.features = geoJson.features.filter((item) => {
+  //   return ["湖南省", "湖北省", "广东省"].includes(item.properties.name);
+  // });
   console.log(geoJson, 33333);
 
-  echarts.registerMap("China", geoJson);
+  echarts.registerMap("china", geoJson);
   // 防抖变量
   let debounceTimer = null;
 
@@ -321,9 +321,9 @@ const chartMap = () => {
     },
     geo: [
       {
-        map: "China",
+        map: "china",
         zlevel: -1,
-        zoom: 1,
+        zoom: 0.8,
         silent: true,
         layoutCenter: ["50%", "50%"],
         layoutSize: "100%",
@@ -348,9 +348,9 @@ const chartMap = () => {
       },
       {
         type: "map",
-        map: "China",
+        map: "china",
         zlevel: -2,
-        zoom: 1,
+        zoom: 0.8,
         layoutCenter: ["50%", "51.4%"],
         layoutSize: "100%",
         roam: false,
@@ -367,9 +367,9 @@ const chartMap = () => {
       },
       {
         type: "map",
-        map: "China",
+        map: "china",
         zlevel: -3,
-        zoom: 1,
+        zoom: 0.8,
         layoutCenter: ["50%", "52.4%"],
         layoutSize: "100%",
         roam: false,
@@ -565,8 +565,8 @@ const chartMap = () => {
         emphasis: {
           disabled: true,
         },
-        zoom: 1,
-        map: "China",
+        zoom: 0.8,
+        map: "china",
         data: [
           {
             value: {
@@ -1121,7 +1121,7 @@ const chartMap = () => {
             borderColor: "#32CBE0",
             borderWidth: 1.5,
             areaColor: {
-              image: "./mapBackground7.png",
+              image: "./image.png",
               repeat: "no-repeat",
             },
           },
