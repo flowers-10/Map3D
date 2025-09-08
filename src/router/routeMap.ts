@@ -16,19 +16,27 @@ export const routes = [
     },
   },
   {
-    path: "/Map3DVue2",
-    component: () => import("../views/Echarts/Map3DVue2.vue"),
-    name: "Map3DVue2",
+    path: "/rotateMap",
+    component: () => import("../views/Echarts/rotateMap.vue"),
+    name: "rotateMap",
     meta: {
-      navLink: "3D地图下钻Vue2版本",
+      navLink: "旋转地图",
     },
   },
+  // {
+  //   path: "/Map3DVue2",
+  //   component: () => import("../views/Echarts/Map3DVue2.vue"),
+  //   name: "Map3DVue2",
+  //   meta: {
+  //     navLink: "3D地图下钻Vue2版本",
+  //   },
+  // },
   {
     path: "/Map3DVue3",
     component: () => import("../views/Echarts/Map3DVue3.vue"),
     name: "Map3DVue3",
     meta: {
-      navLink: "3D地图下钻Vue3版本",
+      navLink: "3D地图下钻",
     },
   },
   {
