@@ -55,12 +55,21 @@ export const routes = [
       navLink: "Threejs地图",
     },
   },
+  // {
+  //   path: "/ThreeMap2",
+  //   component: () => import("../views/Three/Map2.vue"),
+  //   name: "ThreeMap2",
+  //   meta: {
+  //     navLink: "Threejs地图2",
+  //   },
+
+  // },
   {
-    path: "/ThreeMap2",
-    component: () => import("../views/Three/Map2.vue"),
-    name: "ThreeMap2",
+    path: "/SuperMap",
+    component: () => import("../views/SuperMap/SuperMapVue2.vue"),
+    name: "SuperMap",
     meta: {
-      navLink: "Threejs地图2",
+      navLink: "SuperMap",
     },
   },
   {

@@ -7,7 +7,7 @@ import glsl from "vite-plugin-glsl";
 export default defineConfig({
   // base: "",
   // publicDir: "./public",
-  assetsInclude: ["**/*.glb", "**/*.hdr", "**/*.mp3", "**/*.ico", "**/*.svg"],
+  assetsInclude: ["**/*.glb", "**/*.hdr", "**/*.mp3", "**/*.ico", "**/*.svg", "**/*.mov"],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
@@ -31,7 +31,7 @@ export default defineConfig({
       },
       output: {
         assetFileNames: (assetInfo: any) => {
-          if (/\.(mp4|webm|ogg|mp3|wav|flac|aac)$/.test(assetInfo.name)) {
+          if (/\.(mp4|webm|ogg|mp3|wav|flac|aac|mov)$/.test(assetInfo.name)) {
             return `media/[name].[hash][ext]`;
           }
           // else if (/\.(glb|hdr)$/.test(assetInfo.name)) { // 匹配资源文件后缀 可以自定义存放位置

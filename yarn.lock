@@ -2358,6 +2358,11 @@ three-custom-shader-material@^5.4.0:
     glsl-tokenizer "^2.1.5"
     object-hash "^3.0.0"
 
+three.interactive@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.npmjs.org/three.interactive/-/three.interactive-1.8.0.tgz#5ade7ba0317279154d1ab74d18dc402574446adb"
+  integrity sha512-qnPHHE8enXYLETuVzD9RRAfL1dU55nH87sduzBbEiMUSl21HXc+OVnIaLVokYfJ/ktl2QeL6pocO4rTOHlDjGw==
+
 three@^0.158.0:
   version "0.158.0"
   resolved "https://registry.npmjs.org/three/-/three-0.158.0.tgz#03ddd5b60ce9c31be8fb69f27a6d9efd49908ac3"

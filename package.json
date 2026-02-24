@@ -23,6 +23,7 @@
     "three": "^0.158.0",
     "three-auto": "^0.3.3",
     "three-custom-shader-material": "^5.4.0",
+    "three.interactive": "^1.8.0",
     "vite-plugin-glsl": "^1.3.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2"

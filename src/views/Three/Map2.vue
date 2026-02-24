@@ -8,7 +8,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import * as AUTO from "three-auto";
 import * as THREE from "three";
-import ZhejiangJSON from "../../assets/JSON/Zhejiang.json";
+import ZhejiangJSON from "../../assets/JSON/china1.json";
 import ChinaJSON from "../../assets/JSON/china1.json";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 const gsap = AUTO.ThreeAuto.gsap;
@@ -426,7 +426,7 @@ onMounted(() => {
     //   type: 'moebius',
     // }
   });
-  instance.value.scene.fog = new THREE.Fog(0x102736, 1, 50);
+  instance.value.scene.fog = new THREE.Fog(0x102736, 1, 100);
   instance.value.resource?.on("ready", () => {
     const children = instance.value?.series?.seriesGroup?.children;
     if (children) {
