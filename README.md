@@ -1,5 +1,7 @@
 # Map3D
 demo:[https://map3d.vercel.app/#/](https://map3d.vercel.app/#/)
+<img width="936" height="664" alt="image" src="https://github.com/user-attachments/assets/5466920a-38dd-4279-a363-60fff05996d3" />
+
 
 基于Vue框架、Echarts、Echarts-gl、Threejs类库渲染的3D地图案例展示。
 
