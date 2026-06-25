@@ -38,7 +38,7 @@ class MapApplication extends EventEmitter {
     this.container = container
     this.config = Object.assign({}, defaultConfig, {
       geoProjectionCenter: options.centroid,
-    })
+    }, options.geoProjectionScale ? { geoProjectionScale: options.geoProjectionScale } : {})
     this.canvas = container
     this.scene = new THREE.Scene()
     this.sizes = new SizeManager({canvas: container})

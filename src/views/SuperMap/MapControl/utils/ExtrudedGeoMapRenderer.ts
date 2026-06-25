@@ -13,6 +13,7 @@ type ExtrudedGeoMapRendererConfig = {
   topFaceMaterial: THREE.MeshLambertMaterial | THREE.MeshStandardMaterial
   sideMaterial: THREE.MeshLambertMaterial | THREE.MeshStandardMaterial
   depth: number
+  scale?: number
 }
 /**
  * 带有挤压效果的地图渲染器
@@ -48,6 +49,7 @@ export class ExtrudedGeoMapRenderer {
           opacity: 1,
         }),
         depth: 0,
+        scale: 120,
       },
       ...config,
     }
@@ -110,7 +112,7 @@ export class ExtrudedGeoMapRenderer {
     return d3
       .geoMercator()
       .center(this.config.center as unknown as [number, number])
-      .scale(120)
+      .scale(this.config.scale || 120)
       .translate([0, 0])(coords) as [number, number]
   }
   setParent(parent: THREE.Group) {

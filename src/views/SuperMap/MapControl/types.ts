@@ -3,6 +3,7 @@ import {LoaderTypeValues} from '../const/loader'
 
 export interface MapControlOptions {
   centroid: [number, number]
+  geoProjectionScale?: number
 }
 
 export type CameraManagerInstance =

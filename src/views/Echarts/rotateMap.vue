@@ -65,7 +65,7 @@ const areaList = [
 ];
 
 // 添加旋转功能
-const rotationAngle = ref(0)
+const rotationAngle = ref(54)
 const originalGeoJson = ref(null)
 const rotatedGeoJson = ref(null)
 // 定义echarts方法
@@ -349,71 +349,370 @@ const chartMap = () => {
       bottom: 5,
     },
     geo: [
-      {
-        map: "map",
-        zlevel: -1,
-        zoom: 0.8,
-        silent: true,
-        layoutCenter: ["50%", "50%"],
-        layoutSize: "100%",
-        roam: false,
-        itemStyle: {
-          normal: {
-            borderColor: "rgba(18, 239, 213,0.8)",
-            borderWidth: 3,
-            shadowColor: "rgba(18, 239, 213,0.8)",
-            shadowOffsetY: 0,
-            // shadowBlur: 10,
-          },
+    {
+        "type": "map",
+        "layoutCenter": [
+            "50%",
+            "50%"
+        ],
+        "layoutSize": "100%",
+        "z": 3,
+        "select": {
+            "disabled": true
         },
-        label: {
-          normal: {
-            show: false,
-          },
-          emphasis: {
-            show: false,
-          },
+        "label": {
+            "normal": {
+                "show": true
+            },
+            "emphasis": {
+                "show": false,
+                "color": "rgba(255, 255, 255, 1)"
+            }
         },
-      },
-      {
-        type: "map",
-        map: "map",
-        zlevel: -2,
-        zoom: 0.8,
-        layoutCenter: ["50%", "51.4%"],
-        layoutSize: "100%",
-        roam: false,
-        silent: true,
-        itemStyle: {
-          normal: {
-            borderColor: "rgba(35, 161, 184,0.5)",
-            shadowColor: "rgba(35, 161, 184,0.8)",
-            shadowOffsetY: 5,
-            shadowBlur: 15,
-            areaColor: "rgba(83, 226, 235, 0.25)",
-          },
+        "emphasis": {
+            "disabled": false,
+            "itemStyle": {
+                "color": "#eee",
+                "areaColor": "#eee",
+                "borderColor": "rgba(255, 215, 0, 0.9)",
+                "borderWidth": 4,
+                "shadowColor": "rgba(255, 215, 0, 0.6)",
+                "shadowBlur": 18
+            }
         },
-      },
-      {
-        type: "map",
-        map: "map",
-        zlevel: -3,
-        zoom: 0.8,
-        layoutCenter: ["50%", "52.4%"],
-        layoutSize: "100%",
-        roam: false,
-        silent: true,
-        itemStyle: {
-          normal: {
-            borderColor: "rgba(7, 65, 117,0.5)",
-            shadowColor: "rgba(7, 65, 117,0.8)",
-            shadowOffsetY: 15,
-            shadowBlur: 8,
-            areaColor: "rgba(83, 226, 235, 0.48)",
-          },
+        "zoom": 1,
+        "map": "map",
+        "tooltip": {
+            "show": true,
+            "position": "right",
+            "confine": true,
+            "borderColor": "rgba(0, 0, 0, 0)",
+            "extraCssText": "background:url(http://192.168.1.52//v10/resource/baseStatic/image/tooltip-bg-2.png) no-repeat center center ;width: 129px;height: 108px;background-size:100% 100%;padding-left: 60px;"
         },
-      },
-    ],
+        "data": [
+            {
+                "value": {
+                    "adcode": 440103,
+                    "name": "荔湾区",
+                    "center": [
+                        113.243038,
+                        23.124943
+                    ],
+                    "centroid": [
+                        113.227791,
+                        23.088038
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 0,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "荔湾区"
+            },
+            {
+                "value": {
+                    "adcode": 440104,
+                    "name": "越秀区",
+                    "center": [
+                        113.280714,
+                        23.125624
+                    ],
+                    "centroid": [
+                        113.281396,
+                        23.13291
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 1,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "越秀区"
+            },
+            {
+                "value": {
+                    "adcode": 440105,
+                    "name": "海珠区",
+                    "center": [
+                        113.262008,
+                        23.103131
+                    ],
+                    "centroid": [
+                        113.326676,
+                        23.082002
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 2,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "海珠区"
+            },
+            {
+                "value": {
+                    "adcode": 440106,
+                    "name": "天河区",
+                    "center": [
+                        113.335367,
+                        23.13559
+                    ],
+                    "centroid": [
+                        113.376026,
+                        23.159958
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 3,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "天河区"
+            },
+            {
+                "value": {
+                    "adcode": 440111,
+                    "name": "白云区",
+                    "center": [
+                        113.262831,
+                        23.162281
+                    ],
+                    "centroid": [
+                        113.323943,
+                        23.289328
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 4,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "白云区"
+            },
+            {
+                "value": {
+                    "adcode": 440112,
+                    "name": "黄埔区",
+                    "center": [
+                        113.450761,
+                        23.103239
+                    ],
+                    "centroid": [
+                        113.50827,
+                        23.216905
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 5,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "黄埔区"
+            },
+            {
+                "value": {
+                    "adcode": 440113,
+                    "name": "番禺区",
+                    "center": [
+                        113.364619,
+                        22.938582
+                    ],
+                    "centroid": [
+                        113.406928,
+                        22.973597
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 6,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "番禺区"
+            },
+            {
+                "value": {
+                    "adcode": 440114,
+                    "name": "花都区",
+                    "center": [
+                        113.211184,
+                        23.39205
+                    ],
+                    "centroid": [
+                        113.214795,
+                        23.442737
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 7,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "花都区"
+            },
+            {
+                "value": {
+                    "adcode": 440115,
+                    "name": "南沙区",
+                    "center": [
+                        113.53738,
+                        22.794531
+                    ],
+                    "centroid": [
+                        113.544315,
+                        22.736609
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 8,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "南沙区"
+            },
+            {
+                "value": {
+                    "adcode": 440117,
+                    "name": "从化区",
+                    "center": [
+                        113.587386,
+                        23.545283
+                    ],
+                    "centroid": [
+                        113.680484,
+                        23.677286
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 9,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "从化区"
+            },
+            {
+                "value": {
+                    "adcode": 440118,
+                    "name": "增城区",
+                    "center": [
+                        113.829579,
+                        23.290497
+                    ],
+                    "centroid": [
+                        113.764273,
+                        23.341055
+                    ],
+                    "childrenNum": 0,
+                    "level": "district",
+                    "subFeatureIndex": 10,
+                    "acroutes": [
+                        100000,
+                        440000,
+                        440100
+                    ]
+                },
+                "name": "增城区"
+            }
+        ],
+        "itemStyle": {
+            "normal": {
+                "label": {
+                    "color": "rgba(255, 255, 255, 1)"
+                },
+                "color": "rgba(255, 255, 255, 1)",
+                "borderColor": "#32CBE0",
+                "borderWidth": 1.5,
+                "areaColor": {
+                    "image": {},
+                    "repeat": "repeat"
+                }
+            },
+            "emphasis": {
+                "show": false
+            }
+        }
+    },
+    {
+        "map": "map",
+        "z": -1,
+        "zoom": 1,
+        "silent": true,
+        "layoutCenter": [
+            "50%",
+            "52.4%"
+        ],
+        "layoutSize": "100%",
+        "roam": false,
+        "itemStyle": {
+            "normal": {
+                "borderColor": "rgba(18, 239, 213,0.8)",
+                "borderWidth": 3,
+                "shadowColor": "rgba(18, 239, 213,0.8)",
+                "shadowOffsetY": 0,
+                "shadowBlur": 10
+            }
+        },
+        "label": {
+            "normal": {
+                "show": false
+            },
+            "emphasis": {
+                "show": false
+            }
+        }
+    },
+    {
+        "type": "map",
+        "map": "map",
+        "z": -2,
+        "zoom": 1,
+        "layoutCenter": [
+            "50%",
+            "52.4%"
+        ],
+        "layoutSize": "100%",
+        "roam": false,
+        "silent": true,
+        "itemStyle": {
+            "normal": {
+                "shadowColor": "#102D32",
+                "shadowOffsetY": 5,
+                "shadowBlur": 15,
+                "areaColor": "#075681"
+            }
+        }
+    }
+],
 
     series: [
       {

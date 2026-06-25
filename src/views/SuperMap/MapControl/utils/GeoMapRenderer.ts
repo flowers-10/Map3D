@@ -4,6 +4,39 @@ import {FeatureCollection} from '../types'
 import * as d3 from 'd3'
 import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
+
+
+const REGION_CONFIG: any = {
+  huabei: {
+    color: 0x43E869,
+    provinces: ['北京市', '天津市', '河北省', '山西省', '内蒙古自治区']
+  },
+  dongbei: {
+    color: 0x133052,
+    provinces: ['辽宁省', '吉林省', '黑龙江省']
+  },
+  huadong: {
+    color: 0x27E1F4,
+    provinces: ['上海市', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省', '台湾省']
+  },
+  huazhong: {
+    color: 0xF98B80,
+    provinces: ['河南省', '湖北省', '湖南省']
+  },
+  huanan: {
+    color: 0x8295FC,
+    provinces: ['广东省', '广西壮族自治区', '海南省', '香港特别行政区', '澳门特别行政区']
+  },
+  xinan: {
+    color: 0x5A97F2,
+    provinces: ['重庆市', '四川省', '贵州省', '云南省', '西藏自治区']
+  },
+  xibei: {
+    color: 0xBFBE52,
+    provinces: ['陕西省', '甘肃省', '青海省', '宁夏回族自治区', '新疆维吾尔自治区']
+  }
+}
+
 /**
  * GeoMapRenderer配置选项接口
  */
@@ -20,6 +53,8 @@ interface GeoMapRendererOptions {
   renderOrder: number
   /** 是否合并几何体进行渲染，合并后性能更好但无法单独操作各区域 */
   merge: boolean
+  /** 地图投影比例 */
+  scale: number
 }
 
 /**
@@ -68,6 +103,7 @@ class GeoMapRenderer {
       }),
       merge: false,
       renderOrder: 0,
+      scale: 120,
       // 用户配置覆盖默认配置
       ...config,
     }
@@ -108,6 +144,18 @@ class GeoMapRenderer {
       // 存储坐标信息
       this.coordinates.push({name, center, centroid})
 
+      // 根据大区设置颜色
+      let featureMaterial = this.config.material
+        for (const region in REGION_CONFIG) {
+          if (REGION_CONFIG[region].provinces.includes(name)) {
+            featureMaterial = new THREE.MeshStandardMaterial({
+              color: REGION_CONFIG[region].color,
+              transparent: true,
+              opacity: 0.5,
+            })
+            break
+          }
+        }
       // 处理特征的几何坐标
       feature.geometry.coordinates.forEach(polygon => {
         polygon.forEach(ring => {
@@ -139,7 +187,7 @@ class GeoMapRenderer {
             geometries.push(geometry)
           } else {
             // 如果不需要合并，创建独立的网格并添加到特征对象
-            const mesh = new THREE.Mesh(geometry, this.config.material)
+            const mesh = new THREE.Mesh(geometry, featureMaterial)
             mesh.renderOrder = this.config.renderOrder
             featureObject.add(mesh)
           }
@@ -174,7 +222,7 @@ class GeoMapRenderer {
     return d3
       .geoMercator() // 使用墨卡托投影
       .center(this.config.center) // 设置投影中心
-      .scale(120) // 设置投影比例
+      .scale(this.config.scale || 120) // 设置投影比例
       .translate([0, 0])(coords) as [number, number] // 应用投影并转换坐标
   }
 

@@ -12,6 +12,7 @@ interface LineRendererOptions {
   material: THREE.LineBasicMaterial
   renderOrder: number
   type?: 'LineLoop' | 'Line' // 线类型 LineLoop:闭合线  Loop:非闭合线
+  scale?: number
 }
 
 class LineRenderer {
@@ -25,6 +26,7 @@ class LineRenderer {
         material: new THREE.LineBasicMaterial({color: 0xffffff}),
         renderOrder: 1,
         type: 'LineLoop',
+        scale: 120,
       },
       ...options,
     }
@@ -119,7 +121,7 @@ class LineRenderer {
     return d3
       .geoMercator()
       .center(this.options.center)
-      .scale(120)
+      .scale(this.options.scale || 120)
       .translate([0, 0])(coords) as [number, number]
   }
   setParent(parent: THREE.Group) {

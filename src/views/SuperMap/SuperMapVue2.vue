@@ -16,7 +16,6 @@
 import { defineComponent } from 'vue'
 import * as THREE from 'three'
 import gsap from 'gsap'
-import { InteractionManager } from 'three.interactive'
 
 import {
   LilGui,
@@ -69,7 +68,6 @@ class MapControlStudy extends MapApplication {
   focusMapGroup?: THREE.Group<THREE.Object3DEventMap>
   clicked = false // 点击控制
   eventElement: THREE.Object3D<THREE.Object3DEventMap>[] = []
-  interactionManager: InteractionManager
   defaultMaterial?: THREE.MeshStandardMaterial
   defaultLightMaterial?: THREE.MeshStandardMaterial
   flyLineGroup?: THREE.Group<THREE.Object3DEventMap>
@@ -90,7 +88,7 @@ class MapControlStudy extends MapApplication {
     this.flyLineCenter = ZheJiangCityInfo[0].centroid as [number, number]
     this.scene.background = new THREE.Color(0x102736)
     // 设置雾化
-    this.scene.fog = new THREE.Fog(0x102736, 1, 50)
+    this.scene.fog = new THREE.Fog(0x102736, 1, 30)
     if (this.camera.instance) {
       this.camera.instance.position.set(
         -13.767695123014105,
@@ -102,12 +100,6 @@ class MapControlStudy extends MapApplication {
       this.camera.instance.far = 10000
       this.camera.instance.updateProjectionMatrix()
     }
-    // 点击管理器
-    this.interactionManager = new InteractionManager(
-      this.render.instance,
-      this.camera.instance,
-      this.canvas,
-    )
 
     this.label3d = new Label3D(this)
 
@@ -358,12 +350,13 @@ class MapControlStudy extends MapApplication {
    */
   createChina() {
     const chinaProvinceGeoData =
-      this.assets.instance!.getResource('china-province')
-    const chinaGeoData = this.assets.instance!.getResource('china')
+      this.assets.instance!.getResource('world')
+    const chinaGeoData = this.assets.instance!.getResource('world')
 
     const china = new GeoMapRenderer({
       data: chinaProvinceGeoData,
       center: this.pointCenter,
+      scale: this.config.geoProjectionScale,
       material: new THREE.MeshLambertMaterial({
         color: 0x152c47, // 深蓝色
         transparent: true,
@@ -374,6 +367,7 @@ class MapControlStudy extends MapApplication {
 
     const chinaLine = new LineRenderer({
       center: this.pointCenter,
+      scale: this.config.geoProjectionScale,
       data: chinaProvinceGeoData,
       material: new THREE.LineBasicMaterial({
         color: 0x3f82cd, // 蓝色
@@ -383,6 +377,7 @@ class MapControlStudy extends MapApplication {
 
     const chinaBottomLine = new LineRenderer({
       center: this.pointCenter,
+      scale: this.config.geoProjectionScale,
       data: chinaGeoData,
       material: new THREE.LineBasicMaterial({
         color: 0x3f82cd, // 蓝色
@@ -400,7 +395,7 @@ class MapControlStudy extends MapApplication {
    * @returns 包含浙江省地图、顶部地图和轮廓线的对象
    */
   createZheJiang() {
-    const zhejiangGeoData = this.assets.instance!.getResource('zhejiang-city')
+    const zhejiangGeoData = this.assets.instance!.getResource('china-province')
     const [topFaceMaterial, sideMaterial] = createProvinceMaterial({
       assets: this.assets,
       time: this.time,
@@ -416,6 +411,7 @@ class MapControlStudy extends MapApplication {
       },
       {
         center: this.pointCenter,
+        scale: this.config.geoProjectionScale,
         position: new THREE.Vector3(0, 0, 0.11),
         data: zhejiangGeoData,
         depth: 0.5,
@@ -442,6 +438,7 @@ class MapControlStudy extends MapApplication {
     // 创建浙江省顶部地图（平面）
     const zhejiangTop = new GeoMapRenderer({
       center: this.pointCenter,
+      scale: this.config.geoProjectionScale,
       position: new THREE.Vector3(0, 0, 0.72),
       data: zhejiangGeoData,
       material: topMapMaterial,
@@ -465,6 +462,7 @@ class MapControlStudy extends MapApplication {
     // 创建浙江省轮廓线
     const zhejiangLine = new LineRenderer({
       center: this.pointCenter,
+      scale: this.config.geoProjectionScale,
       data: zhejiangGeoData,
       material: this.zhejiangLineMaterial,
       renderOrder: 3,
@@ -519,9 +517,6 @@ class MapControlStudy extends MapApplication {
 
     // 为每个可交互元素添加事件监听
     this.eventElement.forEach(element => {
-      // 添加到交互管理器
-      this.interactionManager.add(element)
-
       // 鼠标按下事件 - 移动相机到点击位置
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const el = element as any
@@ -945,7 +940,8 @@ export default defineComponent({
     const canvas = this.$refs.canvasRef as HTMLCanvasElement
     if (canvas) {
       this.mapControl = new MapControlStudy(canvas, {
-        centroid: ZheJiangData.properties.centroid as [number, number],
+        centroid: [104.113164,37.570667],
+        geoProjectionScale: 9, 
       })
     }
   },
